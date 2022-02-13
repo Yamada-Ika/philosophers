@@ -32,30 +32,35 @@ void	*monitor(void *argp)
 	philo = (t_philo_info *)argp;
 	while (true)
 	{
-		long long cur_time = get_timestamp();
+		// long long cur_time = get_timestamp();
 		if (get_timestamp() - philo->last_meal_time > philo->time_to_die)
 		{
-			printf("dead time: %lld\n", cur_time);
+			// printf("dead time: %lld\n", cur_time);
 			break ;
 		}
 	}
-	// philo->is_died = true;
+	printf("%lld %d died\n", get_timestamp(), philo->index);
+	philo->status->is_someone_dead = true;
 	pthread_exit((void *)true);
 }
 
-t_philo_info	*init_philo(t_arg_info *arg)
+t_philo_info	*init_philo(t_arg_info *argt)
 {
 	t_philo_info	*philo;
 	bool	*forks;
+	t_philo_status	*status;
 	int	i;
 
-	philo = (t_philo_info *)calloc(arg->number_of_philosophers + 1, sizeof(t_philo_info));
-	forks = (bool *)calloc(arg->number_of_philosophers + 1, sizeof(bool));
+	philo = (t_philo_info *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo_info));
+	forks = (bool *)calloc(argt->number_of_philosophers + 1, sizeof(bool));
+	status = (t_philo_status *)calloc(1, sizeof(t_philo_status));
+	status->is_someone_dead = false;
 	i = 1;
-	while (i < arg->number_of_philosophers + 1)
+	while (i < argt->number_of_philosophers + 1)
 	{
 		forks[i] = true;
 		philo[i].index = i;
+		philo[i].status = status;
 		philo[i].has_fork_on_lefthand = false;
 		philo[i].has_fork_on_righthand = false;
 		philo[i].forks = forks;
@@ -63,10 +68,10 @@ t_philo_info	*init_philo(t_arg_info *arg)
 			philo[i].is_even_group = true;
 		else
 			philo[i].is_even_group = false;
-		philo[i].philo_number = arg->number_of_philosophers;
-		philo[i].time_to_eat = arg->time_to_eat;
-		philo[i].time_to_sleep = arg->time_to_sleep;
-		philo[i].time_to_die = arg->time_to_die;
+		philo[i].philo_number = argt->number_of_philosophers;
+		philo[i].time_to_eat = argt->time_to_eat;
+		philo[i].time_to_sleep = argt->time_to_sleep;
+		philo[i].time_to_die = argt->time_to_die;
 		philo[i].last_meal_time = get_timestamp();
 		i++;
 	}
@@ -77,9 +82,8 @@ int	main(int argc, char *argv[])
 {
 	t_arg_info	arg;
 	t_philo_info	*philo;
-	bool	is_someone_died;
+	void	*monitor_status;
 
-	is_someone_died = false;
 	get_arg(argc, argv, &arg);
 	if (arg.is_invalid_arg)
 	{
@@ -103,9 +107,9 @@ int	main(int argc, char *argv[])
 	pthread_create(&(philo[1].monitor_id), NULL, monitor, &(philo[1]));
 	pthread_create(&(philo[2].philo_id), NULL, do_action, &(philo[2]));
 	pthread_create(&(philo[2].monitor_id), NULL, monitor, &(philo[2]));
-	pthread_join(philo[1].monitor_id, (void *)(&is_someone_died));
-	pthread_join(philo[2].monitor_id, (void *)(&is_someone_died));
-	if (is_someone_died)
+	pthread_join(philo[1].monitor_id, &monitor_status);
+	pthread_join(philo[2].monitor_id, &monitor_status);
+	if ((bool)monitor_status)
 	{
 		if (pthread_mutex_destroy(&(philo[1].mutex)) != 0)
 		{

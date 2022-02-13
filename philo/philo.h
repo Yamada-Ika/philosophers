@@ -22,14 +22,21 @@ typedef struct s_arg_info
 	int		number_of_times_each_philosopher_must_eat;
 }	t_arg_info;
 
+typedef struct s_philo_status
+{
+	bool	is_someone_dead;
+}	t_philo_status;
+
 // 哲学者の状態
 typedef struct s_philo_info
 {
 	int		index;
+	t_philo_status	*status;
 	bool	has_fork_on_lefthand;
 	bool	has_fork_on_righthand;
 	bool	*forks;
 	bool	is_even_group;
+	bool	is_died;
 	int		philo_number;
 	int		time_to_eat;
 	int		time_to_sleep;
