@@ -1,5 +1,14 @@
 #include "philo.h"
 
+// __attribute__((destructor))
+// void	check_leak(void)
+// {
+// 	char	cmd[50];
+
+// 	sprintf(cmd, "leaks %d", getpid());
+// 	system(cmd);
+// }
+
 void	debug_arg(t_arg_info *argt)
 {
 	fprintf(stderr, "number of philo : %d\n", argt->number_of_philosophers);
