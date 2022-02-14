@@ -12,7 +12,7 @@ void	get_fork_on_leftside(t_philo_info *philo)
 	{
 		philo->forks[leftside_index] = false;
 		philo->has_fork_on_lefthand = true;
-		printf("%lld %d has taken a left-side fork\n", get_timestamp(), philo->index);
+		printf("%lld %d has taken a fork\n", get_timestamp(), philo->index);
 	}
 }
 
@@ -28,7 +28,7 @@ void	get_fork_on_rightside(t_philo_info *philo)
 	{
 		philo->forks[rightside_index] = false;
 		philo->has_fork_on_righthand = true;
-		printf("%lld %d has taken a right-side fork\n", get_timestamp(), philo->index);
+		printf("%lld %d has taken a fork\n", get_timestamp(), philo->index);
 	}
 }
 
@@ -45,19 +45,35 @@ void	get_forks(t_philo_info *philo)
 	{
 		// while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
 		while (!philo->has_fork_on_lefthand && !is_somephilo_dead(philo))
+		{
+			// pthread_mutex_lock(&(philo->mutex));
 			get_fork_on_leftside(philo);
+			// pthread_mutex_unlock(&(philo->mutex));
+		}
 		// while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
 		while (!philo->has_fork_on_righthand && !is_somephilo_dead(philo))
+		{
+			// pthread_mutex_lock(&(philo->mutex));
 			get_fork_on_rightside(philo);
+			// pthread_mutex_unlock(&(philo->mutex));
+		}
 	}
 	else
 	{
 		// while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
 		while (!philo->has_fork_on_righthand && !is_somephilo_dead(philo))
+		{
+			// pthread_mutex_lock(&(philo->mutex));
 			get_fork_on_rightside(philo);
+			// pthread_mutex_unlock(&(philo->mutex));
+		}
 		// while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
 		while (!philo->has_fork_on_lefthand && !is_somephilo_dead(philo))
+		{
+			// pthread_mutex_lock(&(philo->mutex));
 			get_fork_on_leftside(philo);
+			// pthread_mutex_unlock(&(philo->mutex));
+		}
 	}
 }
 
