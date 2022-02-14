@@ -77,11 +77,11 @@ bool	can_create_thread(t_philo_info *philo)
 		{
 			return (false);
 		}
-		if (pthread_create(&(philo[i].philo_id), NULL, monitor, &(philo[i])) != 0)
-		{
-			return (false);
-		}
 		i++;
+	}
+	if (pthread_create(&(philo[1].philo_id), NULL, monitor, philo) != 0)
+	{
+		return (false);
 	}
 	return (true);
 }

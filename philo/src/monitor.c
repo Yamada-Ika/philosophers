@@ -13,25 +13,29 @@ bool	is_over_time_to_die(t_philo_info *philo)
 void	*monitor(void *argp)
 {
 	t_philo_info	*philo;
+	int	i;
 
 	philo = (t_philo_info *)argp;
+	i = 1;
 	while (true)
 	{
-		// long long cur_time = get_timestamp();
-		// if (get_timestamp() - philo->last_meal_time > philo->time_to_die)
-		if (is_over_time_to_die(philo))
+		if (i == philo[1].philo_number)
+			i = 1;
+		if (is_over_time_to_die(&(philo[i])))
 		{
-			// printf("dead time: %lld\n", cur_time);
 			break ;
 		}
+		i++;
 	}
 	// if (!philo->status->is_someone_dead)
-	if (!is_somephilo_dead(philo))
-	{
-		pthread_mutex_lock(&philo->mutex);
-		printf("%lld %d died\n", get_timestamp(), philo->index);
-		philo->status->is_someone_dead = true;
-		pthread_mutex_unlock(&philo->mutex);
-	}
+	// if (!is_somephilo_dead(philo))
+	// {
+		pthread_mutex_lock(&(philo[i].mutex));
+		printf("%lld %d died\n", get_timestamp(), philo[i].index);
+		// printf("%lld %d died\n", get_timestamp(), i);
+		// philo->status->is_someone_dead = true;
+		philo[i].status->is_someone_dead = true;
+		pthread_mutex_unlock(&(philo[i].mutex));
+	// }
 	pthread_exit((void *)true);
 }

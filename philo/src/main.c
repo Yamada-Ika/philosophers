@@ -65,8 +65,8 @@ int	main(int argc, char *argv[])
 	for (int i = 1; i < philo[1].philo_number + 1; i++)
 	{
 		pthread_join(philo[i].monitor_id, &monitor_status);
-		pthread_join(philo[i].philo_id, NULL);
 	}
+	pthread_join(philo[1].philo_id, NULL);
 	// fprintf(stderr, "finish philo\n");
 	if ((bool)monitor_status)
 	{
