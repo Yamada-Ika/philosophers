@@ -25,6 +25,7 @@ typedef struct s_arg_info
 typedef struct s_philo_status
 {
 	bool	is_someone_dead;
+	bool	can_start;
 }	t_philo_status;
 
 // 哲学者の状態
@@ -67,6 +68,9 @@ void		put_forks(t_philo_info *philo);
 // utils
 int			get_index(int index, int philos_number);
 long long	get_timestamp(void);
+long long	get_timestamp_in_usec(void);
+void		my_usleep(long long usec);
+void		my_msleep(long long msec);
 bool		is_somephilo_dead(t_philo_info *philo);
 
 #endif

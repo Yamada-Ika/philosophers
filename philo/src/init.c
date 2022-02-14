@@ -11,6 +11,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	forks = (bool *)calloc(argt->number_of_philosophers + 1, sizeof(bool));
 	status = (t_philo_status *)calloc(1, sizeof(t_philo_status));
 	status->is_someone_dead = false;
+	status->can_start = false;
 	i = 1;
 	while (i < argt->number_of_philosophers + 1)
 	{
@@ -79,7 +80,7 @@ bool	can_create_thread(t_philo_info *philo)
 		}
 		i++;
 	}
-	if (pthread_create(&(philo[1].philo_id), NULL, monitor, philo) != 0)
+	if (pthread_create(&(philo[1].monitor_id), NULL, monitor, philo) != 0)
 	{
 		return (false);
 	}

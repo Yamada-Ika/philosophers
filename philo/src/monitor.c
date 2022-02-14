@@ -16,6 +16,7 @@ void	*monitor(void *argp)
 	int	i;
 
 	philo = (t_philo_info *)argp;
+	philo[1].status->can_start = true;
 	i = 1;
 	while (true)
 	{
@@ -28,8 +29,8 @@ void	*monitor(void *argp)
 		i++;
 	}
 	pthread_mutex_lock(&(philo[i].mutex));
-	printf("%lld %d died\n", get_timestamp(), philo[i].index);
 	philo[i].status->is_someone_dead = true;
 	pthread_mutex_unlock(&(philo[i].mutex));
+	printf("%lld %d died\n", get_timestamp(), philo[i].index);
 	pthread_exit((void *)true);
 }

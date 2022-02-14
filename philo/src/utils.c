@@ -30,3 +30,40 @@ bool	is_somephilo_dead(t_philo_info *philo)
 	pthread_mutex_unlock(&philo->mutex);
 	return (res);
 }
+
+void	my_msleep(long long msec)
+{
+	long long	start;
+
+	start = get_timestamp();
+	while (true)
+	{
+		if (get_timestamp() - start >= msec)
+			return ;
+	}
+}
+
+long long	get_timestamp_in_usec(void)
+{
+	t_time	tv;
+
+	if (gettimeofday(&tv, NULL) == 0)
+	{
+		// printf("sec  : %zu\n", tv.tv_sec * 1000000);
+		// printf("usec : %d\n", tv.tv_usec);
+		return (tv.tv_sec * 1000000 + tv.tv_usec);
+	}
+	return (0);
+}
+
+void	my_usleep(long long usec)
+{
+	long long	start;
+
+	start = get_timestamp_in_usec();
+	while (true)
+	{
+		if (get_timestamp_in_usec() - start >= usec)
+			return ;
+	}
+}
