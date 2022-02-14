@@ -3,3 +3,4 @@
 *.out
 philo/philo
 .vscode
+*.log
