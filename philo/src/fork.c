@@ -5,6 +5,9 @@ void	get_fork_on_leftside(t_philo_info *philo)
 	int	cur_index = philo->index;
 	int	leftside_index = get_index(cur_index + 1, philo->philo_number);
 
+	// if (philo->status->is_someone_dead)
+	if (is_somephilo_dead(philo))
+		return ;
 	if (philo->forks[leftside_index])
 	{
 		philo->forks[leftside_index] = false;
@@ -18,7 +21,8 @@ void	get_fork_on_rightside(t_philo_info *philo)
 	int	cur_index = philo->index;
 	int	rightside_index = cur_index;
 
-	if (philo->status->is_someone_dead)
+	// if (philo->status->is_someone_dead)
+	if (is_somephilo_dead(philo))
 		return ;
 	if (philo->forks[rightside_index])
 	{
@@ -34,20 +38,25 @@ void	get_fork_on_rightside(t_philo_info *philo)
 */
 void	get_forks(t_philo_info *philo)
 {
-	if (philo->status->is_someone_dead)
+	// if (philo->status->is_someone_dead)
+	if (is_somephilo_dead(philo))
 		return ;
 	if (philo->is_even_group)
 	{
-		while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
+		// while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
+		while (!philo->has_fork_on_lefthand && !is_somephilo_dead(philo))
 			get_fork_on_leftside(philo);
-		while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
+		// while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
+		while (!philo->has_fork_on_righthand && !is_somephilo_dead(philo))
 			get_fork_on_rightside(philo);
 	}
 	else
 	{
-		while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
+		// while (!philo->has_fork_on_righthand && !philo->status->is_someone_dead)
+		while (!philo->has_fork_on_righthand && !is_somephilo_dead(philo))
 			get_fork_on_rightside(philo);
-		while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
+		// while (!philo->has_fork_on_lefthand && !philo->status->is_someone_dead)
+		while (!philo->has_fork_on_lefthand && !is_somephilo_dead(philo))
 			get_fork_on_leftside(philo);
 	}
 }

@@ -62,7 +62,7 @@ int	main(int argc, char *argv[])
 		fprintf(stderr, "Error: Failed to create thread\n");
 		return (1);
 	}
-	for (int i = 1; i < philo[1].philo_number; i++)
+	for (int i = 1; i < philo[1].philo_number + 1; i++)
 	{
 		pthread_join(philo[i].monitor_id, &monitor_status);
 		pthread_join(philo[i].philo_id, NULL);

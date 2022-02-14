@@ -20,3 +20,13 @@ long long	get_timestamp(void)
 	}
 	return (0);
 }
+
+bool	is_somephilo_dead(t_philo_info *philo)
+{
+	bool	res;
+
+	pthread_mutex_lock(&philo->mutex);
+	res = philo->status->is_someone_dead;
+	pthread_mutex_unlock(&philo->mutex);
+	return (res);
+}

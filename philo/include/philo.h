@@ -58,12 +58,15 @@ void		philo_sleep(t_philo_info *philo);
 void		*do_action(void *argp);
 void		*monitor(void *argp);
 
+// forks
 void		get_fork_on_leftside(t_philo_info *philo);
 void		get_fork_on_rightside(t_philo_info *philo);
 void		get_forks(t_philo_info *philo);
 void		put_forks(t_philo_info *philo);
 
+// utils
 int			get_index(int index, int philos_number);
 long long	get_timestamp(void);
+bool		is_somephilo_dead(t_philo_info *philo);
 
 #endif
