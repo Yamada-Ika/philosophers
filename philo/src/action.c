@@ -54,6 +54,7 @@ void	*do_action(void *argp)
 		if (is_somephilo_dead(philo))
 			pthread_exit(NULL);
 		philo_sleep(philo);
+		usleep(100);
 	}
 	pthread_exit(NULL);
 	// pthread_mutex_lock(&philo->mutex);
