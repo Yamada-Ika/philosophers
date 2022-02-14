@@ -27,15 +27,9 @@ void	*monitor(void *argp)
 		}
 		i++;
 	}
-	// if (!philo->status->is_someone_dead)
-	// if (!is_somephilo_dead(philo))
-	// {
-		pthread_mutex_lock(&(philo[i].mutex));
-		printf("%lld %d died\n", get_timestamp(), philo[i].index);
-		// printf("%lld %d died\n", get_timestamp(), i);
-		// philo->status->is_someone_dead = true;
-		philo[i].status->is_someone_dead = true;
-		pthread_mutex_unlock(&(philo[i].mutex));
-	// }
+	pthread_mutex_lock(&(philo[i].mutex));
+	printf("%lld %d died\n", get_timestamp(), philo[i].index);
+	philo[i].status->is_someone_dead = true;
+	pthread_mutex_unlock(&(philo[i].mutex));
 	pthread_exit((void *)true);
 }
