@@ -4,3 +4,4 @@
 philo/philo
 .vscode
 *.log
+*.plist
