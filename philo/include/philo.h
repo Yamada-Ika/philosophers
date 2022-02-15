@@ -45,7 +45,7 @@ typedef struct s_philo_info
 	long long	last_meal_time;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*mutex;
 }	t_philo_info;
 
 t_philo_info	*init_philo(t_arg_info *argt);
@@ -64,13 +64,15 @@ void		get_fork_on_leftside(t_philo_info *philo);
 void		get_fork_on_rightside(t_philo_info *philo);
 void		get_forks(t_philo_info *philo);
 void		put_forks(t_philo_info *philo);
+void		put_fork_on_leftside(t_philo_info *philo);
+void		put_fork_on_rightside(t_philo_info *philo);
 
 // utils
 int			get_index(int index, int philos_number);
 long long	get_timestamp(void);
 long long	get_timestamp_in_usec(void);
-void		my_usleep(long long usec);
-void		my_msleep(long long msec);
+void		my_usleep(long long usec, t_philo_info *philo);
+void		my_msleep(long long msec, t_philo_info *philo);
 bool		is_somephilo_dead(t_philo_info *philo);
 
 #endif

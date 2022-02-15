@@ -43,7 +43,7 @@ int	main(int argc, char *argv[])
 {
 	t_arg_info	arg;
 	t_philo_info	*philo;
-	void	*monitor_status;
+	// void	*monitor_status;
 
 	get_arg(argc, argv, &arg);
 	if (arg.is_invalid_arg)
@@ -64,14 +64,8 @@ int	main(int argc, char *argv[])
 	}
 	for (int i = 1; i < philo[1].philo_number + 1; i++)
 	{
-		pthread_join(philo[i].philo_id, &monitor_status);
-	}
-	pthread_join(philo[1].monitor_id, NULL);
-	// fprintf(stderr, "finish philo\n");
-	if ((bool)monitor_status)
-	{
-		can_destroy_mutex(philo);
-		return (0);
+		pthread_join(philo[i].philo_id, NULL);
+		pthread_join(philo[i].monitor_id, NULL);
 	}
 	if (!can_destroy_mutex(philo))
 	{

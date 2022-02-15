@@ -25,23 +25,12 @@ bool	is_somephilo_dead(t_philo_info *philo)
 {
 	bool	res;
 
-	pthread_mutex_lock(&philo->mutex);
+	pthread_mutex_lock(philo->mutex);
 	res = philo->status->is_someone_dead;
-	pthread_mutex_unlock(&philo->mutex);
+	pthread_mutex_unlock(philo->mutex);
 	return (res);
 }
 
-void	my_msleep(long long msec)
-{
-	long long	start;
-
-	start = get_timestamp();
-	while (true)
-	{
-		if (get_timestamp() - start >= msec)
-			return ;
-	}
-}
 
 long long	get_timestamp_in_usec(void)
 {
@@ -56,14 +45,29 @@ long long	get_timestamp_in_usec(void)
 	return (0);
 }
 
-void	my_usleep(long long usec)
+void	my_msleep(long long msec, t_philo_info *philo)
+{
+	long long	start;
+
+	start = get_timestamp();
+	while (!philo->status->is_someone_dead)
+	{
+		// if (get_timestamp() - start >= msec)
+		if (get_timestamp() - start >= msec - 1)
+			return ;
+		usleep(500);
+	}
+}
+
+void	my_usleep(long long usec, t_philo_info *philo)
 {
 	long long	start;
 
 	start = get_timestamp_in_usec();
-	while (true)
+	while (!philo->status->is_someone_dead)
 	{
 		if (get_timestamp_in_usec() - start >= usec)
 			return ;
+		usleep(1);
 	}
 }

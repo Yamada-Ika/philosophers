@@ -5,6 +5,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	t_philo_info	*philo;
 	bool	*forks;
 	t_philo_status	*status;
+	pthread_mutex_t	*mtx;
 	int	i;
 
 	philo = (t_philo_info *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo_info));
@@ -12,6 +13,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	status = (t_philo_status *)calloc(1, sizeof(t_philo_status));
 	status->is_someone_dead = false;
 	status->can_start = false;
+	mtx = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	i = 1;
 	while (i < argt->number_of_philosophers + 1)
 	{
@@ -30,6 +32,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 		philo[i].time_to_sleep = argt->time_to_sleep;
 		philo[i].time_to_die = argt->time_to_die;
 		philo[i].last_meal_time = get_timestamp();
+		philo[i].mutex = mtx;
 		i++;
 	}
 	return (philo);
@@ -42,7 +45,7 @@ bool	can_init_mutex(t_philo_info *philo)
 	i = 1;
 	while (i < philo[1].philo_number + 1)
 	{
-		if (pthread_mutex_init(&(philo[i].mutex), NULL) != 0)
+		if (pthread_mutex_init(philo[i].mutex, NULL) != 0)
 		{
 			return (false);
 		}
@@ -53,16 +56,9 @@ bool	can_init_mutex(t_philo_info *philo)
 
 bool	can_destroy_mutex(t_philo_info *philo)
 {
-	int	i;
-
-	i = 1;
-	while (i < philo[1].philo_number + 1)
+	if (pthread_mutex_destroy(philo[1].mutex) != 0)
 	{
-		if (pthread_mutex_destroy(&(philo[i].mutex)) != 0)
-		{
-			return (false);
-		}
-		i++;
+		return (false);
 	}
 	return (true);
 }
@@ -78,11 +74,12 @@ bool	can_create_thread(t_philo_info *philo)
 		{
 			return (false);
 		}
+		if (pthread_create(&(philo[i].monitor_id), NULL, monitor, &(philo[i])) != 0)
+		{
+			return (false);
+		}
 		i++;
 	}
-	if (pthread_create(&(philo[1].monitor_id), NULL, monitor, philo) != 0)
-	{
-		return (false);
-	}
+	philo[1].status->can_start = true;
 	return (true);
 }
