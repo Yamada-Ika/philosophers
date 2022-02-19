@@ -6,9 +6,7 @@ void	philo_think(t_philo_info *philo)
 		return ;
 	if (!is_somephilo_dead(philo))
 	{
-		pthread_mutex_lock(philo->mutex);
-		printf("%lld %d is thinking\n", get_timestamp(), philo->index);
-		pthread_mutex_unlock(philo->mutex);
+		print_action(philo->mtx_for_print, philo->index, "is thinking");
 	}
 }
 
@@ -19,19 +17,17 @@ void	philo_eat(t_philo_info *philo)
 	while (!is_somephilo_dead(philo))
 	{
 		get_forks(philo);
-		if (philo->has_fork_on_lefthand && philo->has_fork_on_righthand)
+		if (philo->own_status_kind == READY_TO_EAT)
 			break ;
-		if (philo->has_fork_on_lefthand && !philo->has_fork_on_lefthand)
+		if (philo->own_status_kind == HOLD_FORK_IN_LEFT)
 			put_fork_on_rightside(philo);
-		if (!philo->has_fork_on_lefthand && philo->has_fork_on_lefthand)
+		if (philo->own_status_kind == HOLD_FORK_IN_RIGHT)
 			put_fork_on_leftside(philo);
 	}
 	if (!is_somephilo_dead(philo))
 	{
-		pthread_mutex_lock(philo->mutex);
-		printf("%lld %d is eating\n", get_timestamp(), philo->index);
-		pthread_mutex_unlock(philo->mutex);
-		my_usleep(philo->time_to_eat * 1000, philo);
+		print_action(philo->mtx_for_print, philo->index, "is eating");
+		my_msleep(philo->time_to_eat, philo);
 		philo->last_meal_time = get_timestamp();
 	}
 }
@@ -43,23 +39,19 @@ void	philo_sleep(t_philo_info *philo)
 	if (!is_somephilo_dead(philo))
 	{
 		put_forks(philo);
-		pthread_mutex_lock(philo->mutex);
-		printf("%lld %d is sleeping\n", get_timestamp(), philo->index);
-		pthread_mutex_unlock(philo->mutex);
-		my_usleep(philo->time_to_sleep * 1000, philo);
+		print_action(philo->mtx_for_print, philo->index, "is sleeping");
+		my_msleep(philo->time_to_sleep, philo);
 	}
 }
 
-void	wait_for_other_philo(t_philo_info *philo)
+void	wait_for_other_threads(t_philo_info *philo)
 {
 	while (true)
 	{
-		if (philo->status->can_start)
-			break ;
-	}
-	philo->last_meal_time = get_timestamp();
-	if (philo->is_even_group)
+		if (philo->shared_status->kind == READY_TO_START)
+			return ;
 		my_usleep(1000, philo);
+	}
 }
 
 void	*do_action(void *argp)
@@ -67,7 +59,12 @@ void	*do_action(void *argp)
 	t_philo_info	*philo;
 
 	philo = (t_philo_info *)argp;
-	wait_for_other_philo(philo);
+	wait_for_other_threads(philo);
+	if (philo->is_even_group)
+	{
+		my_msleep(2, philo);
+	}
+	philo->last_meal_time = get_timestamp();
 	while (true)
 	{
 		if (is_somephilo_dead(philo))
@@ -80,5 +77,5 @@ void	*do_action(void *argp)
 			pthread_exit(NULL);
 		philo_think(philo);
 	}
-	pthread_exit(NULL);
+	// pthread_exit(NULL);
 }

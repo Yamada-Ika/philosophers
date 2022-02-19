@@ -22,19 +22,28 @@ typedef struct s_arg_info
 	int		number_of_times_each_philosopher_must_eat;
 }	t_arg_info;
 
-typedef struct s_philo_status
+typedef enum e_status_kind
 {
-	bool	is_someone_dead;
-	bool	can_start;
-}	t_philo_status;
+	WAIT_OTHERS,
+	SOMEONE_DEAD,
+	READY_TO_START,
+	READY_TO_EAT,
+	HOLD_NOTHING,
+	HOLD_FORK_IN_LEFT,
+	HOLD_FORK_IN_RIGHT,
+}	t_status_kind;
+
+typedef struct s_sim_status
+{
+	t_status_kind	kind;
+}	t_sim_status;
 
 // 哲学者の状態
 typedef struct s_philo_info
 {
 	int		index;
-	t_philo_status	*status;
-	bool	has_fork_on_lefthand;
-	bool	has_fork_on_righthand;
+	t_sim_status	*shared_status;
+	t_status_kind	own_status_kind;
 	bool	*forks;
 	bool	is_even_group;
 	bool	is_died;
@@ -45,7 +54,9 @@ typedef struct s_philo_info
 	long long	last_meal_time;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;
-	pthread_mutex_t	*mutex;
+	pthread_mutex_t	*mtx_for_print;
+	pthread_mutex_t	*mtx_for_fork;
+	pthread_mutex_t	*mtx_for_status;
 }	t_philo_info;
 
 t_philo_info	*init_philo(t_arg_info *argt);
@@ -74,5 +85,7 @@ long long	get_timestamp_in_usec(void);
 void		my_usleep(long long usec, t_philo_info *philo);
 void		my_msleep(long long msec, t_philo_info *philo);
 bool		is_somephilo_dead(t_philo_info *philo);
+void		wait_for_other_threads(t_philo_info *philo);
+void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
 
 #endif
