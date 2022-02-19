@@ -87,5 +87,7 @@ void		my_msleep(long long msec, t_philo_info *philo);
 bool		is_somephilo_dead(t_philo_info *philo);
 void		wait_for_other_threads(t_philo_info *philo);
 void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
+void		print_error(char *message);
+size_t		ft_strlen(const char *s);
 
 #endif

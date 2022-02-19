@@ -47,18 +47,18 @@ int	main(int argc, char *argv[])
 	get_arg(argc, argv, &arg);
 	if (arg.is_invalid_arg)
 	{
-		fprintf(stderr, "Error: Invalid argument\n");
+		print_error("Invalid argument");
 		return (0);
 	}
 	philo = init_philo(&arg);
 	if (!can_init_mutex(philo))
 	{
-		fprintf(stderr, "Error: Failed to initialize mutex\n");
+		print_error("Failed to initialize mutex");
 		return (1);
 	}
 	if (!can_create_thread(philo))
 	{
-		fprintf(stderr, "Error: Failed to create thread\n");
+		print_error("Failed to create thread");
 		return (1);
 	}
 	for (int i = 1; i < philo[1].philo_number + 1; i++)
@@ -68,7 +68,7 @@ int	main(int argc, char *argv[])
 	}
 	if (!can_destroy_mutex(philo))
 	{
-		fprintf(stderr, "Error: Failed to destroy mutex\n");
+		print_error("Failed to destroy mutex");
 		return (1);
 	}
 	return (0);

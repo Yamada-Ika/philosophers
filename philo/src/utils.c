@@ -79,3 +79,20 @@ void	print_action(pthread_mutex_t *mutex, int philo_index, char *action)
 	printf(" %s\n", action);
 	pthread_mutex_unlock(mutex);
 }
+
+size_t	ft_strlen(const char *s)
+{
+	size_t	s_len;
+
+	s_len = 0;
+	while (s[s_len] != '\0')
+		s_len++;
+	return (s_len);
+}
+
+void	print_error(char *message)
+{
+	write(STDERR_FILENO, "Error: ", ft_strlen("Error: "));
+	write(STDERR_FILENO, message, ft_strlen(message));
+	write(STDERR_FILENO, "\n", 1);
+}
