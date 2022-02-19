@@ -4,7 +4,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 {
 	t_philo_info	*philo;
 	bool	*forks;
-	t_sim_status	*status;
+	t_sim_state	*status;
 	pthread_mutex_t	*mtx_for_print;
 	pthread_mutex_t	*mtx_for_fork;
 	pthread_mutex_t	*mtx_for_status;
@@ -12,7 +12,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 
 	philo = (t_philo_info *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo_info));
 	forks = (bool *)calloc(argt->number_of_philosophers + 1, sizeof(bool));
-	status = (t_sim_status *)calloc(1, sizeof(t_sim_status));
+	status = (t_sim_state *)calloc(1, sizeof(t_sim_state));
 	status->kind = WAIT_OTHERS;
 	mtx_for_print = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	mtx_for_fork = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
@@ -22,8 +22,8 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	{
 		forks[i] = true;
 		philo[i].index = i;
-		philo[i].shared_status = status;
-		philo[i].own_status_kind = HOLD_NOTHING;
+		philo[i].sim_state = status;
+		philo[i].own_state = HOLD_NOTHING;
 		philo[i].forks = forks;
 		if (i % 2 == 0)
 			philo[i].is_even_group = true;
@@ -99,6 +99,6 @@ bool	can_create_thread(t_philo_info *philo)
 		}
 		i++;
 	}
-	philo[1].shared_status->kind = READY_TO_START;
+	philo[1].sim_state->kind = READY_TO_START;
 	return (true);
 }

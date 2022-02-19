@@ -17,11 +17,11 @@ void	philo_eat(t_philo_info *philo)
 	while (!is_somephilo_dead(philo))
 	{
 		get_forks(philo);
-		if (philo->own_status_kind == READY_TO_EAT)
+		if (philo->own_state == READY_TO_EAT)
 			break ;
-		if (philo->own_status_kind == HOLD_FORK_IN_LEFT)
+		if (philo->own_state == HOLD_FORK_IN_LEFT)
 			put_fork_on_rightside(philo);
-		if (philo->own_status_kind == HOLD_FORK_IN_RIGHT)
+		if (philo->own_state == HOLD_FORK_IN_RIGHT)
 			put_fork_on_leftside(philo);
 	}
 	if (!is_somephilo_dead(philo))
@@ -48,7 +48,7 @@ void	wait_for_other_threads(t_philo_info *philo)
 {
 	while (true)
 	{
-		if (philo->shared_status->kind == READY_TO_START)
+		if (philo->sim_state->kind == READY_TO_START)
 			return ;
 		my_usleep(1000, philo);
 	}
@@ -65,17 +65,13 @@ void	*do_action(void *argp)
 		my_msleep(2, philo);
 	}
 	philo->last_meal_time = get_timestamp();
-	while (true)
+	while (!is_somephilo_dead(philo))
 	{
-		if (is_somephilo_dead(philo))
-			pthread_exit(NULL);
+		// if (is_somephilo_dead(philo))
+		// 	pthread_exit(NULL);
 		philo_eat(philo);
-		if (is_somephilo_dead(philo))
-			pthread_exit(NULL);
 		philo_sleep(philo);
-		if (is_somephilo_dead(philo))
-			pthread_exit(NULL);
 		philo_think(philo);
 	}
-	// pthread_exit(NULL);
+	pthread_exit(NULL);
 }

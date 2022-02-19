@@ -22,7 +22,7 @@ typedef struct s_arg_info
 	int		number_of_times_each_philosopher_must_eat;
 }	t_arg_info;
 
-typedef enum e_status_kind
+typedef enum e_state_kind
 {
 	WAIT_OTHERS,
 	SOMEONE_DEAD,
@@ -31,19 +31,19 @@ typedef enum e_status_kind
 	HOLD_NOTHING,
 	HOLD_FORK_IN_LEFT,
 	HOLD_FORK_IN_RIGHT,
-}	t_status_kind;
+}	t_state_kind;
 
-typedef struct s_sim_status
+typedef struct s_sim_state
 {
-	t_status_kind	kind;
-}	t_sim_status;
+	t_state_kind	kind;
+}	t_sim_state;
 
 // 哲学者の状態
 typedef struct s_philo_info
 {
 	int		index;
-	t_sim_status	*shared_status;
-	t_status_kind	own_status_kind;
+	t_sim_state		*sim_state;
+	t_state_kind	own_state;
 	bool	*forks;
 	bool	is_even_group;
 	bool	is_died;

@@ -16,10 +16,10 @@ void	get_fork_on_leftside(t_philo_info *philo)
 		pthread_mutex_lock(philo->mtx_for_fork);
 		philo->forks[leftside_index] = false;
 		pthread_mutex_unlock(philo->mtx_for_fork);
-		if (philo->own_status_kind == HOLD_FORK_IN_RIGHT)
-			philo->own_status_kind = READY_TO_EAT;
-		if (philo->own_status_kind == HOLD_NOTHING)
-			philo->own_status_kind = HOLD_FORK_IN_LEFT;
+		if (philo->own_state == HOLD_FORK_IN_RIGHT)
+			philo->own_state = READY_TO_EAT;
+		if (philo->own_state == HOLD_NOTHING)
+			philo->own_state = HOLD_FORK_IN_LEFT;
 		print_action(philo->mtx_for_print, philo->index, "has taken a fork");
 	}
 }
@@ -40,10 +40,10 @@ void	get_fork_on_rightside(t_philo_info *philo)
 		pthread_mutex_lock(philo->mtx_for_fork);
 		philo->forks[rightside_index] = false;
 		pthread_mutex_unlock(philo->mtx_for_fork);
-		if (philo->own_status_kind == HOLD_FORK_IN_LEFT)
-			philo->own_status_kind = READY_TO_EAT;
-		if (philo->own_status_kind == HOLD_NOTHING)
-			philo->own_status_kind = HOLD_FORK_IN_RIGHT;
+		if (philo->own_state == HOLD_FORK_IN_LEFT)
+			philo->own_state = READY_TO_EAT;
+		if (philo->own_state == HOLD_NOTHING)
+			philo->own_state = HOLD_FORK_IN_RIGHT;
 		print_action(philo->mtx_for_print, philo->index, "has taken a fork");
 	}
 }
@@ -76,10 +76,10 @@ void	put_fork_on_leftside(t_philo_info *philo)
 	leftside_index = get_index(philo->index + 1, philo->philo_number);
 	philo->forks[leftside_index] = true;
 	pthread_mutex_unlock(philo->mtx_for_fork);
-	if (philo->own_status_kind == HOLD_FORK_IN_LEFT)
-		philo->own_status_kind = HOLD_NOTHING;
-	if (philo->own_status_kind == READY_TO_EAT)
-		philo->own_status_kind = HOLD_FORK_IN_RIGHT;
+	if (philo->own_state == HOLD_FORK_IN_LEFT)
+		philo->own_state = HOLD_NOTHING;
+	if (philo->own_state == READY_TO_EAT)
+		philo->own_state = HOLD_FORK_IN_RIGHT;
 }
 
 void	put_fork_on_rightside(t_philo_info *philo)
@@ -90,10 +90,10 @@ void	put_fork_on_rightside(t_philo_info *philo)
 	rightside_index = philo->index;
 	philo->forks[rightside_index] = true;
 	pthread_mutex_unlock(philo->mtx_for_fork);
-	if (philo->own_status_kind == HOLD_FORK_IN_RIGHT)
-		philo->own_status_kind = HOLD_NOTHING;
-	if (philo->own_status_kind == READY_TO_EAT)
-		philo->own_status_kind = HOLD_FORK_IN_LEFT;
+	if (philo->own_state == HOLD_FORK_IN_RIGHT)
+		philo->own_state = HOLD_NOTHING;
+	if (philo->own_state == READY_TO_EAT)
+		philo->own_state = HOLD_FORK_IN_LEFT;
 }
 
 void	put_forks(t_philo_info *philo)
@@ -101,6 +101,6 @@ void	put_forks(t_philo_info *philo)
 	put_fork_on_leftside(philo);
 	put_fork_on_rightside(philo);
 	pthread_mutex_lock(philo->mtx_for_status);
-	philo->shared_status->kind = HOLD_NOTHING;
+	philo->sim_state->kind = HOLD_NOTHING;
 	pthread_mutex_unlock(philo->mtx_for_status);
 }

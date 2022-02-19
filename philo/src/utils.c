@@ -26,7 +26,7 @@ bool	is_somephilo_dead(t_philo_info *philo)
 	bool	res;
 
 	pthread_mutex_lock(philo->mtx_for_status);
-	res = (philo->shared_status->kind == SOMEONE_DEAD);
+	res = (philo->sim_state->kind == SOMEONE_DEAD);
 	pthread_mutex_unlock(philo->mtx_for_status);
 	return (res);
 }
@@ -50,7 +50,7 @@ void	my_msleep(long long msec, t_philo_info *philo)
 	long long	start;
 
 	start = get_timestamp();
-	while (!(philo->shared_status->kind == SOMEONE_DEAD))
+	while (!(philo->sim_state->kind == SOMEONE_DEAD))
 	{
 		// if (get_timestamp() - start >= msec - 1)
 		if (get_timestamp() - start >= msec)
@@ -64,7 +64,7 @@ void	my_usleep(long long usec, t_philo_info *philo)
 	long long	start;
 
 	start = get_timestamp_in_usec();
-	while (!(philo->shared_status->kind == SOMEONE_DEAD))
+	while (!(philo->sim_state->kind == SOMEONE_DEAD))
 	{
 		if (get_timestamp_in_usec() - start >= usec)
 			return ;

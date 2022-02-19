@@ -43,7 +43,6 @@ int	main(int argc, char *argv[])
 {
 	t_arg_info	arg;
 	t_philo_info	*philo;
-	// void	*monitor_status;
 
 	get_arg(argc, argv, &arg);
 	if (arg.is_invalid_arg)
