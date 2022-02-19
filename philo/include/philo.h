@@ -62,6 +62,7 @@ typedef struct s_philo_info
 t_philo_info	*init_philo(t_arg_info *argt);
 bool		can_init_mutex(t_philo_info *philo);
 bool		can_create_thread(t_philo_info *philo);
+bool		can_join_thread(t_philo_info *philo);
 bool		can_destroy_mutex(t_philo_info *philo);
 
 void		philo_think(t_philo_info *philo);

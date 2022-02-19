@@ -61,10 +61,10 @@ int	main(int argc, char *argv[])
 		print_error("Failed to create thread");
 		return (1);
 	}
-	for (int i = 1; i < philo[1].philo_number + 1; i++)
+	if (!can_join_thread(philo))
 	{
-		pthread_join(philo[i].philo_id, NULL);
-		pthread_join(philo[i].monitor_id, NULL);
+		print_error("Failed to join thread");
+		return (1);
 	}
 	if (!can_destroy_mutex(philo))
 	{

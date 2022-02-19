@@ -102,3 +102,23 @@ bool	can_create_thread(t_philo_info *philo)
 	philo[1].sim_state->kind = READY_TO_START;
 	return (true);
 }
+
+bool	can_join_thread(t_philo_info *philo)
+{
+	int	i;
+
+	i = 1;
+	while (i < philo[1].philo_number + 1)
+	{
+		if (pthread_join(philo[i].philo_id, NULL) != 0)
+		{
+			return (false);
+		}
+		if (pthread_join(philo[i].monitor_id, NULL) != 0)
+		{
+			return (false);
+		}
+		i++;
+	}
+	return (true);
+}
