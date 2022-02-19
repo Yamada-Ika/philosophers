@@ -44,13 +44,24 @@ void	philo_sleep(t_philo_info *philo)
 	}
 }
 
+bool	is_ready_to_start_simulation(t_philo_info *philo)
+{
+	bool	res;
+
+	pthread_mutex_lock(philo->mtx_for_status);
+	res = (philo->sim_state->kind == READY_TO_START);
+	pthread_mutex_unlock(philo->mtx_for_status);
+	return (res);
+}
+
 void	wait_for_other_threads(t_philo_info *philo)
 {
 	while (true)
 	{
-		if (philo->sim_state->kind == READY_TO_START)
+		// if (philo->sim_state->kind == READY_TO_START)
+		if (is_ready_to_start_simulation(philo))
 			return ;
-		my_usleep(1000, philo);
+		my_usleep(100, philo);
 	}
 }
 
@@ -67,8 +78,6 @@ void	*do_action(void *argp)
 	philo->last_meal_time = get_timestamp();
 	while (!is_somephilo_dead(philo))
 	{
-		// if (is_somephilo_dead(philo))
-		// 	pthread_exit(NULL);
 		philo_eat(philo);
 		philo_sleep(philo);
 		philo_think(philo);
