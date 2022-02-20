@@ -28,10 +28,10 @@ void	*monitor(void *argp)
 	if (!is_somephilo_dead(philo))
 	{
 		// pthread_mutex_lock(philo->mtx_for_print);
-		philo->sim_state->kind = SOMEONE_DEAD;
+		philo->sim_state->kind = END_SIMULATION;
 		print_action(philo->mtx_for_print, philo->index, "died");
 		// printf("%lld %d died\n", get_timestamp(), philo->index);
 		// pthread_mutex_unlock(philo->mtx_for_print);
 	}
-	// pthread_exit(NULL);
+	pthread_exit(NULL);
 }

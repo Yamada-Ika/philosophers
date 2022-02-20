@@ -22,33 +22,37 @@ typedef struct s_arg_info
 	int		number_of_times_each_philosopher_must_eat;
 }	t_arg_info;
 
-typedef enum e_state_kind
+typedef enum e_sim_state_kind
 {
 	WAIT_OTHERS,
-	SOMEONE_DEAD,
 	READY_TO_START,
-	READY_TO_EAT,
+	END_SIMULATION,
+}	t_sim_state_kind;
+
+typedef enum e_philo_state_kind
+{
 	HOLD_NOTHING,
 	HOLD_FORK_IN_LEFT,
 	HOLD_FORK_IN_RIGHT,
-}	t_state_kind;
+	READY_TO_EAT,
+}	t_philo_state_kind;
 
 typedef struct s_sim_state
 {
-	t_state_kind	kind;
+	t_sim_state_kind	kind;
 }	t_sim_state;
 
 // 哲学者の状態
 typedef struct s_philo_info
 {
 	int		index;
-	t_sim_state		*sim_state;
-	t_state_kind	own_state;
-	bool	*forks;
-	int		philo_number;
-	int		time_to_eat;
-	int		time_to_sleep;
-	int		time_to_die;
+	t_sim_state			*sim_state;
+	t_philo_state_kind	own_state;
+	bool		*forks;
+	int			philo_number;
+	int			time_to_eat;
+	int			time_to_sleep;
+	int			time_to_die;
 	long long	last_meal_time;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;
