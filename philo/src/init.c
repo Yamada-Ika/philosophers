@@ -95,7 +95,9 @@ bool	can_create_thread(t_philo_info *philo)
 		}
 		i++;
 	}
+	pthread_mutex_lock((philo[1].mtx_for_status));
 	philo[1].sim_state->kind = READY_TO_START;
+	pthread_mutex_unlock((philo[1].mtx_for_status));
 	return (true);
 }
 
