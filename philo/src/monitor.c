@@ -5,7 +5,7 @@
 // 	bool	res;
 
 // 	pthread_mutex_lock(philo->mtx_for_print);
-// 	res = (get_timestamp() - philo->last_meal_time > philo->time_to_die);
+// 	res = (get_timestamp(philo) - philo->last_meal_time > philo->time_to_die);
 // 	pthread_mutex_unlock(philo->mtx_for_print);
 // 	return (res);
 // }
@@ -18,7 +18,7 @@ void	*monitor(void *argp)
 	wait_for_other_threads(philo);
 	while (true)
 	{
-		if (get_timestamp() - philo->last_meal_time > philo->time_to_die)
+		if (get_timestamp(philo) - philo->last_meal_time > philo->time_to_die)
 		{
 			break ;
 		}
@@ -26,11 +26,10 @@ void	*monitor(void *argp)
 	}
 	if (!is_end_simulation(philo))
 	{
-		// pthread_mutex_lock(philo->mtx_for_print);
+		pthread_mutex_lock(philo->mtx_for_status);
 		philo->sim_state->kind = END_SIMULATION;
-		print_action(philo->mtx_for_print, philo->index, "died");
-		// printf("%lld %d died\n", get_timestamp(), philo->index);
-		// pthread_mutex_unlock(philo->mtx_for_print);
+		pthread_mutex_unlock(philo->mtx_for_status);
+		print_action(philo, philo->mtx_for_print, philo->index, "died");
 	}
 	pthread_exit(NULL);
 }

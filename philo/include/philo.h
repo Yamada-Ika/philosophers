@@ -59,6 +59,7 @@ typedef struct s_philo_info
 	pthread_mutex_t	*mtx_for_print;
 	pthread_mutex_t	*mtx_for_fork;
 	pthread_mutex_t	*mtx_for_status;
+	pthread_mutex_t	*mtx_for_time;
 }	t_philo_info;
 
 t_philo_info	*init_philo(t_arg_info *argt);
@@ -83,13 +84,16 @@ void		put_fork_on_rightside(t_philo_info *philo);
 
 // utils
 int			get_index(int index, int philos_number);
-long long	get_timestamp(void);
-long long	get_timestamp_in_usec(void);
+// long long	get_timestamp(void);
+long long	get_timestamp(t_philo_info *philo);
+// long long	get_timestamp_in_usec(void);
+long long	get_timestamp_in_usec(t_philo_info *philo);
 void		my_usleep(long long usec, t_philo_info *philo);
 void		my_msleep(long long msec, t_philo_info *philo);
 bool		is_end_simulation(t_philo_info *philo);
 void		wait_for_other_threads(t_philo_info *philo);
-void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
+// void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
+void		print_action(t_philo_info *philo, pthread_mutex_t *mutex, int philo_index, char *action);
 void		print_error(char *message);
 size_t		ft_strlen(const char *s);
 

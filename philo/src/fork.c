@@ -20,7 +20,7 @@ void	get_fork_on_leftside(t_philo_info *philo)
 			philo->own_state = READY_TO_EAT;
 		if (philo->own_state == HOLD_NOTHING)
 			philo->own_state = HOLD_FORK_IN_LEFT;
-		print_action(philo->mtx_for_print, philo->index, "has taken a fork");
+		print_action(philo, philo->mtx_for_print, philo->index, "has taken a fork");
 	}
 }
 
@@ -44,7 +44,7 @@ void	get_fork_on_rightside(t_philo_info *philo)
 			philo->own_state = READY_TO_EAT;
 		if (philo->own_state == HOLD_NOTHING)
 			philo->own_state = HOLD_FORK_IN_RIGHT;
-		print_action(philo->mtx_for_print, philo->index, "has taken a fork");
+		print_action(philo, philo->mtx_for_print, philo->index, "has taken a fork");
 	}
 }
 

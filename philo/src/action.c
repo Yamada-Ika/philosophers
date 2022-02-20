@@ -6,7 +6,7 @@ void	philo_think(t_philo_info *philo)
 		return ;
 	if (!is_end_simulation(philo))
 	{
-		print_action(philo->mtx_for_print, philo->index, "is thinking");
+		print_action(philo, philo->mtx_for_print, philo->index, "is thinking");
 	}
 }
 
@@ -23,12 +23,13 @@ void	philo_eat(t_philo_info *philo)
 			put_fork_on_rightside(philo);
 		if (philo->own_state == HOLD_FORK_IN_LEFT)
 			put_fork_on_leftside(philo);
+		// usleep(100);
 	}
 	if (!is_end_simulation(philo))
 	{
-		print_action(philo->mtx_for_print, philo->index, "is eating");
+		print_action(philo, philo->mtx_for_print, philo->index, "is eating");
 		my_msleep(philo->time_to_eat, philo);
-		philo->last_meal_time = get_timestamp();
+		philo->last_meal_time = get_timestamp(philo);
 	}
 }
 
@@ -39,7 +40,7 @@ void	philo_sleep(t_philo_info *philo)
 	if (!is_end_simulation(philo))
 	{
 		put_forks(philo);
-		print_action(philo->mtx_for_print, philo->index, "is sleeping");
+		print_action(philo, philo->mtx_for_print, philo->index, "is sleeping");
 		my_msleep(philo->time_to_sleep, philo);
 	}
 }
@@ -75,7 +76,7 @@ void	*do_action(void *argp)
 	{
 		my_msleep(2, philo);
 	}
-	philo->last_meal_time = get_timestamp();
+	philo->last_meal_time = get_timestamp(philo);
 	while (!is_end_simulation(philo))
 	{
 		philo_eat(philo);

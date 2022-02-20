@@ -16,9 +16,9 @@ void	*test_my_msleep(void *argp)
 	dummy.status = &status;
 	for (int i = 0; i < atoi(argv[2]); i++)
 	{
-		start = get_timestamp_in_usec();
+		start = get_timestamp_in_usec(philo);
 		my_msleep(atoi(argv[1]), &dummy);
-		printf("%lld\n", get_timestamp_in_usec() - start);
+		printf("%lld\n", get_timestamp_in_usec(philo) - start);
 	}
 	printf("END: test_my_msleep\n");
 }
@@ -33,9 +33,9 @@ void	*test_my_usleep(void *argp)
 	dummy.status = &status;
 	for (int i = 0; i < atoi(argv[2]); i++)
 	{
-		start = get_timestamp_in_usec();
+		start = get_timestamp_in_usec(philo);
 		my_usleep(atoi(argv[1]), &dummy);
-		printf("%lld\n", get_timestamp_in_usec() - start);
+		printf("%lld\n", get_timestamp_in_usec(philo) - start);
 	}
 	printf("END: test_my_usleep\n");
 }
@@ -47,9 +47,9 @@ void	*test_usleep(void *argp)
 	printf("START: test_usleep\n");
 	for (int i = 0; i < atoi(argv[2]); i++)
 	{
-		start = get_timestamp_in_usec();
+		start = get_timestamp_in_usec(philo);
 		usleep(atoi(argv[1]));
-		printf("%lld\n", get_timestamp_in_usec() - start);
+		printf("%lld\n", get_timestamp_in_usec(philo) - start);
 	}
 	printf("END: test_usleep\n");
 }

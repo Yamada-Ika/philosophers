@@ -8,6 +8,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	pthread_mutex_t	*mtx_for_print;
 	pthread_mutex_t	*mtx_for_fork;
 	pthread_mutex_t	*mtx_for_status;
+	pthread_mutex_t	*mtx_for_time;
 	int	i;
 
 	philo = (t_philo_info *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo_info));
@@ -17,6 +18,7 @@ t_philo_info	*init_philo(t_arg_info *argt)
 	mtx_for_print = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	mtx_for_fork = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	mtx_for_status = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	mtx_for_time = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	i = 1;
 	while (i < argt->number_of_philosophers + 1)
 	{
@@ -29,10 +31,11 @@ t_philo_info	*init_philo(t_arg_info *argt)
 		philo[i].time_to_eat = argt->time_to_eat;
 		philo[i].time_to_sleep = argt->time_to_sleep;
 		philo[i].time_to_die = argt->time_to_die;
-		philo[i].last_meal_time = get_timestamp();
+		// philo[i].last_meal_time = get_timestamp(philo);
 		philo[i].mtx_for_print = mtx_for_print;
 		philo[i].mtx_for_fork = mtx_for_fork;
 		philo[i].mtx_for_status = mtx_for_status;
+		philo[i].mtx_for_time = mtx_for_time;
 		i++;
 	}
 	return (philo);
@@ -57,6 +60,10 @@ bool	can_init_mutex(t_philo_info *philo)
 	{
 		return (false);
 	}
+	if (pthread_mutex_init(philo[1].mtx_for_time, NULL) != 0)
+	{
+		return (false);
+	}
 	// }
 	return (true);
 }
@@ -72,6 +79,10 @@ bool	can_destroy_mutex(t_philo_info *philo)
 		return (false);
 	}
 	if (pthread_mutex_destroy(philo[1].mtx_for_status) != 0)
+	{
+		return (false);
+	}
+	if (pthread_mutex_destroy(philo[1].mtx_for_time) != 0)
 	{
 		return (false);
 	}
