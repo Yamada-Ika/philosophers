@@ -45,7 +45,6 @@ typedef struct s_philo_info
 	t_sim_state		*sim_state;
 	t_state_kind	own_state;
 	bool	*forks;
-	bool	is_died;
 	int		philo_number;
 	int		time_to_eat;
 	int		time_to_sleep;
