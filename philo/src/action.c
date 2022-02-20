@@ -2,9 +2,9 @@
 
 void	philo_think(t_philo_info *philo)
 {
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
-	if (!is_somephilo_dead(philo))
+	if (!is_end_simulation(philo))
 	{
 		print_action(philo->mtx_for_print, philo->index, "is thinking");
 	}
@@ -12,9 +12,9 @@ void	philo_think(t_philo_info *philo)
 
 void	philo_eat(t_philo_info *philo)
 {
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
-	while (!is_somephilo_dead(philo))
+	while (!is_end_simulation(philo))
 	{
 		get_forks(philo);
 		if (philo->own_state == READY_TO_EAT)
@@ -24,7 +24,7 @@ void	philo_eat(t_philo_info *philo)
 		if (philo->own_state == HOLD_FORK_IN_LEFT)
 			put_fork_on_leftside(philo);
 	}
-	if (!is_somephilo_dead(philo))
+	if (!is_end_simulation(philo))
 	{
 		print_action(philo->mtx_for_print, philo->index, "is eating");
 		my_msleep(philo->time_to_eat, philo);
@@ -34,9 +34,9 @@ void	philo_eat(t_philo_info *philo)
 
 void	philo_sleep(t_philo_info *philo)
 {
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
-	if (!is_somephilo_dead(philo))
+	if (!is_end_simulation(philo))
 	{
 		put_forks(philo);
 		print_action(philo->mtx_for_print, philo->index, "is sleeping");
@@ -76,7 +76,7 @@ void	*do_action(void *argp)
 		my_msleep(2, philo);
 	}
 	philo->last_meal_time = get_timestamp();
-	while (!is_somephilo_dead(philo))
+	while (!is_end_simulation(philo))
 	{
 		philo_eat(philo);
 		philo_sleep(philo);

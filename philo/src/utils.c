@@ -21,7 +21,7 @@ long long	get_timestamp(void)
 	return (0);
 }
 
-bool	is_somephilo_dead(t_philo_info *philo)
+bool	is_end_simulation(t_philo_info *philo)
 {
 	bool	res;
 
@@ -48,7 +48,8 @@ void	my_msleep(long long msec, t_philo_info *philo)
 	long long	start;
 
 	start = get_timestamp();
-	while (!(philo->sim_state->kind == END_SIMULATION))
+	// while (!(philo->sim_state->kind == END_SIMULATION))
+	while (!is_end_simulation(philo))
 	{
 		if (get_timestamp() - start >= msec)
 			return ;
@@ -61,7 +62,8 @@ void	my_usleep(long long usec, t_philo_info *philo)
 	long long	start;
 
 	start = get_timestamp_in_usec();
-	while (!(philo->sim_state->kind == END_SIMULATION))
+	// while (!(philo->sim_state->kind == END_SIMULATION))
+	while (!is_end_simulation(philo))
 	{
 		if (get_timestamp_in_usec() - start >= usec)
 			return ;

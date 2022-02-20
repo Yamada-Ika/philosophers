@@ -25,7 +25,7 @@ void	*monitor(void *argp)
 		}
 		// my_usleep(100, philo);
 	}
-	if (!is_somephilo_dead(philo))
+	if (!is_end_simulation(philo))
 	{
 		// pthread_mutex_lock(philo->mtx_for_print);
 		philo->sim_state->kind = END_SIMULATION;

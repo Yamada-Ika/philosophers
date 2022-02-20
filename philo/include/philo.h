@@ -37,12 +37,12 @@ typedef enum e_philo_state_kind
 	READY_TO_EAT,
 }	t_philo_state_kind;
 
+// shared state
 typedef struct s_sim_state
 {
 	t_sim_state_kind	kind;
 }	t_sim_state;
 
-// 哲学者の状態
 typedef struct s_philo_info
 {
 	int		index;
@@ -87,7 +87,7 @@ long long	get_timestamp(void);
 long long	get_timestamp_in_usec(void);
 void		my_usleep(long long usec, t_philo_info *philo);
 void		my_msleep(long long msec, t_philo_info *philo);
-bool		is_somephilo_dead(t_philo_info *philo);
+bool		is_end_simulation(t_philo_info *philo);
 void		wait_for_other_threads(t_philo_info *philo);
 void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
 void		print_error(char *message);

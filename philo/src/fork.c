@@ -6,7 +6,7 @@ void	get_fork_on_leftside(t_philo_info *philo)
 	int	leftside_index = get_index(cur_index + 1, philo->philo_number);
 	bool	res;
 
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
 	pthread_mutex_lock(philo->mtx_for_fork);
 	res = philo->forks[leftside_index];
@@ -30,7 +30,7 @@ void	get_fork_on_rightside(t_philo_info *philo)
 	int	rightside_index = cur_index;
 	bool	res;
 
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
 	pthread_mutex_lock(philo->mtx_for_fork);
 	res = philo->forks[rightside_index];
@@ -54,7 +54,7 @@ void	get_fork_on_rightside(t_philo_info *philo)
 */
 void	get_forks(t_philo_info *philo)
 {
-	if (is_somephilo_dead(philo))
+	if (is_end_simulation(philo))
 		return ;
 	if (philo->index % 2 == 0)
 	{
