@@ -16,7 +16,6 @@ void	*monitor(void *argp)
 
 	philo = (t_philo_info *)argp;
 	wait_for_other_threads(philo);
-	pthread_exit(NULL);
 	while (true)
 	{
 		if (get_timestamp() - philo->last_meal_time > philo->time_to_die)
