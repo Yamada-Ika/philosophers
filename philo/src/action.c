@@ -19,9 +19,9 @@ void	philo_eat(t_philo_info *philo)
 		get_forks(philo);
 		if (philo->own_state == READY_TO_EAT)
 			break ;
-		if (philo->own_state == HOLD_FORK_IN_LEFT)
-			put_fork_on_rightside(philo);
 		if (philo->own_state == HOLD_FORK_IN_RIGHT)
+			put_fork_on_rightside(philo);
+		if (philo->own_state == HOLD_FORK_IN_LEFT)
 			put_fork_on_leftside(philo);
 	}
 	if (!is_somephilo_dead(philo))
@@ -71,7 +71,7 @@ void	*do_action(void *argp)
 
 	philo = (t_philo_info *)argp;
 	wait_for_other_threads(philo);
-	if (philo->is_even_group)
+	if (philo->index % 2 == 0)
 	{
 		my_msleep(2, philo);
 	}

@@ -56,14 +56,16 @@ void	get_forks(t_philo_info *philo)
 {
 	if (is_somephilo_dead(philo))
 		return ;
-	if (philo->is_even_group)
+	if (philo->index % 2 == 0)
 	{
 		get_fork_on_leftside(philo);
+		usleep(100);
 		get_fork_on_rightside(philo);
 	}
 	else
 	{
 		get_fork_on_rightside(philo);
+		usleep(100);
 		get_fork_on_leftside(philo);
 	}
 }
@@ -72,8 +74,8 @@ void	put_fork_on_leftside(t_philo_info *philo)
 {
 	int	leftside_index;
 
-	pthread_mutex_lock(philo->mtx_for_fork);
 	leftside_index = get_index(philo->index + 1, philo->philo_number);
+	pthread_mutex_lock(philo->mtx_for_fork);
 	philo->forks[leftside_index] = true;
 	pthread_mutex_unlock(philo->mtx_for_fork);
 	if (philo->own_state == HOLD_FORK_IN_LEFT)
@@ -86,8 +88,8 @@ void	put_fork_on_rightside(t_philo_info *philo)
 {
 	int	rightside_index;
 
-	pthread_mutex_lock(philo->mtx_for_fork);
 	rightside_index = philo->index;
+	pthread_mutex_lock(philo->mtx_for_fork);
 	philo->forks[rightside_index] = true;
 	pthread_mutex_unlock(philo->mtx_for_fork);
 	if (philo->own_state == HOLD_FORK_IN_RIGHT)
@@ -100,7 +102,7 @@ void	put_forks(t_philo_info *philo)
 {
 	put_fork_on_leftside(philo);
 	put_fork_on_rightside(philo);
-	pthread_mutex_lock(philo->mtx_for_status);
-	philo->sim_state->kind = HOLD_NOTHING;
-	pthread_mutex_unlock(philo->mtx_for_status);
+	// pthread_mutex_lock(philo->mtx_for_status);
+	// philo->sim_state->kind = HOLD_NOTHING;
+	// pthread_mutex_unlock(philo->mtx_for_status);
 }
