@@ -25,10 +25,6 @@ t_philo_info	*init_philo(t_arg_info *argt)
 		philo[i].sim_state = status;
 		philo[i].own_state = HOLD_NOTHING;
 		philo[i].forks = forks;
-		if (i % 2 == 0)
-			philo[i].is_even_group = true;
-		else
-			philo[i].is_even_group = false;
 		philo[i].philo_number = argt->number_of_philosophers;
 		philo[i].time_to_eat = argt->time_to_eat;
 		philo[i].time_to_sleep = argt->time_to_sleep;
