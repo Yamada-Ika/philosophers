@@ -11,11 +11,10 @@
 
 void	debug_arg(t_arg *argt)
 {
-	fprintf(stderr, "number of philo  : %d\n", argt->number_of_philosophers);
-	fprintf(stderr, "time to die      : %d\n", argt->time_to_die);
-	fprintf(stderr, "time to eat      : %d\n", argt->time_to_eat);
-	fprintf(stderr, "time to sleep    : %d\n", argt->time_to_sleep);
-	fprintf(stderr, "must eat times   : %d\n", argt->number_of_times_each_philosopher_must_eat);
+	fprintf(stderr, "number of philo : %d\n", argt->number_of_philosophers);
+	fprintf(stderr, "time to die     : %d\n", argt->time_to_die);
+	fprintf(stderr, "time to eat     : %d\n", argt->time_to_eat);
+	fprintf(stderr, "time to sleep   : %d\n", argt->time_to_sleep);
 }
 
 int	validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *error_num)
@@ -33,8 +32,6 @@ int	validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *error_num)
 		argt->time_to_sleep = atoi(argv[4]);
 		if (argc == 6)
 			argt->number_of_times_each_philosopher_must_eat = atoi(argv[5]);
-		else
-			argt->number_of_times_each_philosopher_must_eat = -1;
 		// debug_arg(argt);
 	}
 	else
@@ -69,6 +66,7 @@ void	error(t_error_kind kind)
 		printf("error: Failed to join thread\n");
 	else
 		printf("error: %d Unknown error\n", kind);
+
 }
 
 int	main(int argc, char *argv[])
@@ -76,17 +74,45 @@ int	main(int argc, char *argv[])
 	t_arg			arg;
 	t_philo			*philo;
 	t_error_kind	error_num;
+	int	state;
+	int	res;
 
+	state = 0;
 	error_num = -1;
-	if (validate_arg(argc, argv, &arg, &error_num) != 0
-		|| init_philo(&philo, &arg, &error_num) != 0
-		|| init_mutex(&philo, &error_num) != 0
-		|| create_thread(&philo, &error_num) != 0
-		|| detach_philo(&philo, &error_num) != 0
-		|| wait_monitor(&philo, &error_num) != 0)
-	{
-		error(error_num);
-		return (1);
-	}
+	res = validate_arg(argc, argv, &arg, &error_num);
+	printf("validate_arg res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	res = init_philo(&philo, &arg, &error_num);
+	printf("init_philo res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	res = init_mutex(&philo, &error_num);
+	printf("init_mutex res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	res = create_thread(&philo, &error_num);
+	printf("create_thread res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	res = detach_philo(&philo, &error_num);
+	printf("detach_philo res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	res = wait_monitor(&philo, &error_num, &state);
+	printf("wait_monitor res %d error_num %d\n", res, error_num);
+	if (res != 0)
+		return 1;
+	// if (validate_arg(argc, argv, &arg, &error_num) != 0
+	// 	|| init_philo(&philo, &arg, &error_num) != 0
+	// 	|| init_mutex(&philo, &error_num) != 0
+	// 	|| create_thread(&philo, &error_num) != 0
+	// 	|| detach_philo(&philo, &error_num) != 0
+	// 	|| wait_monitor(&philo, &error_num, &state) != 0)
+	// {
+	// 	error(error_num);
+	// 	return (1);
+	// }
+	// printf("end philo\n");
 	return (0);
 }

@@ -4,11 +4,11 @@ typedef struct s_arg_info
 {
 	int			argc;
 	char		*argv[];
-}	t_arg_info;
+}	t_arg;
 
 void	*test_my_msleep(void *argp)
 {
-	t_philo_info	dummy;
+	t_philo	dummy;
 	t_philo_status	status;
 	long long		start;
 
@@ -25,7 +25,7 @@ void	*test_my_msleep(void *argp)
 
 void	*test_my_usleep(void *argp)
 {
-	t_philo_info	dummy;
+	t_philo	dummy;
 	t_philo_status	status;
 	long long		start;
 
@@ -57,7 +57,7 @@ void	*test_usleep(void *argp)
 // gcc -DMY_USLEEP=1 test_my_msleep.c ../src/utils.c  -I../include && ./a.out; rm -rf a.out
 int	main(int argc, char *argv[])
 {
-	t_arg_info	argt;
+	t_arg	argt;
 	// pthread_t	thread1;
 	// pthread_t	thread2;
 

@@ -1,35 +1,77 @@
 #include "philo.h"
 
-// bool	is_over_time_to_die(t_philo_info *philo)
-// {
-// 	bool	res;
+int	lock_philo_threads(t_philo *philo)
+{
+	return (pthread_mutex_lock(philo->log));
+}
 
-// 	pthread_mutex_lock(philo->mtx_for_print);
-// 	res = (get_timestamp(philo) - philo->last_meal_time > philo->time_to_die);
-// 	pthread_mutex_unlock(philo->mtx_for_print);
-// 	return (res);
-// }
+void	kill_other_monitors(t_philo *philo)
+{
+	pthread_mutex_lock(philo->state);
+	*(philo->is_end) = true;
+	pthread_mutex_unlock(philo->state);
+}
+
+void	wait_philos(t_philo *philo)
+{
+	while (true)
+	{
+		pthread_mutex_lock(philo->state);
+		if (*(philo->is_init))
+		{
+			pthread_mutex_unlock(philo->state);
+			break ;
+		}
+		pthread_mutex_unlock(philo->state);
+		usleep(1);
+	}
+}
+
+bool	is_sim_end(t_philo *philo)
+{
+	bool	res;
+
+	pthread_mutex_lock(philo->state);
+	res = *(philo->is_end);
+	pthread_mutex_unlock(philo->state);
+	return (res);
+}
+
+bool	is_all_philos_eat(t_philo *philo)
+{
+	bool	res;
+
+	pthread_mutex_lock(philo->count);
+	res = *(philo->full_num) >= philo->philo_number;
+	pthread_mutex_unlock(philo->count);
+	return (res);
+}
 
 void	*monitor(void *argp)
 {
-	t_philo_info	*philo;
+	t_philo	*philo;
 
-	philo = (t_philo_info *)argp;
-	wait_for_other_threads(philo);
+	philo = (t_philo *)argp;
+	wait_odd_group(philo);
 	while (true)
 	{
-		if (get_timestamp(philo) - philo->last_meal_time > philo->time_to_die)
+		if (is_sim_end(philo))
+		{
+			pthread_exit((void *)1);
+		}
+		if (!is_sim_end(philo) && get_timestamp() - philo->last_meal_time > philo->time_to_die)
 		{
 			break ;
 		}
-		// my_usleep(100, philo);
+		if (!is_sim_end(philo) && philo->must_eat_times != -1 && is_all_philos_eat(philo))
+		{
+			kill_other_monitors(philo);
+			lock_philo_threads(philo);
+			pthread_exit((void *)1);
+		}
 	}
-	if (!is_end_simulation(philo))
-	{
-		pthread_mutex_lock(philo->mtx_for_status);
-		philo->sim_state->kind = END_SIMULATION;
-		pthread_mutex_unlock(philo->mtx_for_status);
-		print_action(philo, philo->mtx_for_print, philo->index, "died");
-	}
-	pthread_exit(NULL);
+	kill_other_monitors(philo);
+	print_action(philo->log, philo->index, "died");
+	lock_philo_threads(philo);
+	pthread_exit((void *)1);
 }

@@ -1,133 +1,54 @@
 #include "philo.h"
 
-t_philo_info	*init_philo(t_arg_info *argt)
+int	init_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num)
 {
-	t_philo_info	*philo;
-	bool	*forks;
-	t_sim_state	*status;
-	pthread_mutex_t	*mtx_for_print;
-	pthread_mutex_t	*mtx_for_fork;
-	pthread_mutex_t	*mtx_for_status;
-	pthread_mutex_t	*mtx_for_time;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	*log;
+	pthread_mutex_t	*state;
+	pthread_mutex_t	*count;
+	int				*full_num;
+	bool			*is_odd_ready;
+	bool			*is_even_ready;
+	bool			*is_init;
+	bool			*is_end;
 	int	i;
 
-	philo = (t_philo_info *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo_info));
-	forks = (bool *)calloc(argt->number_of_philosophers + 1, sizeof(bool));
-	status = (t_sim_state *)calloc(1, sizeof(t_sim_state));
-	status->kind = WAIT_OTHERS;
-	mtx_for_print = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
-	mtx_for_fork = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
-	mtx_for_status = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
-	mtx_for_time = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	*philo = (t_philo *)calloc(argt->number_of_philosophers + 1, sizeof(t_philo));
+	if (*philo == NULL)
+	{
+		*error_num = MEMORY;
+		return (1);
+	}
+	forks = (pthread_mutex_t *)calloc(argt->number_of_philosophers + 1, sizeof(pthread_mutex_t));
+	log = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	state = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	count = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	full_num = (int *)calloc(1, sizeof(int));
+	is_odd_ready = (bool *)calloc(1, sizeof(bool));
+	is_even_ready = (bool *)calloc(1, sizeof(bool));
+	is_init = (bool *)calloc(1, sizeof(bool));
+	is_end = (bool *)calloc(1, sizeof(bool));
 	i = 1;
 	while (i < argt->number_of_philosophers + 1)
 	{
-		forks[i] = true;
-		philo[i].index = i;
-		philo[i].sim_state = status;
-		philo[i].own_state = HOLD_NOTHING;
-		philo[i].forks = forks;
-		philo[i].philo_number = argt->number_of_philosophers;
-		philo[i].time_to_eat = argt->time_to_eat;
-		philo[i].time_to_sleep = argt->time_to_sleep;
-		philo[i].time_to_die = argt->time_to_die;
-		// philo[i].last_meal_time = get_timestamp(philo);
-		philo[i].mtx_for_print = mtx_for_print;
-		philo[i].mtx_for_fork = mtx_for_fork;
-		philo[i].mtx_for_status = mtx_for_status;
-		philo[i].mtx_for_time = mtx_for_time;
+		(*philo)[i].index = i;
+		(*philo)[i].forks = forks;
+		(*philo)[i].philo_number = argt->number_of_philosophers;
+		(*philo)[i].time_to_eat = argt->time_to_eat;
+		(*philo)[i].time_to_sleep = argt->time_to_sleep;
+		(*philo)[i].time_to_die = argt->time_to_die;
+		(*philo)[i].must_eat_times = argt->number_of_times_each_philosopher_must_eat;
+		(*philo)[i].eat_count = 0;
+		(*philo)[i].last_meal_time = get_timestamp();
+		(*philo)[i].full_num = full_num;
+		(*philo)[i].is_odd_ready = is_odd_ready;
+		(*philo)[i].is_even_ready = is_even_ready;
+		(*philo)[i].is_init = is_init;
+		(*philo)[i].is_end = is_end;
+		(*philo)[i].state = state;
+		(*philo)[i].log = log;
+		(*philo)[i].count = count;
 		i++;
 	}
-	return (philo);
-}
-
-bool	can_init_mutex(t_philo_info *philo)
-{
-	// int	i;
-
-	// i = 1;
-	// while (i < philo[1].philo_number + 1)
-	// {
-	if (pthread_mutex_init(philo[1].mtx_for_print, NULL) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_init(philo[1].mtx_for_fork, NULL) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_init(philo[1].mtx_for_status, NULL) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_init(philo[1].mtx_for_time, NULL) != 0)
-	{
-		return (false);
-	}
-	// }
-	return (true);
-}
-
-bool	can_destroy_mutex(t_philo_info *philo)
-{
-	if (pthread_mutex_destroy(philo[1].mtx_for_print) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_destroy(philo[1].mtx_for_fork) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_destroy(philo[1].mtx_for_status) != 0)
-	{
-		return (false);
-	}
-	if (pthread_mutex_destroy(philo[1].mtx_for_time) != 0)
-	{
-		return (false);
-	}
-	return (true);
-}
-
-bool	can_create_thread(t_philo_info *philo)
-{
-	int	i;
-
-	i = 1;
-	while (i < philo[1].philo_number + 1)
-	{
-		if (pthread_create(&(philo[i].philo_id), NULL, do_action, &(philo[i])) != 0)
-		{
-			return (false);
-		}
-		if (pthread_create(&(philo[i].monitor_id), NULL, monitor, &(philo[i])) != 0)
-		{
-			return (false);
-		}
-		i++;
-	}
-	pthread_mutex_lock((philo[1].mtx_for_status));
-	philo[1].sim_state->kind = READY_TO_START;
-	pthread_mutex_unlock((philo[1].mtx_for_status));
-	return (true);
-}
-
-bool	can_join_thread(t_philo_info *philo)
-{
-	int	i;
-
-	i = 1;
-	while (i < philo[1].philo_number + 1)
-	{
-		if (pthread_join(philo[i].philo_id, NULL) != 0)
-		{
-			return (false);
-		}
-		if (pthread_join(philo[i].monitor_id, NULL) != 0)
-		{
-			return (false);
-		}
-		i++;
-	}
-	return (true);
+	return (0);
 }
