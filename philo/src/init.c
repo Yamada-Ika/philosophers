@@ -6,8 +6,9 @@ int	init_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num)
 	pthread_mutex_t	*log;
 	pthread_mutex_t	*state;
 	pthread_mutex_t	*count;
+	pthread_mutex_t	*time;
 	int				*full_num;
-	bool			*is_odd_ready;
+	bool			*is_ready_thread;
 	bool			*is_even_ready;
 	bool			*is_init;
 	bool			*is_end;
@@ -23,8 +24,9 @@ int	init_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num)
 	log = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	state = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	count = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
+	time = (pthread_mutex_t *)calloc(1, sizeof(pthread_mutex_t));
 	full_num = (int *)calloc(1, sizeof(int));
-	is_odd_ready = (bool *)calloc(1, sizeof(bool));
+	is_ready_thread = (bool *)calloc(1, sizeof(bool));
 	is_even_ready = (bool *)calloc(1, sizeof(bool));
 	is_init = (bool *)calloc(1, sizeof(bool));
 	is_end = (bool *)calloc(1, sizeof(bool));
@@ -41,13 +43,14 @@ int	init_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num)
 		(*philo)[i].eat_count = 0;
 		(*philo)[i].last_meal_time = get_timestamp();
 		(*philo)[i].full_num = full_num;
-		(*philo)[i].is_odd_ready = is_odd_ready;
+		(*philo)[i].is_ready_thread = is_ready_thread;
 		(*philo)[i].is_even_ready = is_even_ready;
 		(*philo)[i].is_init = is_init;
 		(*philo)[i].is_end = is_end;
 		(*philo)[i].state = state;
 		(*philo)[i].log = log;
 		(*philo)[i].count = count;
+		(*philo)[i].time = time;
 		i++;
 	}
 	return (0);

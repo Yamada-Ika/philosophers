@@ -12,21 +12,6 @@ void	kill_other_monitors(t_philo *philo)
 	pthread_mutex_unlock(philo->state);
 }
 
-void	wait_philos(t_philo *philo)
-{
-	while (true)
-	{
-		pthread_mutex_lock(philo->state);
-		if (*(philo->is_init))
-		{
-			pthread_mutex_unlock(philo->state);
-			break ;
-		}
-		pthread_mutex_unlock(philo->state);
-		usleep(1);
-	}
-}
-
 bool	is_sim_end(t_philo *philo)
 {
 	bool	res;
@@ -47,31 +32,44 @@ bool	is_all_philos_eat(t_philo *philo)
 	return (res);
 }
 
+bool	is_hungry(t_philo *philo)
+{
+	bool	res;
+
+	pthread_mutex_lock(philo->time);
+	res = get_timestamp() - philo->last_meal_time > philo->time_to_die;
+	pthread_mutex_unlock(philo->time);
+	return (res);
+}
+
 void	*monitor(void *argp)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)argp;
-	wait_odd_group(philo);
+	wait_all_thread(philo);
 	while (true)
 	{
 		if (is_sim_end(philo))
 		{
 			pthread_exit((void *)1);
 		}
-		if (!is_sim_end(philo) && get_timestamp() - philo->last_meal_time > philo->time_to_die)
+		if (is_hungry(philo))
 		{
 			break ;
 		}
-		if (!is_sim_end(philo) && philo->must_eat_times != -1 && is_all_philos_eat(philo))
+		pthread_mutex_lock(philo->count);
+		if (!is_sim_end(philo) && philo->must_eat_times != -1 && *(philo->full_num) >= philo->philo_number)
 		{
-			kill_other_monitors(philo);
 			lock_philo_threads(philo);
+			kill_other_monitors(philo);
+			pthread_mutex_unlock(philo->count);
 			pthread_exit((void *)1);
 		}
+		pthread_mutex_unlock(philo->count);
 	}
-	kill_other_monitors(philo);
 	print_action(philo->log, philo->index, "died");
 	lock_philo_threads(philo);
-	pthread_exit((void *)1);
+	kill_other_monitors(philo);
+	pthread_exit(NULL);
 }

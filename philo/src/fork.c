@@ -24,13 +24,13 @@ void	get_forks(t_philo *philo)
 	if (philo->index % 2 == 0)
 	{
 		get_fork_on_leftside(philo);
-		// usleep(500);
+		usleep(500);
 		get_fork_on_rightside(philo);
 	}
 	else
 	{
 		get_fork_on_rightside(philo);
-		usleep(500);
+		// usleep(100);
 		get_fork_on_leftside(philo);
 	}
 	philo->can_eat = true;

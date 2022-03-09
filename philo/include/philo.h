@@ -49,7 +49,7 @@ typedef struct s_philo
 	long long		last_meal_time;
 	bool			can_eat;
 	bool			is_full;
-	bool			*is_odd_ready;
+	bool			*is_ready_thread;
 	bool			*is_even_ready;
 	bool			*is_init;
 	bool			*is_end;
@@ -57,6 +57,7 @@ typedef struct s_philo
 	pthread_mutex_t	*log;
 	pthread_mutex_t	*state;
 	pthread_mutex_t	*count;
+	pthread_mutex_t	*time;
 	pthread_t		philo_id;
 	pthread_t		monitor_id;
 }	t_philo;
@@ -91,6 +92,7 @@ long long	get_timestamp_in_usec(void);
 // long long	get_timestamp_in_usec(t_philo *philo);
 void		my_usleep(long long usec, t_philo *philo);
 void		my_msleep(long long msec, t_philo *philo);
+void	wait_all_thread(t_philo *philo);
 void		wait_odd_group(t_philo *philo);
 void		wait_even_group(t_philo *philo);
 // void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);

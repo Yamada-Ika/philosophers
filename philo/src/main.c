@@ -88,5 +88,6 @@ int	main(int argc, char *argv[])
 		error(error_num);
 		return (1);
 	}
+	// fprintf(stderr, "end\n");
 	return (0);
 }

@@ -20,5 +20,7 @@ function TEST_EAT_COUNT() {
 	done
 }
 
-../philo 100 410 200 200 5 > res.log
-TEST_EAT_COUNT 100 res.log
+# ../philo 200 410 200 200 5 > res.log
+# TEST_EAT_COUNT 200 res.log
+# ../philo 100 410 200 200 5 > res.log
+# TEST_EAT_COUNT 100 res.log

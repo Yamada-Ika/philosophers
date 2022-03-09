@@ -35,20 +35,18 @@ void	print_error(char *message)
 	write(STDERR_FILENO, "\n", 1);
 }
 
-void	wait_odd_group(t_philo *philo)
+void	wait_all_thread(t_philo *philo)
 {
-	if (philo->index % 2 == 0)
-		return ;
 	while (true)
 	{
-		// pthread_mutex_lock(philo->state);
-		if (*(philo->is_odd_ready))
+		pthread_mutex_lock(philo->state);
+		if (*(philo->is_ready_thread))
 		{
-			// pthread_mutex_unlock(philo->state);
+			pthread_mutex_unlock(philo->state);
 			return ;
 		}
-		// pthread_mutex_unlock(philo->state);
-		my_usleep(100, philo);
+		pthread_mutex_unlock(philo->state);
+		my_usleep(10, philo);
 	}
 }
 
@@ -58,13 +56,30 @@ void	wait_even_group(t_philo *philo)
 		return ;
 	while (true)
 	{
-		// pthread_mutex_lock(philo->state);
+		pthread_mutex_lock(philo->state);
 		if (*(philo->is_even_ready))
 		{
-			// pthread_mutex_unlock(philo->state);
+			pthread_mutex_unlock(philo->state);
 			return ;
 		}
-		// pthread_mutex_unlock(philo->state);
-		my_usleep(100, philo);
+		pthread_mutex_unlock(philo->state);
+		my_usleep(10, philo);
 	}
 }
+
+// void	wait_odd_group(t_philo *philo)
+// {
+// 	if (philo->index % 2 == 0)
+// 		return ;
+// 	while (true)
+// 	{
+// 		pthread_mutex_lock(philo->state);
+// 		if (*(philo->is_ready_thread))
+// 		{
+// 			pthread_mutex_unlock(philo->state);
+// 			return ;
+// 		}
+// 		pthread_mutex_unlock(philo->state);
+// 		my_usleep(100, philo);
+// 	}
+// }
