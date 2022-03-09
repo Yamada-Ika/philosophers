@@ -24,13 +24,13 @@ void	get_forks(t_philo *philo)
 	if (philo->index % 2 == 0)
 	{
 		get_fork_on_leftside(philo);
-		usleep(500);
+		// usleep(500);
 		get_fork_on_rightside(philo);
 	}
 	else
 	{
 		get_fork_on_rightside(philo);
-		// usleep(100);
+		usleep(100);
 		get_fork_on_leftside(philo);
 	}
 	philo->can_eat = true;
@@ -49,9 +49,18 @@ void	put_fork_on_rightside(t_philo *philo)
 	pthread_mutex_unlock(&(philo->forks[philo->index]));
 }
 
+// とった順にフォークを置いてみる
 void	put_forks(t_philo *philo)
 {
-	put_fork_on_leftside(philo);
-	put_fork_on_rightside(philo);
+	if (philo->index % 2 == 0)
+	{
+		put_fork_on_leftside(philo);
+		put_fork_on_rightside(philo);
+	}
+	else
+	{
+		put_fork_on_rightside(philo);
+		put_fork_on_leftside(philo);
+	}
 	philo->can_eat = false;
 }

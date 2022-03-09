@@ -9,7 +9,8 @@
 # include <string.h>
 # include <sys/time.h>
 
-# define FUNC() printf("%s\n", __func__)
+# define FUNC() fprintf(stderr, "start : %s\n", __func__)
+# define END() fprintf(stderr, "end : %s\n", __func__)
 
 typedef struct timeval	t_time;
 

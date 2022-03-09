@@ -1,5 +1,5 @@
 CC			:= cc
-CFLAGS		:= -g -fsanitize=thread #-Wall -Wextra -Werror  #-fsanitize=address
+CFLAGS		:= #-g -fsanitize=address #-fsanitize=thread #-Wall -Wextra -Werror  #-fsanitize=address
 NAME		:= philo
 SRCS		:= \
 action.c  init.c    utils.c\

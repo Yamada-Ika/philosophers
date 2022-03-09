@@ -63,7 +63,7 @@ void	*do_action(void *argp)
 
 	philo = (t_philo *)argp;
 	update_mealtime(philo);
-	wait_others(philo);
+	// wait_others(philo);
 	while (true)
 	{
 		philo_eat(philo);

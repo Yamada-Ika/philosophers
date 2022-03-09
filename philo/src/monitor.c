@@ -45,31 +45,26 @@ bool	is_hungry(t_philo *philo)
 void	*monitor(void *argp)
 {
 	t_philo	*philo;
+	int	i;
+	int	philo_num;
 
 	philo = (t_philo *)argp;
-	wait_all_thread(philo);
+	philo_num = philo[1].philo_number;
+	i = 1;
 	while (true)
 	{
-		if (is_sim_end(philo))
-		{
-			pthread_exit((void *)1);
-		}
-		if (is_hungry(philo))
-		{
+		if (i >= philo_num)
+			i = 1;
+		if (is_hungry(&philo[i]))
 			break ;
-		}
-		pthread_mutex_lock(philo->count);
-		if (!is_sim_end(philo) && philo->must_eat_times != -1 && *(philo->full_num) >= philo->philo_number)
+		if (philo[i].must_eat_times != -1 && *(philo[i].full_num) >= philo[i].philo_number)
 		{
-			lock_philo_threads(philo);
-			kill_other_monitors(philo);
-			pthread_mutex_unlock(philo->count);
-			pthread_exit((void *)1);
+			pthread_mutex_lock(philo[i].log);
+			pthread_exit(NULL);
 		}
-		pthread_mutex_unlock(philo->count);
+		i++;
 	}
-	print_action(philo->log, philo->index, "died");
-	lock_philo_threads(philo);
-	kill_other_monitors(philo);
+	print_action(philo[i].log, philo[i].index, "died");
+	pthread_mutex_lock(philo[i].log);
 	pthread_exit(NULL);
 }
