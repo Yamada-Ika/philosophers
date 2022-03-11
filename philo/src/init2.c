@@ -62,6 +62,7 @@ int	create_thread(t_philo **philo, t_error_kind *error_num)
 			return (1);
 		}
 		i += 2;
+		// i++;
 	}
 	usleep(200);
 	i = 2;
