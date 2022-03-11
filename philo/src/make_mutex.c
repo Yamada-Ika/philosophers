@@ -17,7 +17,8 @@ int	make_mutex(t_philo **philo, t_error_kind *err)
 	if (pthread_mutex_init(((*philo)[1].log), NULL) != 0
 		|| pthread_mutex_init(((*philo)[1].state), NULL) != 0
 		|| pthread_mutex_init(((*philo)[1].count), NULL) != 0
-		|| pthread_mutex_init(((*philo)[1].time), NULL) != 0)
+		|| pthread_mutex_init(((*philo)[1].time), NULL) != 0
+		|| pthread_mutex_init(((*philo)[1].mtx_err), NULL) != 0)
 	{
 		set_err(err, INIT_MTX);
 		return (1);

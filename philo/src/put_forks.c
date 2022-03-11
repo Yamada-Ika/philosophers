@@ -25,5 +25,4 @@ void	put_forks(t_philo *philo)
 		put_fork_on_rightside(philo);
 		put_fork_on_leftside(philo);
 	}
-	philo->can_eat = false;
 }

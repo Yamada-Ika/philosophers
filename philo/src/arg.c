@@ -16,13 +16,13 @@ static bool	is_invalid_arg_num(int argc)
 	return (true);
 }
 
-static size_t	gen_strtonum(char *s, t_error_kind *err)
+static long long	gen_num(char *s, t_error_kind *err)
 {
-	long	tmp;
-	char	*end;
+	long long	num;
+	char		*end;
 
-	tmp = (long)ft_strtoll(s, &end, 10);
-	if (tmp < 0)
+	num = ft_strtoll(s, &end, 10);
+	if (num < 0)
 	{
 		set_err(err, ARG_MINUS);
 		return (1);
@@ -32,7 +32,7 @@ static size_t	gen_strtonum(char *s, t_error_kind *err)
 		set_err(err, ARG_NUMERIC);
 		return (1);
 	}
-	return ((size_t)tmp);
+	return (num);
 }
 
 int	validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *err)
@@ -42,18 +42,18 @@ int	validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *err)
 		set_err(err, ARG_NUM);
 		return (1);
 	}
-	argt->num_of_philo = gen_strtonum(argv[1], err);
+	argt->num_of_philo = gen_num(argv[1], err);
 	if (argt->num_of_philo == 0)
 	{
 		set_err(err, MORE_PHILO);
 		return (1);
 	}
-	argt->time_to_die = gen_strtonum(argv[2], err);
-	argt->time_to_eat = gen_strtonum(argv[3], err);
-	argt->time_to_sleep = gen_strtonum(argv[4], err);
+	argt->time_to_die = gen_num(argv[2], err);
+	argt->time_to_eat = gen_num(argv[3], err);
+	argt->time_to_sleep = gen_num(argv[4], err);
 	if (argc == 6)
 	{
-		argt->must_eat_times = gen_strtonum(argv[5], err);
+		argt->must_eat_times = gen_num(argv[5], err);
 		argt->is_set_eat_cnt = true;
 	}
 	else

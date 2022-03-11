@@ -2,43 +2,39 @@
 
 static void	update_mealtime(t_philo *philo)
 {
-	pthread_mutex_lock(philo->time);
+	mutex_lock(philo->time, philo->mtx_err, philo->err);
 	philo->last_meal_time = get_timestamp();
-	pthread_mutex_unlock(philo->time);
+	mutex_unlock(philo->time, philo->mtx_err, philo->err);
 }
 
 void	philo_think(t_philo *philo)
 {
-	print_action(philo->log, philo->index, "is thinking");
+	print_action(philo, "is thinking");
 }
 
 void	philo_eat(t_philo *philo)
 {
-	while (true)
-	{
-		get_forks(philo);
-		if (philo->can_eat)
-			break ;
-	}
-	print_action(philo->log, philo->index, "is eating");
-	my_msleep(philo->time_to_eat, philo);
+	get_forks(philo);
+	print_action(philo, "is eating");
+	my_msleep(philo->time_to_eat);
 	update_mealtime(philo);
 	philo->eat_count++;
-	if (!philo->is_full && philo->should_count_eat
+	if (!philo->is_full
+		&& philo->should_count_eat
 		&& philo->eat_count >= philo->must_eat_times)
 	{
 		philo->is_full = true;
-		pthread_mutex_lock(philo->count);
+		mutex_lock(philo->count, philo->mtx_err, philo->err);
 		*(philo->full_num) += 1;
-		pthread_mutex_unlock(philo->count);
+		mutex_unlock(philo->count, philo->mtx_err, philo->err);
 	}
 }
 
 void	philo_sleep(t_philo *philo)
 {
 	put_forks(philo);
-	print_action(philo->log, philo->index, "is sleeping");
-	my_msleep(philo->time_to_sleep, philo);
+	print_action(philo, "is sleeping");
+	my_msleep(philo->time_to_sleep);
 }
 
 void	*do_action(void *argp)

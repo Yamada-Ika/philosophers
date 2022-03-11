@@ -36,4 +36,4 @@ TEST 5 800 200 200 7 res1.log &
 TEST 3 610 200 200 10 res1.log &
 TEST 200 410 200 200 10 res2.log &
 wait
-echo "ok"
+echo "end"

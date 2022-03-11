@@ -2,57 +2,45 @@
 
 int	lock_philo_threads(t_philo *philo)
 {
-	return (pthread_mutex_lock(philo->log));
+	return (mutex_lock(philo->log, philo->mtx_err, philo->err));
 }
-
-// void	kill_other_monitors(t_philo *philo)
-// {
-// 	pthread_mutex_lock(philo->state);
-// 	*(philo->is_end) = true;
-// 	pthread_mutex_unlock(philo->state);
-// }
-
-// bool	is_sim_end(t_philo *philo)
-// {
-// 	bool	res;
-
-// 	pthread_mutex_lock(philo->state);
-// 	res = *(philo->is_end);
-// 	pthread_mutex_unlock(philo->state);
-// 	return (res);
-// }
-
-// bool	is_all_philos_eat(t_philo *philo)
-// {
-// 	bool	res;
-
-// 	pthread_mutex_lock(philo->count);
-// 	res = *(philo->full_num) >= philo->philo_number;
-// 	pthread_mutex_unlock(philo->count);
-// 	return (res);
-// }
 
 bool	is_dead(t_philo *philo)
 {
 	bool	res;
 
-	pthread_mutex_lock(philo->time);
+	mutex_lock(philo->time, philo->mtx_err, philo->err);
 	res = get_timestamp() - philo->last_meal_time > philo->time_to_die;
-	pthread_mutex_unlock(philo->time);
+	mutex_unlock(philo->time, philo->mtx_err, philo->err);
 	return (res);
 }
 
 bool	is_end_dinner(t_philo *philo)
 {
-	return (philo->should_count_eat
-		&& *(philo->full_num) >= philo->philo_number);
+	bool	res;
+
+	mutex_lock(philo->count, philo->mtx_err, philo->err);
+	res = philo->should_count_eat
+		&& *(philo->full_num) >= philo->philo_number;
+	mutex_unlock(philo->count, philo->mtx_err, philo->err);
+	return (res);
+}
+
+bool	is_err_occured_while_dinner(t_philo *philo)
+{
+	bool	res;
+
+	mutex_lock(philo->mtx_err, philo->mtx_err, philo->err);
+	res = is_err_occured(philo->err);
+	mutex_unlock(philo->mtx_err, philo->mtx_err, philo->err);
+	return (res);
 }
 
 void	*monitor(void *argp)
 {
 	t_philo	*philo;
-	int		i;
-	int		philo_num;
+	size_t	i;
+	size_t	philo_num;
 
 	philo = (t_philo *)argp;
 	philo_num = philo[1].philo_number;
@@ -63,14 +51,15 @@ void	*monitor(void *argp)
 			i = 1;
 		if (is_dead(&philo[i]))
 			break ;
-		if (is_end_dinner(&(philo[i])))
+		if (is_err_occured_while_dinner(&philo[i])
+			|| is_end_dinner(&philo[i]))
 		{
-			pthread_mutex_lock(philo[i].log);
+			mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
 			pthread_exit(NULL);
 		}
 		i++;
 	}
-	print_action(philo[i].log, philo[i].index, "died");
-	pthread_mutex_lock(philo[i].log);
+	print_action(&philo[i], "died");
+	mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
 	pthread_exit(NULL);
 }

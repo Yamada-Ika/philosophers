@@ -26,42 +26,28 @@ long long	get_timestamp_in_usec(void)
 	return (0);
 }
 
-void	my_msleep(long long msec, t_philo *philo)
+void	my_msleep(long long msec)
 {
 	long long	start;
 
 	start = get_timestamp();
 	while (true)
 	{
-		pthread_mutex_lock(philo->state);
-		if (*(philo->is_end))
-		{
-			pthread_mutex_unlock(philo->state);
-			return ;
-		}
-		pthread_mutex_unlock(philo->state);
 		if (get_timestamp() - start >= msec)
 			return ;
 		usleep(500);
 	}
 }
 
-void	my_usleep(long long usec, t_philo *philo)
-{
-	long long	start;
+// void	my_usleep(long long usec)
+// {
+// 	long long	start;
 
-	start = get_timestamp_in_usec();
-	while (true)
-	{
-		pthread_mutex_lock(philo->state);
-		if (*(philo->is_end))
-		{
-			pthread_mutex_unlock(philo->state);
-			return ;
-		}
-		pthread_mutex_unlock(philo->state);
-		if (get_timestamp_in_usec() - start >= usec)
-			return ;
-		usleep(1);
-	}
-}
+// 	start = get_timestamp_in_usec();
+// 	while (true)
+// 	{
+// 		if (get_timestamp_in_usec() - start >= usec)
+// 			return ;
+// 		usleep(1);
+// 	}
+// }

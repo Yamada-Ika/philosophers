@@ -10,10 +10,11 @@ int	get_index(int index, int philos_number)
 		return (index);
 }
 
-void	print_action(t_mutex *mtx, int index, char *action)
+int	print_action(t_philo *philo, char *action)
 {
-	pthread_mutex_lock(mtx);
-	printf("%lld %d", get_timestamp(), index);
+	mutex_lock(philo->log, philo->mtx_err, philo->err);
+	printf("%lld %zu", get_timestamp(), philo->index);
 	printf(" %s\n", action);
-	pthread_mutex_unlock(mtx);
+	mutex_unlock(philo->log, philo->mtx_err, philo->err);
+	return (0);
 }
