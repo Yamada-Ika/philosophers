@@ -1,5 +1,10 @@
 CC			:= cc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror #-fsanitize=thread
+CFLAGS		:= -Wall -Wextra -Werror #-g -fsanitize=address #-fsanitize=thread
+LDFLAGS		:=
+ifeq ($(shell uname), Linux)
+	LDFLAGS	+= -pthread  -lpthread
+endif
+
 NAME		:= philo
 SRCS		:= \
 action.c             ft_strdup.c          monitor.c\
@@ -18,7 +23,7 @@ OBJS		:= $(addprefix obj/, $(OBJS))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(CFLAGS) $(COPTS) $(OBJS)
+	$(CC) -o $(NAME) $(CFLAGS) $(LDFLAGS) $(OBJS)
 
 obj/%.o: src/%.c
 	$(CC) $(CFLAGS) -o $@ -c $^ -Iinclude
