@@ -2,14 +2,12 @@ CC			:= cc
 CFLAGS		:= #-g -fsanitize=address #-fsanitize=thread #-Wall -Wextra -Werror  #-fsanitize=address
 NAME		:= philo
 SRCS		:= \
-action.c  init.c    utils.c\
-fork.c    init2.c   monitor.c utils2.c
-
-ifdef DEBUG
-	SRCS += main_dbg.c
-else
-	SRCS += main.c
-endif
+action.c             ft_putstr_fd.c       get_forks.c          run_monitor_thread.c\
+arg.c                ft_strcmp.c          main.c               run_philo_thread.c\
+error.c              ft_strdup.c          make_mutex.c         time.c\
+ft_isalnum.c         ft_strlen_s.c        make_philo.c         utils.c\
+ft_isalpha.c         ft_strncmp.c         monitor.c            wait_monitor.c\
+ft_isdigit.c         ft_strtoll.c         put_forks.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))
@@ -30,8 +28,5 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
-debug:
-	make DEBUG=1
 
 .PHONY: all clean fclean re libft empty

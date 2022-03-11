@@ -8,20 +8,28 @@
 # include <stdlib.h>
 # include <string.h>
 # include <sys/time.h>
+# include <limits.h>
 
 # define FUNC() fprintf(stderr, "start : %s\n", __func__)
 # define END() fprintf(stderr, "end : %s\n", __func__)
 
 typedef struct timeval	t_time;
+typedef pthread_mutex_t	t_mutex;
+typedef pthread_attr_t	t_attr;
 
 typedef enum e_error_kind {
+	NO_ERR = -1,
 	MORE_PHILO,
 	ARG_NUM,
-	MEMORY,
+	ARG_MINUS,
+	ARG_NUMERIC,
+	NO_MEM,
 	INIT_MTX,
 	DESTROY_MTX,
 	LOCK_MTX,
 	UNLOCK_MTX,
+	INIT_ATTR,
+	ADD_ATTR,
 	CREATE_THREAD,
 	DETACH_PHILO,
 	JOIN_THREAD,
@@ -30,47 +38,67 @@ typedef enum e_error_kind {
 // 引数を一時的に格納する構造体
 typedef struct s_arg
 {
-	int				number_of_philosophers;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				number_of_times_each_philosopher_must_eat;
+	size_t			num_of_philo;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			must_eat_times;
+	bool			is_set_eat_cnt;
 }	t_arg;
 
 typedef struct s_philo
 {
-	int				index;
-	int				philo_number;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				time_to_die;
-	int				must_eat_times;
-	int				eat_count;
-	int				*full_num;
+	size_t			index;
+	size_t			philo_number;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			time_to_die;
+	size_t			must_eat_times;
+	size_t			eat_count;
 	long long		last_meal_time;
 	bool			can_eat;
 	bool			is_full;
+	bool			should_count_eat;
+	size_t			*full_num;
 	bool			*is_ready_thread;
 	bool			*is_even_ready;
 	bool			*is_init;
 	bool			*is_end;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	*log;
-	pthread_mutex_t	*state;
-	pthread_mutex_t	*count;
-	pthread_mutex_t	*time;
+	t_mutex	*forks;
+	t_mutex	*log;
+	t_mutex	*state;
+	t_mutex	*count;
+	t_mutex	*time;
 	pthread_t		philo_id;
 	pthread_t		monitor_id;
 }	t_philo;
 
-// init
-int	init_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num);
-int	init_mutex(t_philo **philo, t_error_kind *error_num);
-int	create_thread(t_philo **philo, t_error_kind *error_num);
-int	detach_philo(t_philo **philo, t_error_kind *error_num);
-int	wait_monitor(t_philo **philo, t_error_kind *error_num);
-int	destroy_mutex(t_philo **philo, t_error_kind *error_num);
+// arg
+int			validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *error_num);
 
+long long	ft_strtoll(const char *str, char **endptr, int base);
+int			ft_strncmp(const char*s1, const char *s2, size_t n);
+int			ft_strcmp(const char*s1, const char *s2);
+int			ft_isalnum(int c);
+int			ft_isalpha(int c);
+int			ft_isdigit(int c);
+size_t		ft_strlen_s(const char *s);
+char		*ft_strdup(const char *s1);
+void		ft_putstr_fd(char *c, int fd);
+
+// error.c
+bool	is_err_occured(t_error_kind *err);
+void	set_err(t_error_kind *err, t_error_kind kind);
+void	print_error(t_error_kind kind);
+
+// init
+int		make_philo(t_philo **philo, t_arg *argt, t_error_kind *error_num);
+int		make_mutex(t_philo **philo, t_error_kind *error_num);
+int		run_philo_thread(t_philo **philo, t_error_kind *error_num);
+int		run_monitor_thread(t_philo **philo, t_error_kind *error_num);
+int		wait_monitor(t_philo **philo, t_error_kind *error_num);
+
+// action
 void	philo_think(t_philo *philo);
 void	philo_eat(t_philo *philo);
 void	philo_sleep(t_philo *philo);
@@ -78,27 +106,15 @@ void	*do_action(void *argp);
 void	*monitor(void *argp);
 
 // forks
-void	get_fork_on_leftside(t_philo *philo);
-void	get_fork_on_rightside(t_philo *philo);
 void	get_forks(t_philo *philo);
 void	put_forks(t_philo *philo);
-void	put_fork_on_leftside(t_philo *philo);
-void	put_fork_on_rightside(t_philo *philo);
 
 // utils
 int			get_index(int index, int philos_number);
 long long	get_timestamp(void);
-// long long	get_timestamp(t_philo *philo);
 long long	get_timestamp_in_usec(void);
-// long long	get_timestamp_in_usec(t_philo *philo);
 void		my_usleep(long long usec, t_philo *philo);
 void		my_msleep(long long msec, t_philo *philo);
-void	wait_all_thread(t_philo *philo);
-void		wait_odd_group(t_philo *philo);
-void		wait_even_group(t_philo *philo);
-// void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
-void		print_action(pthread_mutex_t *mutex, int philo_index, char *action);
-void		print_error(char *message);
-size_t		ft_strlen(const char *s);
+void		print_action(t_mutex *mutex, int philo_index, char *action);
 
 #endif

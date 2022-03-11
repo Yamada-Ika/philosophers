@@ -5,34 +5,34 @@ int	lock_philo_threads(t_philo *philo)
 	return (pthread_mutex_lock(philo->log));
 }
 
-void	kill_other_monitors(t_philo *philo)
-{
-	pthread_mutex_lock(philo->state);
-	*(philo->is_end) = true;
-	pthread_mutex_unlock(philo->state);
-}
+// void	kill_other_monitors(t_philo *philo)
+// {
+// 	pthread_mutex_lock(philo->state);
+// 	*(philo->is_end) = true;
+// 	pthread_mutex_unlock(philo->state);
+// }
 
-bool	is_sim_end(t_philo *philo)
-{
-	bool	res;
+// bool	is_sim_end(t_philo *philo)
+// {
+// 	bool	res;
 
-	pthread_mutex_lock(philo->state);
-	res = *(philo->is_end);
-	pthread_mutex_unlock(philo->state);
-	return (res);
-}
+// 	pthread_mutex_lock(philo->state);
+// 	res = *(philo->is_end);
+// 	pthread_mutex_unlock(philo->state);
+// 	return (res);
+// }
 
-bool	is_all_philos_eat(t_philo *philo)
-{
-	bool	res;
+// bool	is_all_philos_eat(t_philo *philo)
+// {
+// 	bool	res;
 
-	pthread_mutex_lock(philo->count);
-	res = *(philo->full_num) >= philo->philo_number;
-	pthread_mutex_unlock(philo->count);
-	return (res);
-}
+// 	pthread_mutex_lock(philo->count);
+// 	res = *(philo->full_num) >= philo->philo_number;
+// 	pthread_mutex_unlock(philo->count);
+// 	return (res);
+// }
 
-bool	is_hungry(t_philo *philo)
+bool	is_dead(t_philo *philo)
 {
 	bool	res;
 
@@ -42,11 +42,17 @@ bool	is_hungry(t_philo *philo)
 	return (res);
 }
 
+bool	is_end_dinner(t_philo *philo)
+{
+	return (philo->should_count_eat
+		&& *(philo->full_num) >= philo->philo_number);
+}
+
 void	*monitor(void *argp)
 {
 	t_philo	*philo;
-	int	i;
-	int	philo_num;
+	int		i;
+	int		philo_num;
 
 	philo = (t_philo *)argp;
 	philo_num = philo[1].philo_number;
@@ -55,9 +61,9 @@ void	*monitor(void *argp)
 	{
 		if (i >= philo_num)
 			i = 1;
-		if (is_hungry(&philo[i]))
+		if (is_dead(&philo[i]))
 			break ;
-		if (philo[i].must_eat_times != -1 && *(philo[i].full_num) >= philo[i].philo_number)
+		if (is_end_dinner(&(philo[i])))
 		{
 			pthread_mutex_lock(philo[i].log);
 			pthread_exit(NULL);
