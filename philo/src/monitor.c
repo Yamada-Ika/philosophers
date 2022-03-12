@@ -54,12 +54,18 @@ void	*monitor(void *argp)
 		if (is_err_occured_while_dinner(&philo[i])
 			|| is_end_dinner(&philo[i]))
 		{
-			mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
+			// mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
+			mutex_lock(philo[i].state, philo[i].mtx_err, philo[i].err);
+			*(philo[i].is_end) = true;
+			mutex_unlock(philo[i].state, philo[i].mtx_err, philo[i].err);
 			pthread_exit(NULL);
 		}
 		i++;
 	}
 	print_action(&philo[i], "died");
-	mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
+	mutex_lock(philo[i].state, philo[i].mtx_err, philo[i].err);
+	*(philo[i].is_end) = true;
+	mutex_unlock(philo[i].state, philo[i].mtx_err, philo[i].err);
+	// mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
 	pthread_exit(NULL);
 }

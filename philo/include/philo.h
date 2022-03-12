@@ -55,10 +55,8 @@ typedef struct s_philo
 	long long		last_meal_time;
 	bool			is_full;
 	bool			should_count_eat;
+	bool			*is_end;
 	size_t			*full_num;
-	bool			*is_ready_thread;
-	bool			*is_even_ready;
-	bool			*is_init;
 	t_mutex			*forks;
 	t_mutex			*log;
 	t_mutex			*state;
@@ -98,9 +96,9 @@ int			run_monitor_thread(t_philo **philo, t_error_kind *err);
 int			wait_monitor(t_philo **philo, t_error_kind *err);
 
 // action
-void		philo_think(t_philo *philo);
-void		philo_eat(t_philo *philo);
-void		philo_sleep(t_philo *philo);
+// int		philo_think(t_philo *philo);
+// int		philo_eat(t_philo *philo);
+// int		philo_sleep(t_philo *philo);
 void		*do_action(void *argp);
 void		*monitor(void *argp);
 

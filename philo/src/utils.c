@@ -12,6 +12,13 @@ int	get_index(int index, int philos_number)
 
 int	print_action(t_philo *philo, char *action)
 {
+	mutex_lock(philo->state, philo->mtx_err, philo->err);
+	if (*(philo->is_end))
+	{
+		mutex_unlock(philo->state, philo->mtx_err, philo->err);
+		return (1);
+	}
+	mutex_unlock(philo->state, philo->mtx_err, philo->err);
 	mutex_lock(philo->log, philo->mtx_err, philo->err);
 	printf("%lld %zu", get_timestamp(), philo->index);
 	printf(" %s\n", action);
