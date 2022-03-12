@@ -1,16 +1,30 @@
 #include "philo.h"
 
+/**
+ * @brief エラーが発生したか確認する関数
+ * @details この関数が呼ばれるまでにエラーが発生していると、errにNO_ERR以外がセットされている。
+ * 
+ * @param err エラーを格納する変数
+ * @return true エラーが発生している
+ * @return false エラーが発生していない
+ */
 bool	is_err_occured(t_error_kind *err)
 {
 	return (*err != NO_ERR);
 }
 
+/**
+ * @brief Set the err object
+ * 
+ * @param err エラーを格納する変数
+ * @param kind エラーの種類
+ */
 void	set_err(t_error_kind *err, t_error_kind kind)
 {
 	*err = kind;
 }
 
-char	*get_err_msg(t_error_kind kind)
+static char	*get_err_msg(t_error_kind kind)
 {
 	static char	*msg[] = {
 		"error: Input more philosophers\n",
@@ -32,6 +46,11 @@ char	*get_err_msg(t_error_kind kind)
 	return (ft_strdup(msg[kind]));
 }
 
+/**
+ * @brief 標準エラー出力にエラーメッセージを出力する関数
+ * 
+ * @param kind エラーの種類
+ */
 void	print_error(t_error_kind kind)
 {
 	char	*msg;

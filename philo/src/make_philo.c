@@ -25,17 +25,18 @@ static bool	is_nomem(t_share *share)
 		|| share->full_num == NULL);
 }
 
-static void	set_share_obj(t_share *share, t_arg *argt, t_error_kind *err)
+static void	set_share(t_share *share, t_arg *argt, t_error_kind *err)
 {
-	share->is_end = (bool *)calloc(1, sizeof(bool));
-	share->forks = (t_mutex *)calloc(argt->num_of_philo + 1, sizeof(t_mutex));
-	share->log = (t_mutex *)calloc(1, sizeof(t_mutex));
-	share->state = (t_mutex *)calloc(1, sizeof(t_mutex));
-	share->count = (t_mutex *)calloc(1, sizeof(t_mutex));
-	share->time = (t_mutex *)calloc(1, sizeof(t_mutex));
-	share->mtx_err = (t_mutex *)calloc(1, sizeof(t_mutex));
+	share->is_end = (bool *)ft_calloc(1, sizeof(bool));
+	share->forks = (t_mutex *)ft_calloc(argt->num_of_philo + 1,
+			sizeof(t_mutex));
+	share->log = (t_mutex *)ft_calloc(1, sizeof(t_mutex));
+	share->state = (t_mutex *)ft_calloc(1, sizeof(t_mutex));
+	share->count = (t_mutex *)ft_calloc(1, sizeof(t_mutex));
+	share->time = (t_mutex *)ft_calloc(1, sizeof(t_mutex));
+	share->mtx_err = (t_mutex *)ft_calloc(1, sizeof(t_mutex));
 	share->err = err;
-	share->full_num = (size_t *)calloc(1, sizeof(size_t));
+	share->full_num = (size_t *)ft_calloc(1, sizeof(size_t));
 	if (is_nomem(share))
 		set_err(err, NO_MEM);
 }
@@ -63,18 +64,26 @@ static void	set_philo(t_philo *philo, size_t index, t_arg *argt, t_share *share)
 		philo->should_count_eat = true;
 }
 
+/**
+ * @brief 各スレッドに渡す構造体の配列を作成する関数
+ * 
+ * @param philo 各スレッドに渡す構造体の配列
+ * @param argt コマンドライン引数を格納している構造体
+ * @param err エラーを格納する変数
+ * @return int エラーが発生すると1を返し、それ以外は0
+ */
 int	make_philo(t_philo **philo, t_arg *argt, t_error_kind *err)
 {
 	t_share	share;
 	size_t	i;
 
-	*philo = (t_philo *)calloc(argt->num_of_philo + 1, sizeof(t_philo));
+	*philo = (t_philo *)ft_calloc(argt->num_of_philo + 1, sizeof(t_philo));
 	if (*philo == NULL)
 	{
 		set_err(err, NO_MEM);
 		return (1);
 	}
-	set_share_obj(&share, argt, err);
+	set_share(&share, argt, err);
 	if (is_err_occured(err))
 		return (1);
 	i = 1;

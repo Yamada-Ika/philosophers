@@ -1,10 +1,5 @@
 #include "philo.h"
 
-int	lock_philo_threads(t_philo *philo)
-{
-	return (mutex_lock(philo->log, philo->mtx_err, philo->err));
-}
-
 bool	is_dead(t_philo *philo)
 {
 	bool	res;
@@ -36,6 +31,13 @@ bool	is_err_occured_while_dinner(t_philo *philo)
 	return (res);
 }
 
+void	set_end_dinner_flag(t_philo *philo)
+{
+	mutex_lock(philo->state, philo->mtx_err, philo->err);
+	*(philo->is_end) = true;
+	mutex_unlock(philo->state, philo->mtx_err, philo->err);
+}
+
 void	*monitor(void *argp)
 {
 	t_philo	*philo;
@@ -54,18 +56,12 @@ void	*monitor(void *argp)
 		if (is_err_occured_while_dinner(&philo[i])
 			|| is_end_dinner(&philo[i]))
 		{
-			// mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
-			mutex_lock(philo[i].state, philo[i].mtx_err, philo[i].err);
-			*(philo[i].is_end) = true;
-			mutex_unlock(philo[i].state, philo[i].mtx_err, philo[i].err);
-			pthread_exit(NULL);
+			set_end_dinner_flag(&philo[i]);
+			return (NULL);
 		}
 		i++;
 	}
 	print_action(&philo[i], "died");
-	mutex_lock(philo[i].state, philo[i].mtx_err, philo[i].err);
-	*(philo[i].is_end) = true;
-	mutex_unlock(philo[i].state, philo[i].mtx_err, philo[i].err);
-	// mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
-	pthread_exit(NULL);
+	set_end_dinner_flag(&philo[i]);
+	return (NULL);
 }

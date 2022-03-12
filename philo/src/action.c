@@ -38,7 +38,6 @@ int	philo_eat(t_philo *philo)
 int	philo_sleep(t_philo *philo)
 {
 	put_forks(philo);
-	// print_action(philo, "is sleeping");
 	if (print_action(philo, "is sleeping") != 0)
 		return (1);
 	my_msleep(philo->time_to_sleep);
@@ -53,15 +52,12 @@ void	*do_action(void *argp)
 	update_mealtime(philo);
 	while (true)
 	{
-		// philo_eat(philo);
-		// philo_sleep(philo);
-		// philo_think(philo);
 		if (philo_eat(philo) != 0
 			|| philo_sleep(philo) != 0
 			|| philo_think(philo) != 0)
 		{
-			pthread_exit(NULL);
+			return (NULL);
 		}
 	}
-	pthread_exit(NULL);
+	return (NULL);
 }

@@ -1,10 +1,10 @@
 #include "philo.h"
 
-int	get_index(int index, int philos_number)
+int	get_index(int index, int philo_num)
 {
 	if (index == 0)
-		return (philos_number);
-	else if (index == philos_number + 1)
+		return (philo_num);
+	else if (index == philo_num + 1)
 		return (1);
 	else
 		return (index);

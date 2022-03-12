@@ -1,14 +1,5 @@
 #include "philo.h"
 
-// void	debug_arg(t_arg *argt)
-// {
-// 	fprintf(stderr, "number of philo  : %d\n", argt->num_of_philo);
-// 	fprintf(stderr, "time to die      : %d\n", argt->time_to_die);
-// 	fprintf(stderr, "time to eat      : %d\n", argt->time_to_eat);
-// 	fprintf(stderr, "time to sleep    : %d\n", argt->time_to_sleep);
-// 	fprintf(stderr, "must eat times   : %d\n", argt->must_eat_times);
-// }
-
 static bool	is_invalid_arg_num(int argc)
 {
 	if (argc == 5 || argc == 6)
@@ -27,7 +18,7 @@ static long long	gen_num(char *s, t_error_kind *err)
 		set_err(err, ARG_MINUS);
 		return (1);
 	}
-	if (*end != '\0' || ft_strcmp(s, "+") == 0)
+	if (*end != '\0' || ft_strcmp(s, "+") == 0 || ft_strcmp(s, "-") == 0)
 	{
 		set_err(err, ARG_NUMERIC);
 		return (1);
@@ -35,6 +26,15 @@ static long long	gen_num(char *s, t_error_kind *err)
 	return (num);
 }
 
+/**
+ * @brief コマンドライン引数をチェックし、適切な引数だとt_argに格納する関数。
+ * 
+ * @param argc プログラム名を含むコマンドライン引数の数
+ * @param argv プログラム名を含むコマンドライン引数の値
+ * @param argt コマンドライン引数を格納する構造体
+ * @param err エラーを格納する変数
+ * @return int エラーが発生すると1を返し、それ以外は0
+ */
 int	validate_arg(int argc, char *argv[], t_arg *argt, t_error_kind *err)
 {
 	if (is_invalid_arg_num(argc))

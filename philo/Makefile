@@ -7,14 +7,10 @@ endif
 
 NAME		:= philo
 SRCS		:= \
-action.c             ft_strdup.c          monitor.c\
-arg.c                ft_strlen_s.c        pthread.c\
-error.c              ft_strncmp.c         put_forks.c\
-ft_isalnum.c         ft_strtoll.c         run_monitor_thread.c\
-ft_isalpha.c         get_forks.c          run_philo_thread.c\
-ft_isdigit.c         main.c               time.c\
-ft_putstr_fd.c       make_mutex.c         utils.c\
-ft_strcmp.c          make_philo.c         wait_monitor.c
+action.c       ft_is.c        ft_strlen.c    make_philo.c   run_thread.c\
+arg.c          ft_putstr_fd.c ft_strtoll.c   monitor.c      time.c\
+error.c        ft_strcmp.c    get_forks.c    mutex.c        utils.c\
+ft_calloc.c    ft_strdup.c    main.c         put_forks.c    wait_thread.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))

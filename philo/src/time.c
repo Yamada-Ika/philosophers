@@ -13,18 +13,18 @@ long long	get_timestamp(void)
 	return (0);
 }
 
-long long	get_timestamp_in_usec(void)
-{
-	t_time		tv;
-	long long	timestamp;
+// long long	get_timestamp_in_usec(void)
+// {
+// 	t_time		tv;
+// 	long long	timestamp;
 
-	if (gettimeofday(&tv, NULL) == 0)
-	{
-		timestamp = tv.tv_sec * 1000000 + tv.tv_usec;
-		return (timestamp);
-	}
-	return (0);
-}
+// 	if (gettimeofday(&tv, NULL) == 0)
+// 	{
+// 		timestamp = tv.tv_sec * 1000000 + tv.tv_usec;
+// 		return (timestamp);
+// 	}
+// 	return (0);
+// }
 
 void	my_msleep(long long msec)
 {

@@ -4,7 +4,7 @@ static	void	ft_skip_prefix(const char **str, int *base)
 {
 	if (*base == 0 || *base == 16)
 	{
-		if (ft_strlen_s(*str) > 2)
+		if (ft_strlen(*str) > 2)
 		{
 			if ((*str)[0] == '0' && ((*str)[1] == 'x' || (*str)[1] == 'X'))
 			{
@@ -13,7 +13,7 @@ static	void	ft_skip_prefix(const char **str, int *base)
 				return ;
 			}
 		}
-		if (ft_strlen_s(*str) > 1)
+		if (ft_strlen(*str) > 1)
 		{
 			if ((*str)[0] == '0')
 			{
