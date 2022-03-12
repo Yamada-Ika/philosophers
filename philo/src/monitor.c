@@ -55,7 +55,6 @@ void	*monitor(void *argp)
 			|| is_end_dinner(&philo[i]))
 		{
 			// mutex_lock(philo[i].log, philo[i].mtx_err, philo[i].err);
-			// DBG();
 			mutex_lock(philo[i].state, philo[i].mtx_err, philo[i].err);
 			*(philo[i].is_end) = true;
 			mutex_unlock(philo[i].state, philo[i].mtx_err, philo[i].err);

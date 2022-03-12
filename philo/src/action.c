@@ -16,7 +16,10 @@ int	philo_eat(t_philo *philo)
 {
 	get_forks(philo);
 	if (print_action(philo, "is eating") != 0)
+	{
+		put_forks(philo);
 		return (1);
+	}
 	my_msleep(philo->time_to_eat);
 	update_mealtime(philo);
 	philo->eat_count++;

@@ -97,6 +97,7 @@ int			run_philo_thread(t_philo **philo, t_error_kind *err);
 int			run_monitor_thread(t_philo **philo, t_error_kind *err);
 int			wait_monitor(t_philo **philo, t_error_kind *err);
 int			wait_philo(t_philo **philo, t_error_kind *error_num);
+int			destroy_mutex(t_philo **philo, t_error_kind *err);
 
 // action
 // int		philo_think(t_philo *philo);

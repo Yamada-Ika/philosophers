@@ -21,8 +21,9 @@ int	main(int argc, char *argv[])
 		|| make_mutex(&philo, &err) != 0
 		|| run_philo_thread(&philo, &err) != 0
 		|| run_monitor_thread(&philo, &err) != 0
+		|| wait_philo(&philo, &err) != 0
 		|| wait_monitor(&philo, &err) != 0
-		|| wait_philo(&philo, &err) != 0)
+		|| destroy_mutex(&philo, &err) != 0)
 	{
 		print_error(err);
 		return (1);
