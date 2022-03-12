@@ -14,6 +14,8 @@ typedef struct timeval	t_time;
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_attr_t	t_attr;
 
+# define DBG() fprintf(stderr, "%s line : %d\n", __func__, __LINE__)
+
 typedef enum e_error_kind {
 	NO_ERR = -1,
 	MORE_PHILO,
@@ -94,6 +96,7 @@ int			make_mutex(t_philo **philo, t_error_kind *err);
 int			run_philo_thread(t_philo **philo, t_error_kind *err);
 int			run_monitor_thread(t_philo **philo, t_error_kind *err);
 int			wait_monitor(t_philo **philo, t_error_kind *err);
+int			wait_philo(t_philo **philo, t_error_kind *error_num);
 
 // action
 // int		philo_think(t_philo *philo);
