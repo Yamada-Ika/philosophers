@@ -69,27 +69,27 @@ typedef struct s_share
  */
 typedef struct s_philo
 {
-	size_t			index;
-	size_t			philo_number;
-	long long		time_to_eat;
-	long long		time_to_sleep;
-	long long		time_to_die;
-	size_t			must_eat_times;
-	size_t			eat_count;
-	long long		last_meal_time;
-	bool			is_full;
-	bool			should_count_eat;
-	bool			*is_end;
-	size_t			*full_num;
-	t_mutex			*forks;
-	t_mutex			*log;
-	t_mutex			*state;
-	t_mutex			*count;
-	t_mutex			*time;
-	t_mutex			*mtx_err;
-	t_error	*err;
-	pthread_t		philo_id;
-	pthread_t		monitor_id;
+	size_t		index;
+	size_t		philo_number;
+	long long	time_to_eat;
+	long long	time_to_sleep;
+	long long	time_to_die;
+	size_t		must_eat_times;
+	size_t		eat_count;
+	long long	last_meal_time;
+	bool		is_full;
+	bool		should_count_eat;
+	bool		*is_end;
+	size_t		*full_num;
+	t_mutex		*forks;
+	t_mutex		*log;
+	t_mutex		*state;
+	t_mutex		*count;
+	t_mutex		*time;
+	t_mutex		*mtx_err;
+	t_error		*err;
+	pthread_t	philo_id;
+	pthread_t	monitor_id;
 }	t_philo;
 
 // arg
@@ -114,7 +114,6 @@ void		print_error(t_error kind);
 
 // init
 int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
-// int			init_mutex(t_philo **philo, t_error *err);
 int			init_mutex(t_philo *philo, t_error *err);
 int			run_philo_thread(t_philo **philo, t_error *err);
 int			run_monitor_thread(t_philo **philo, t_error *err);
@@ -127,13 +126,12 @@ void		*do_action(void *argp);
 void		*monitor(void *argp);
 
 // forks
-int		get_forks(t_philo *philo);
-int		put_forks(t_philo *philo);
+int			get_forks(t_philo *philo);
+int			put_forks(t_philo *philo);
 
 // utils
 int			get_index(int index, int philo_num);
 long long	get_timestamp(void);
-// long long	get_timestamp_in_usec(void);
 void		my_msleep(long long msec);
 int			print_action(t_philo *philo, char *action);
 

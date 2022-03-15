@@ -4,7 +4,8 @@ bool	is_nomem(t_share *share);
 void	set_share(t_share *share, t_arg *argt, t_error *err);
 void	set_philo(t_philo *philo, size_t index, t_arg *argt, t_share *share);
 
-static int	set_obj_to_philo(t_philo *philo, t_arg *argt, t_share *share, t_error *err)
+static int	set_obj_to_philo(t_philo *philo, t_arg *argt,
+	t_share *share, t_error *err)
 {
 	size_t	i;
 
@@ -17,7 +18,7 @@ static int	set_obj_to_philo(t_philo *philo, t_arg *argt, t_share *share, t_error
 	return (init_mutex(philo, err));
 }
 
-static  int	init_philo(t_philo *philo, t_arg *argt, t_error *err)
+static int	init_philo(t_philo *philo, t_arg *argt, t_error *err)
 {
 	t_share	share;
 
