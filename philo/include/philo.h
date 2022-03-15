@@ -95,6 +95,20 @@ typedef struct s_philo
 // arg
 int			parse(int argc, char *argv[], t_arg *argt,
 				t_error *err);
+int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
+int			run_philo_thread(t_philo **philo, t_error *err);
+int			run_monitor_thread(t_philo **philo, t_error *err);
+int			wait_philo(t_philo **philo, t_error *err);
+int			wait_monitor(t_philo **philo, t_error *err);
+int			destroy_mutex(t_philo **philo, t_error *err);
+
+// error.c
+void		print_error(t_error kind);
+bool		is_err_occured(t_error *err);
+void		set_err(t_error *err, t_error kind);
+
+// mutex
+int			init_mutex(t_philo *philo, t_error *err);
 
 // ft func
 long long	ft_strtoll(const char *str, char **endptr, int base);
@@ -106,20 +120,6 @@ size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s1);
 void		ft_putstr_fd(char *c, int fd);
 void		*ft_calloc(size_t count, size_t size);
-
-// error.c
-bool		is_err_occured(t_error *err);
-void		set_err(t_error *err, t_error kind);
-void		print_error(t_error kind);
-
-// init
-int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
-int			init_mutex(t_philo *philo, t_error *err);
-int			run_philo_thread(t_philo **philo, t_error *err);
-int			run_monitor_thread(t_philo **philo, t_error *err);
-int			wait_philo(t_philo **philo, t_error *err);
-int			wait_monitor(t_philo **philo, t_error *err);
-int			destroy_mutex(t_philo **philo, t_error *err);
 
 // action
 void		*do_action(void *argp);
