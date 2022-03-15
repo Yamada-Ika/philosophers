@@ -8,7 +8,7 @@
  * @return true エラーが発生している
  * @return false エラーが発生していない
  */
-bool	is_err_occured(t_error_kind *err)
+bool	is_err_occured(t_error *err)
 {
 	return (*err != NO_ERR);
 }
@@ -19,12 +19,12 @@ bool	is_err_occured(t_error_kind *err)
  * @param err エラーを格納する変数
  * @param kind エラーの種類
  */
-void	set_err(t_error_kind *err, t_error_kind kind)
+void	set_err(t_error *err, t_error kind)
 {
 	*err = kind;
 }
 
-static char	*get_err_msg(t_error_kind kind)
+static char	*get_err_msg(t_error kind)
 {
 	static char	*msg[] = {
 		"error: Input more philosophers\n",
@@ -51,7 +51,7 @@ static char	*get_err_msg(t_error_kind kind)
  * 
  * @param kind エラーの種類
  */
-void	print_error(t_error_kind kind)
+void	print_error(t_error kind)
 {
 	char	*msg;
 

@@ -34,7 +34,7 @@ typedef enum e_error_kind {
 	CREATE_THREAD,
 	DETACH_PHILO,
 	JOIN_THREAD,
-}	t_error_kind;
+}	t_error;
 
 /**
  * @brief コマンドライン引数を一時的に格納する構造体
@@ -49,6 +49,19 @@ typedef struct s_arg
 	size_t			must_eat_times;
 	bool			is_set_eat_cnt;
 }	t_arg;
+
+typedef struct s_share
+{
+	bool	*is_end;
+	t_mutex	*forks;
+	t_mutex	*log;
+	t_mutex	*state;
+	t_mutex	*count;
+	t_mutex	*time;
+	t_mutex	*mtx_err;
+	t_error	*err;
+	size_t	*full_num;
+}	t_share;
 
 /**
  * @brief 各スレッドがアクセスできる構造体
@@ -74,14 +87,14 @@ typedef struct s_philo
 	t_mutex			*count;
 	t_mutex			*time;
 	t_mutex			*mtx_err;
-	t_error_kind	*err;
+	t_error	*err;
 	pthread_t		philo_id;
 	pthread_t		monitor_id;
 }	t_philo;
 
 // arg
-int			validate_arg(int argc, char *argv[], t_arg *argt,
-				t_error_kind *err);
+int			parse(int argc, char *argv[], t_arg *argt,
+				t_error *err);
 
 // ft func
 long long	ft_strtoll(const char *str, char **endptr, int base);
@@ -95,26 +108,27 @@ void		ft_putstr_fd(char *c, int fd);
 void		*ft_calloc(size_t count, size_t size);
 
 // error.c
-bool		is_err_occured(t_error_kind *err);
-void		set_err(t_error_kind *err, t_error_kind kind);
-void		print_error(t_error_kind kind);
+bool		is_err_occured(t_error *err);
+void		set_err(t_error *err, t_error kind);
+void		print_error(t_error kind);
 
 // init
-int			make_philo(t_philo **philo, t_arg *argt, t_error_kind *err);
-int			make_mutex(t_philo **philo, t_error_kind *err);
-int			run_philo_thread(t_philo **philo, t_error_kind *err);
-int			run_monitor_thread(t_philo **philo, t_error_kind *err);
-int			wait_philo(t_philo **philo, t_error_kind *err);
-int			wait_monitor(t_philo **philo, t_error_kind *err);
-int			destroy_mutex(t_philo **philo, t_error_kind *err);
+int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
+// int			init_mutex(t_philo **philo, t_error *err);
+int			init_mutex(t_philo *philo, t_error *err);
+int			run_philo_thread(t_philo **philo, t_error *err);
+int			run_monitor_thread(t_philo **philo, t_error *err);
+int			wait_philo(t_philo **philo, t_error *err);
+int			wait_monitor(t_philo **philo, t_error *err);
+int			destroy_mutex(t_philo **philo, t_error *err);
 
 // action
 void		*do_action(void *argp);
 void		*monitor(void *argp);
 
 // forks
-void		get_forks(t_philo *philo);
-void		put_forks(t_philo *philo);
+int		get_forks(t_philo *philo);
+int		put_forks(t_philo *philo);
 
 // utils
 int			get_index(int index, int philo_num);
@@ -124,7 +138,7 @@ void		my_msleep(long long msec);
 int			print_action(t_philo *philo, char *action);
 
 // pthread
-int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error_kind *err);
-int			mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error_kind *err);
+int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
+int			mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
 
 #endif
