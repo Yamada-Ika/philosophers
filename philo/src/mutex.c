@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:37 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	init_mutex(t_philo *philo, t_error *err)
 	size_t	i;
 
 	i = 1;
-	while (i < philo[1].philo_number + 1)
+	while (i < philo[1].num + 1)
 	{
 		if (pthread_mutex_init(&philo[1].forks[i], NULL) != 0)
 		{
@@ -48,7 +48,7 @@ int	destroy_mutex(t_philo **philo, t_error *err)
 	size_t	i;
 
 	i = 1;
-	while (i < (*philo)[1].philo_number + 1)
+	while (i < (*philo)[1].num + 1)
 	{
 		if (pthread_mutex_destroy(&(*philo)[1].forks[i]) != 0)
 		{

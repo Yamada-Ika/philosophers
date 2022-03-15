@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:30:16 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:57:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ typedef pthread_mutex_t	t_mutex;
 typedef pthread_attr_t	t_attr;
 
 /**
- * @brief エラーの種類を定義
+ * @brief define error kind
  * 
  */
-typedef enum e_error_kind {
+typedef enum e_error {
 	NO_ERR = -1,
 	MORE_PHILO,
 	ARG_NUM,
@@ -49,7 +49,7 @@ typedef enum e_error_kind {
 }	t_error;
 
 /**
- * @brief コマンドライン引数を一時的に格納する構造体
+ * @brief Structure to temporarily store command line arguments
  * 
  */
 typedef struct s_arg
@@ -76,53 +76,77 @@ typedef struct s_share
 }	t_share;
 
 /**
- * @brief 各スレッドがアクセスできる構造体
- * @details ポインタ変数は各スレッドで共有。アクセスするためにはmutexをかける。
+ * @brief Structures accessible by each thread
+ * @details Pointer variables are shared by each thread
  */
 typedef struct s_philo
 {
 	size_t		index;
-	size_t		philo_number;
+	size_t		num;
 	long long	time_to_eat;
 	long long	time_to_sleep;
 	long long	time_to_die;
 	size_t		must_eat_times;
 	size_t		eat_count;
 	long long	last_meal_time;
+	t_mutex		*time;
 	bool		is_full;
 	bool		should_count_eat;
 	bool		*is_end;
+	t_mutex		*state;
 	size_t		*full_num;
+	t_mutex		*count;
 	t_mutex		*forks;
 	t_mutex		*log;
-	t_mutex		*state;
-	t_mutex		*count;
-	t_mutex		*time;
 	t_mutex		*mtx_err;
 	t_error		*err;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;
 }	t_philo;
 
-// arg
+// parse.c
 int			parse(int argc, char *argv[], t_arg *argt,
 				t_error *err);
+
+// make_philo.c
 int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
+
+// run_thread.c
 int			run_philo_thread(t_philo **philo, t_error *err);
 int			run_monitor_thread(t_philo **philo, t_error *err);
+
+// wait_thread.c
 int			wait_philo(t_philo **philo, t_error *err);
 int			wait_monitor(t_philo **philo, t_error *err);
+
+// mutex.c
 int			destroy_mutex(t_philo **philo, t_error *err);
+int			init_mutex(t_philo *philo, t_error *err);
 
 // error.c
 void		print_error(t_error kind);
 bool		is_err_occured(t_error *err);
 void		set_err(t_error *err, t_error kind);
 
-// mutex
-int			init_mutex(t_philo *philo, t_error *err);
+// action.c
+void		*do_action(void *argp);
+void		*monitor(void *argp);
 
-// ft func
+// get_forks.c, get_forks2.c
+int			get_forks(t_philo *philo);
+int			put_forks(t_philo *philo);
+
+// utils.c
+long long	get_timestamp(void);
+void		my_msleep(long long msec);
+int			get_index(int index, int philo_num);
+int			print_action(t_philo *philo, char *action);
+
+// pthread
+int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
+int			mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
+
+// libft functions
 long long	ft_strtoll(const char *str, char **endptr, int base);
 int			ft_strcmp(const char*s1, const char *s2);
 int			ft_isalnum(int c);
@@ -132,23 +156,5 @@ size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s1);
 void		ft_putstr_fd(char *c, int fd);
 void		*ft_calloc(size_t count, size_t size);
-
-// action
-void		*do_action(void *argp);
-void		*monitor(void *argp);
-
-// forks
-int			get_forks(t_philo *philo);
-int			put_forks(t_philo *philo);
-
-// utils
-int			get_index(int index, int philo_num);
-long long	get_timestamp(void);
-void		my_msleep(long long msec);
-int			print_action(t_philo *philo, char *action);
-
-// pthread
-int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
-int			mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
 
 #endif

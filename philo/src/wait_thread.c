@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:07 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:30:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	wait_philo(t_philo **philo, t_error *err)
 	size_t	i;
 
 	i = 1;
-	while (i < (*philo)[1].philo_number + 1)
+	while (i < (*philo)[1].num + 1)
 	{
 		if (pthread_join((*philo)[i].philo_id, NULL) != 0)
 		{

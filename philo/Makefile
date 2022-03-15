@@ -6,7 +6,7 @@
 #    By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/15 19:30:21 by iyamada           #+#    #+#              #
-#    Updated: 2022/03/15 19:30:21 by iyamada          ###   ########.fr        #
+#    Updated: 2022/03/16 00:38:41 by iyamada          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ endif
 
 NAME		:= philo
 SRCS		:= \
-action.c       ft_strcmp.c    make_philo.c   run_thread.c\
-action2.c      ft_strdup.c    make_philo2.c  time.c\
-error.c        ft_strlen.c    monitor.c      utils.c\
-ft_calloc.c    ft_strtoll.c   mutex.c        wait_thread.c\
-ft_is.c        get_forks.c    parse.c\
-ft_putstr_fd.c main.c         put_forks.c
+action.c       ft_strcmp.c    main.c         put_forks.c\
+action2.c      ft_strdup.c    make_philo.c   run_thread.c\
+error.c        ft_strlen.c    make_philo2.c  time.c\
+ft_calloc.c    ft_strtoll.c   monitor.c      utils.c\
+ft_is.c        get_forks.c    mutex.c        wait_thread.c\
+ft_putstr_fd.c get_forks2.c   parse.c
 
 OBJS		:= $(SRCS:%.c=%.o)
 SRCS		:= $(addprefix src/, $(SRCS))

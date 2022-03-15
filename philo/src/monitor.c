@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:34 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:34 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:41:24 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	is_dead(t_philo *philo)
+static bool	is_dead(t_philo *philo)
 {
 	bool	res;
 
@@ -22,18 +22,18 @@ bool	is_dead(t_philo *philo)
 	return (res);
 }
 
-bool	is_end_dinner(t_philo *philo)
+static bool	is_end_dinner(t_philo *philo)
 {
 	bool	res;
 
 	mutex_lock(philo->count, philo->mtx_err, philo->err);
 	res = philo->should_count_eat
-		&& *(philo->full_num) >= philo->philo_number;
+		&& *(philo->full_num) >= philo->num;
 	mutex_unlock(philo->count, philo->mtx_err, philo->err);
 	return (res);
 }
 
-bool	is_err_occured_while_dinner(t_philo *philo)
+static bool	is_err_occured_while_dinner(t_philo *philo)
 {
 	bool	res;
 
@@ -43,7 +43,7 @@ bool	is_err_occured_while_dinner(t_philo *philo)
 	return (res);
 }
 
-void	set_end_dinner_flag(t_philo *philo)
+static void	set_end_dinner_flag(t_philo *philo)
 {
 	mutex_lock(philo->state, philo->mtx_err, philo->err);
 	*(philo->is_end) = true;
@@ -57,7 +57,7 @@ void	*monitor(void *argp)
 	size_t	philo_num;
 
 	philo = (t_philo *)argp;
-	philo_num = philo[1].philo_number;
+	philo_num = philo[1].num;
 	i = 1;
 	while (true)
 	{

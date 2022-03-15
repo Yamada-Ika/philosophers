@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:31 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	set_share(t_share *share, t_arg *argt, t_error *err)
 void	set_philo(t_philo *philo, size_t index, t_arg *argt, t_share *share)
 {
 	philo->index = index;
-	philo->philo_number = argt->num_of_philo;
+	philo->num = argt->num_of_philo;
 	philo->time_to_eat = argt->time_to_eat;
 	philo->time_to_sleep = argt->time_to_sleep;
 	philo->time_to_die = argt->time_to_die;

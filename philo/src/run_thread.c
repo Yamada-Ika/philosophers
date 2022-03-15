@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:46 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	create_odd_group(t_philo **philo, t_attr *attr, t_error *err)
 	size_t	i;
 
 	i = 1;
-	while (i < (*philo)[1].philo_number + 1)
+	while (i < (*philo)[1].num + 1)
 	{
 		if (pthread_create(&((*philo)[i].philo_id), attr,
 			do_action, &((*philo)[i])) != 0)
@@ -35,7 +35,7 @@ static int	create_even_group(t_philo **philo, t_attr *attr, t_error *err)
 	size_t	i;
 
 	i = 2;
-	while (i < (*philo)[1].philo_number + 1)
+	while (i < (*philo)[1].num + 1)
 	{
 		if (pthread_create(&((*philo)[i].philo_id), attr,
 			do_action, &((*philo)[i])) != 0)
@@ -55,7 +55,8 @@ static void	wait_a_moment(void)
 
 /**
  * @brief Created multiple threads to feed philosophers in parallel
- * @details The philosophers are divided into even and odd groups, and the odd group threads are run first.
+ * @details The philosophers are divided into even and odd groups,
+ *          and the odd group threads are run first.
  */
 int	run_philo_thread(t_philo **philo, t_error *err)
 {

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:42 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:43 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	put_fork_on_leftside(t_philo *philo)
 {
 	int	left;
 
-	left = get_index(philo->index + 1, philo->philo_number);
+	left = get_index(philo->index + 1, philo->num);
 	return (mutex_unlock(&(philo->forks[left]), philo->mtx_err, philo->err));
 }
 

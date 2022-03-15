@@ -6,19 +6,15 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:56 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:28:56 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/16 00:52:56 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /**
- * @brief エラーが発生したか確認する関数
- * @details この関数が呼ばれるまでにエラーが発生していると、errにNO_ERR以外がセットされている。
- * 
- * @param err エラーを格納する変数
- * @return true エラーが発生している
- * @return false エラーが発生していない
+ * @brief Check if an error has occurred
+ *
  */
 bool	is_err_occured(t_error *err)
 {
@@ -26,10 +22,8 @@ bool	is_err_occured(t_error *err)
 }
 
 /**
- * @brief Set the err object
+ * @brief Set the error kind
  * 
- * @param err エラーを格納する変数
- * @param kind エラーの種類
  */
 void	set_err(t_error *err, t_error kind)
 {
@@ -59,9 +53,8 @@ static char	*get_err_msg(t_error kind)
 }
 
 /**
- * @brief 標準エラー出力にエラーメッセージを出力する関数
+ * @brief Output error messages to standard error output
  * 
- * @param kind エラーの種類
  */
 void	print_error(t_error kind)
 {
