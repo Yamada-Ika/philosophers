@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mutex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 19:29:36 by iyamada           #+#    #+#             */
+/*   Updated: 2022/03/15 19:29:37 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	init_mutex(t_philo *philo, t_error *err)
@@ -27,8 +39,8 @@ int	init_mutex(t_philo *philo, t_error *err)
 }
 
 /**
- * @brief mutexを破壊する関数
- * @details valgrindでのエラーを避けるため
+ * @brief Destroy mutex
+ * @details To avoid errors with valgrind
  * 
  */
 int	destroy_mutex(t_philo **philo, t_error *err)

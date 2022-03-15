@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   make_philo.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 19:29:29 by iyamada           #+#    #+#             */
+/*   Updated: 2022/03/15 19:29:29 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 bool	is_nomem(t_share *share);
@@ -34,7 +46,7 @@ static t_philo	*create_philo(size_t n)
 }
 
 /**
- * @brief 各スレッドに渡す構造体を作成
+ * @brief Create a structure to pass to each thread
  * 
  */
 int	make_philo(t_philo **philo, t_arg *argt, t_error *err)

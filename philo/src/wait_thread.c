@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wait_thread.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 19:30:07 by iyamada           #+#    #+#             */
+/*   Updated: 2022/03/15 19:30:08 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 /**
- * @brief 哲学者達が食事を終えるのを待つ
+ * @brief Wait for the philosophers to finish their meal
  *
  */
 int	wait_philo(t_philo **philo, t_error *err)
@@ -22,7 +34,7 @@ int	wait_philo(t_philo **philo, t_error *err)
 }
 
 /**
- * @brief 哲学者のモニタリングが終了するのを待つ
+ * @brief Wait for the philosopher to finish monitoring
  * 
  */
 int	wait_monitor(t_philo **philo, t_error *err)

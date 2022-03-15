@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   run_thread.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
+/*   Updated: 2022/03/15 19:29:46 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static int	create_odd_group(t_philo **philo, t_attr *attr, t_error *err)
@@ -42,8 +54,8 @@ static void	wait_a_moment(void)
 }
 
 /**
- * @brief 並行して哲学者に食事させるため、複数スレッドを作成
- * @details 哲学者を偶数、奇数グループにわけ、先に奇数グループのスレッドを走らせている
+ * @brief Created multiple threads to feed philosophers in parallel
+ * @details The philosophers are divided into even and odd groups, and the odd group threads are run first.
  */
 int	run_philo_thread(t_philo **philo, t_error *err)
 {
@@ -54,8 +66,8 @@ int	run_philo_thread(t_philo **philo, t_error *err)
 }
 
 /**
- * @brief 哲学者の状態を監視するため
- * @details モニターのスレッドは一つだけ
+ * @brief Monitor the state of the philosopher
+ * @details There is only one thread on the monitor
  */
 int	run_monitor_thread(t_philo **philo, t_error *err)
 {

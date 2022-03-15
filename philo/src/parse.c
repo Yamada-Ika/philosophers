@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 19:29:39 by iyamada           #+#    #+#             */
+/*   Updated: 2022/03/15 19:29:39 by iyamada          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static bool	is_invalid_arg_num(int argc)
@@ -50,7 +62,7 @@ static int	parse_arg(int argc, char *argv[], t_arg *argt, t_error *err)
 }
 
 /**
- * @brief コマンドライン引数をチェックし、値を取得する
+ * @brief Check command line arguments and get their values
  * 
  */
 int	parse(int argc, char *argv[], t_arg *argt, t_error *err)
