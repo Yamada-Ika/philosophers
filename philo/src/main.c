@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:26 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/17 23:40:08 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 01:10:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	destroy_philo(t_philo *philo)
 	free(philo[1].time);
 	free(philo[1].mtx_err);
 	free(philo[1].full_num);
+	free(philo);
 }
 
 int	main(int argc, char *argv[])
@@ -39,14 +40,19 @@ int	main(int argc, char *argv[])
 	t_error	err;
 
 	err = NO_ERR;
-	if (parse(argc, argv, &arg, &err) != 0
-		|| make_philo(&philo, &arg, &err) != 0
+	if (parse(argc, argv, &arg, &err) != 0)
+	{
+		print_error(err);
+		return (1);
+	}
+	if (make_philo(&philo, &arg, &err) != 0
 		|| run_philo_thread(&philo, &err) != 0
 		|| run_monitor_thread(&philo, &err) != 0
 		|| wait_philo(&philo, &err) != 0
 		|| wait_monitor(&philo, &err) != 0
 		|| destroy_mutex(&philo, &err) != 0)
 	{
+		destroy_philo(philo);
 		print_error(err);
 		return (1);
 	}
