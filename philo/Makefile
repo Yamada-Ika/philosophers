@@ -6,11 +6,11 @@
 #    By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/15 19:30:21 by iyamada           #+#    #+#              #
-#    Updated: 2022/03/16 01:01:43 by iyamada          ###   ########.fr        #
+#    Updated: 2022/03/18 12:07:47 by iyamada          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			:= cc
+CC			:= gcc
 CFLAGS		:= -Wall -Wextra -Werror #-g -fsanitize=address #-fsanitize=thread
 LDFLAGS		:=
 ifeq ($(shell uname), Linux)
@@ -44,5 +44,8 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
+
+dc:
+	docker run -it --rm -v $(pwd):/philo -w /philo --platform=linux/amd64 42 zsh
 
 .PHONY: all clean fclean re libft empty

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:39 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:39 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/17 17:07:45 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static long long	parse_ll(char *s, t_error *err)
 		set_err(err, ARG_MINUS);
 		return (1);
 	}
-	if (*end != '\0' || ft_strcmp(s, "+") == 0 || ft_strcmp(s, "-") == 0)
+	if (*end != '\0' || ft_strcmp(s, "+") == 0 || ft_strcmp(s, "-") == 0) // +
 	{
 		set_err(err, ARG_NUMERIC);
 		return (1);

@@ -6,11 +6,31 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:26 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/15 19:29:26 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/17 23:40:08 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+__attribute__((destructor))
+static void destructor() {
+	char buf[100];
+
+	sprintf(buf, "leaks -q %d", getpid());
+	system(buf);
+}
+
+void	destroy_philo(t_philo *philo)
+{
+	free(philo[1].is_end);
+	free(philo[1].forks);
+	free(philo[1].log);
+	free(philo[1].state);
+	free(philo[1].count);
+	free(philo[1].time);
+	free(philo[1].mtx_err);
+	free(philo[1].full_num);
+}
 
 int	main(int argc, char *argv[])
 {
@@ -30,5 +50,6 @@ int	main(int argc, char *argv[])
 		print_error(err);
 		return (1);
 	}
+	destroy_philo(philo);
 	return (0);
 }
