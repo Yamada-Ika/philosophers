@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 02:56:57 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 03:27:31 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,72 +159,75 @@ char		*ft_strdup(const char *s1);
 void		ft_putstr_fd(char *c, int fd);
 void		*ft_calloc(size_t count, size_t size);
 
-// test for mock
+// ---------------------- test for mock ----------------------
 
-inline static int mock_pthread_create(pthread_t *arg1, pthread_attr_t *arg2, void *arg3(void *), void *arg4)
-{
-	srand((unsigned int)time(NULL));
+// inline static int mock_create(pthread_t *arg1, pthread_attr_t *arg2,
+// 	void *arg3(void *), void *arg4)
+// {
+// 	srand((unsigned int)time(NULL));
 
-	if (rand() % 3 == 0)
-	{
-		return (pthread_create(arg1, arg2, arg3, arg4));
-	}
-	fprintf(stderr, "hooked pthread_create\n");
-	return (1);
-}
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (pthread_create(arg1, arg2, arg3, arg4));
+// 	}
+// 	fprintf(stderr, "hooked pthread_create\n");
+// 	return (1);
+// }
 
-inline static int mock_pthread_join(pthread_t arg1, void *arg2)
-{
-	srand((unsigned int)time(NULL));
+// inline static int mock_join(pthread_t arg1, void *arg2)
+// {
+// 	srand((unsigned int)time(NULL));
 
-	if (rand() % 3 == 0)
-	{
-		return (pthread_join(arg1, arg2));
-	}
-	fprintf(stderr, "hooked pthread_join\n");
-	return (1);
-}
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (pthread_join(arg1, arg2));
+// 	}
+// 	fprintf(stderr, "hooked pthread_join\n");
+// 	return (1);
+// }
 
-inline static int mock_pthread_mutex_destroy(pthread_mutex_t *arg1)
-{
-	srand((unsigned int)time(NULL));
+// inline static int mock_destroy(pthread_mutex_t *arg1)
+// {
+// 	srand((unsigned int)time(NULL));
 
-	if (rand() % 3 == 0)
-	{
-		return (pthread_mutex_destroy(arg1));
-	}
-	fprintf(stderr, "hooked pthread_mutex_destroy\n");
-	return (1);
-}
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (pthread_mutex_destroy(arg1));
+// 	}
+// 	fprintf(stderr, "hooked pthread_mutex_destroy\n");
+// 	return (1);
+// }
 
-inline static int mock_pthread_mutex_lock(pthread_mutex_t *arg1)
-{
-	srand((unsigned int)time(NULL));
+// inline static int mock_lock(pthread_mutex_t *arg1)
+// {
+// 	srand((unsigned int)time(NULL));
 
-	if (rand() % 3 == 0)
-	{
-		return (pthread_mutex_lock(arg1));
-	}
-	fprintf(stderr, "hooked pthread_mutex_lock\n");
-	return (1);
-}
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (pthread_mutex_lock(arg1));
+// 	}
+// 	fprintf(stderr, "hooked pthread_mutex_lock\n");
+// 	return (1);
+// }
 
-inline static int mock_pthread_mutex_unlock(pthread_mutex_t *arg1)
-{
-	srand((unsigned int)time(NULL));
+// inline static int mock_unlock(pthread_mutex_t *arg1)
+// {
+// 	srand((unsigned int)time(NULL));
 
-	if (rand() % 3 == 0)
-	{
-		return (pthread_mutex_unlock(arg1));
-	}
-	fprintf(stderr, "hooked pthread_mutex_unlock\n");
-	return (1);
-}
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (pthread_mutex_unlock(arg1));
+// 	}
+// 	fprintf(stderr, "hooked pthread_mutex_unlock\n");
+// 	return (1);
+// }
 
-# define pthread_create(arg1, arg2, arg3, arg4) mock_pthread_create(arg1, arg2, arg3, arg4)
-# define pthread_join(arg1, arg2) mock_pthread_join(arg1, arg2)
-# define pthread_mutex_destroy(arg1) mock_pthread_mutex_destroy(arg1)
-# define pthread_mutex_lock(arg1) mock_pthread_mutex_lock(arg1)
-# define pthread_mutex_unlock(arg1) mock_pthread_mutex_unlock(arg1)
+// # define pthread_create(ag1, ag2, ag3, ag4) mock_create(ag1, ag2, ag3, ag4)
+// # define pthread_join(arg1, arg2) mock_join(arg1, arg2)
+// # define pthread_mutex_destroy(arg1) mock_destroy(arg1)
+// # define pthread_mutex_lock(arg1) mock_lock(arg1)
+// # define pthread_mutex_unlock(arg1) mock_unlock(arg1)
+
+// ---------------------- test for mock ----------------------
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 02:47:44 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 03:24:12 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,7 @@ static int	create_even_group(t_philo **philo, t_attr *attr, t_error *err)
 
 static void	wait_a_moment(void)
 {
-	usleep(200);
-}
-
-void	kill_thread(t_philo *philo)
-{
-	set_end_dinner_flag(philo);
-	// usleep(1000);
-	sleep(1);
+	usleep(100);
 }
 
 /**
