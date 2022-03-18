@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:34 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:41:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 02:11:28 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static bool	is_err_occured_while_dinner(t_philo *philo)
 	return (res);
 }
 
-static void	set_end_dinner_flag(t_philo *philo)
+void	set_end_dinner_flag(t_philo *philo)
 {
 	mutex_lock(philo->state, philo->mtx_err, philo->err);
 	*(philo->is_end) = true;

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:57:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 02:56:57 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ void		set_err(t_error *err, t_error kind);
 // action.c
 void		*do_action(void *argp);
 void		*monitor(void *argp);
+void		set_end_dinner_flag(t_philo *philo);
+void		kill_thread(t_philo *philo);
 
 // get_forks.c, get_forks2.c
 int			get_forks(t_philo *philo);
@@ -156,5 +158,73 @@ size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s1);
 void		ft_putstr_fd(char *c, int fd);
 void		*ft_calloc(size_t count, size_t size);
+
+// test for mock
+
+inline static int mock_pthread_create(pthread_t *arg1, pthread_attr_t *arg2, void *arg3(void *), void *arg4)
+{
+	srand((unsigned int)time(NULL));
+
+	if (rand() % 3 == 0)
+	{
+		return (pthread_create(arg1, arg2, arg3, arg4));
+	}
+	fprintf(stderr, "hooked pthread_create\n");
+	return (1);
+}
+
+inline static int mock_pthread_join(pthread_t arg1, void *arg2)
+{
+	srand((unsigned int)time(NULL));
+
+	if (rand() % 3 == 0)
+	{
+		return (pthread_join(arg1, arg2));
+	}
+	fprintf(stderr, "hooked pthread_join\n");
+	return (1);
+}
+
+inline static int mock_pthread_mutex_destroy(pthread_mutex_t *arg1)
+{
+	srand((unsigned int)time(NULL));
+
+	if (rand() % 3 == 0)
+	{
+		return (pthread_mutex_destroy(arg1));
+	}
+	fprintf(stderr, "hooked pthread_mutex_destroy\n");
+	return (1);
+}
+
+inline static int mock_pthread_mutex_lock(pthread_mutex_t *arg1)
+{
+	srand((unsigned int)time(NULL));
+
+	if (rand() % 3 == 0)
+	{
+		return (pthread_mutex_lock(arg1));
+	}
+	fprintf(stderr, "hooked pthread_mutex_lock\n");
+	return (1);
+}
+
+inline static int mock_pthread_mutex_unlock(pthread_mutex_t *arg1)
+{
+	srand((unsigned int)time(NULL));
+
+	if (rand() % 3 == 0)
+	{
+		return (pthread_mutex_unlock(arg1));
+	}
+	fprintf(stderr, "hooked pthread_mutex_unlock\n");
+	return (1);
+}
+
+# define pthread_create(arg1, arg2, arg3, arg4) mock_pthread_create(arg1, arg2, arg3, arg4)
+# define pthread_join(arg1, arg2) mock_pthread_join(arg1, arg2)
+# define pthread_mutex_destroy(arg1) mock_pthread_mutex_destroy(arg1)
+# define pthread_mutex_lock(arg1) mock_pthread_mutex_lock(arg1)
+# define pthread_mutex_unlock(arg1) mock_pthread_mutex_unlock(arg1)
 
 #endif

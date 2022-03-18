@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/19 02:47:44 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ static void	wait_a_moment(void)
 	usleep(200);
 }
 
+void	kill_thread(t_philo *philo)
+{
+	set_end_dinner_flag(philo);
+	// usleep(1000);
+	sleep(1);
+}
+
 /**
  * @brief Created multiple threads to feed philosophers in parallel
  * @details The philosophers are divided into even and odd groups,
@@ -61,9 +68,17 @@ static void	wait_a_moment(void)
 int	run_philo_thread(t_philo **philo, t_error *err)
 {
 	if (create_odd_group(philo, NULL, err) != 0)
+	{
+		kill_thread(&((*philo)[1]));
 		return (1);
+	}
 	wait_a_moment();
-	return (create_even_group(philo, NULL, err));
+	if (create_even_group(philo, NULL, err) != 0)
+	{
+		kill_thread(&((*philo)[2]));
+		return (1);
+	}
+	return (0);
 }
 
 /**
@@ -75,6 +90,7 @@ int	run_monitor_thread(t_philo **philo, t_error *err)
 	if (pthread_create(&((*philo)[1].monitor_id), NULL,
 		monitor, ((*philo))) != 0)
 	{
+		kill_thread(&((*philo)[1]));
 		set_err(err, CREATE_THREAD);
 		return (1);
 	}
