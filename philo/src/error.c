@@ -6,13 +6,15 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:56 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 01:59:56 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/21 19:10:49 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 #define UNDEFINED_MSG "error: Undefined error is occured\n"
+
+void	print_usage(void);
 
 /**
  * @brief Check if an error has occurred
@@ -83,13 +85,18 @@ static bool	is_undefined_err(t_error kind)
  * @brief Output error messages to standard error output
  * 
  */
-void	print_error(t_error kind)
+int	print_error(t_error kind)
 {
 	char	*msg;
 
 	if (is_undefined_err(kind))
-		return (ft_putstr_fd(UNDEFINED_MSG, STDERR_FILENO));
+	{
+		ft_putstr_fd(UNDEFINED_MSG, STDERR_FILENO);
+		return (1);
+	}
 	msg = get_err_msg(kind);
 	ft_putstr_fd(msg, STDERR_FILENO);
 	free(msg);
+	print_usage();
+	return (1);
 }

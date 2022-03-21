@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 03:27:31 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/21 19:14:10 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <string.h>
 # include <sys/time.h>
 # include <limits.h>
+
+# include "libft.h"
 
 typedef struct timeval	t_time;
 typedef pthread_mutex_t	t_mutex;
@@ -109,7 +111,8 @@ int			parse(int argc, char *argv[], t_arg *argt,
 				t_error *err);
 
 // make_philo.c
-int			make_philo(t_philo **philo, t_arg *argt, t_error *err);
+int			new_philo(t_philo **philo, t_arg *argt, t_error *err);
+int			init_philo(t_philo *philo, t_arg *argt, t_error *err);
 
 // run_thread.c
 int			run_philo_thread(t_philo **philo, t_error *err);
@@ -124,9 +127,12 @@ int			destroy_mutex(t_philo **philo, t_error *err);
 int			init_mutex(t_philo *philo, t_error *err);
 
 // error.c
-void		print_error(t_error kind);
+int			print_error(t_error kind);
 bool		is_err_occured(t_error *err);
 void		set_err(t_error *err, t_error kind);
+
+// destroy_philo.c
+void		destroy_philo(t_philo *philo);
 
 // action.c
 void		*do_action(void *argp);
@@ -148,18 +154,19 @@ int			print_action(t_philo *philo, char *action);
 int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
 int			mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
 
-// libft functions
-long long	ft_strtoll(const char *str, char **endptr, int base);
-int			ft_strcmp(const char*s1, const char *s2);
-int			ft_isalnum(int c);
-int			ft_isalpha(int c);
-int			ft_isdigit(int c);
-size_t		ft_strlen(const char *s);
-char		*ft_strdup(const char *s1);
-void		ft_putstr_fd(char *c, int fd);
-void		*ft_calloc(size_t count, size_t size);
-
 // ---------------------- test for mock ----------------------
+
+// inline static void *mock_malloc(size_t __size)
+// {
+// 	srand((unsigned int)time(NULL));
+
+// 	if (rand() % 3 == 0)
+// 	{
+// 		return (malloc(__size));
+// 	}
+// 	fprintf(stderr, "mocked malloc\n");
+// 	return (NULL);
+// }
 
 // inline static int mock_create(pthread_t *arg1, pthread_attr_t *arg2,
 // 	void *arg3(void *), void *arg4)
@@ -170,7 +177,7 @@ void		*ft_calloc(size_t count, size_t size);
 // 	{
 // 		return (pthread_create(arg1, arg2, arg3, arg4));
 // 	}
-// 	fprintf(stderr, "hooked pthread_create\n");
+// 	fprintf(stderr, "mocked pthread_create\n");
 // 	return (1);
 // }
 
@@ -182,7 +189,7 @@ void		*ft_calloc(size_t count, size_t size);
 // 	{
 // 		return (pthread_join(arg1, arg2));
 // 	}
-// 	fprintf(stderr, "hooked pthread_join\n");
+// 	fprintf(stderr, "mocked pthread_join\n");
 // 	return (1);
 // }
 
@@ -194,7 +201,7 @@ void		*ft_calloc(size_t count, size_t size);
 // 	{
 // 		return (pthread_mutex_destroy(arg1));
 // 	}
-// 	fprintf(stderr, "hooked pthread_mutex_destroy\n");
+// 	fprintf(stderr, "mocked pthread_mutex_destroy\n");
 // 	return (1);
 // }
 
@@ -206,7 +213,7 @@ void		*ft_calloc(size_t count, size_t size);
 // 	{
 // 		return (pthread_mutex_lock(arg1));
 // 	}
-// 	fprintf(stderr, "hooked pthread_mutex_lock\n");
+// 	fprintf(stderr, "mocked pthread_mutex_lock\n");
 // 	return (1);
 // }
 
@@ -218,10 +225,11 @@ void		*ft_calloc(size_t count, size_t size);
 // 	{
 // 		return (pthread_mutex_unlock(arg1));
 // 	}
-// 	fprintf(stderr, "hooked pthread_mutex_unlock\n");
+// 	fprintf(stderr, "mocked pthread_mutex_unlock\n");
 // 	return (1);
 // }
 
+// # define malloc(ag1) mock_malloc(ag1)
 // # define pthread_create(ag1, ag2, ag3, ag4) mock_create(ag1, ag2, ag3, ag4)
 // # define pthread_join(arg1, arg2) mock_join(arg1, arg2)
 // # define pthread_mutex_destroy(arg1) mock_destroy(arg1)
