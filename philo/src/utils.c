@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 21:38:21 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:27:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@ long long	get_timestamp(void)
 	return (0);
 }
 
-static int	is_someone_dead(t_philo *philo, bool *res)
+static int	is_someone_dead(t_philo *p, bool *res)
 {
-	if (mutex_lock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
-		return (-1);
-	if (*(philo->is_end))
+	if (mutex_lock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
+		return (FAIL);
+	if (*(p->is_end))
 	{
-		if (mutex_unlock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
-			return (-1);
+		if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
+			return (FAIL);
 		*res = true;
-		return (0);
+		return (SUCCESS);
 	}
-	if (mutex_unlock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
-		return (-1);
+	if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
+		return (FAIL);
 	*res = false;
-	return (0);
+	return (SUCCESS);
 }
 
 int	my_msleep(t_philo *philo, long long msec)
@@ -51,10 +51,10 @@ int	my_msleep(t_philo *philo, long long msec)
 	start = get_timestamp();
 	while (true)
 	{
-		if (is_someone_dead(philo, &should_end) != 0)
-			return (1);
+		if (is_someone_dead(philo, &should_end) == FAIL)
+			return (FAIL);
 		if (get_timestamp() - start >= msec || should_end)
-			return (0);
+			return (SUCCESS);
 		usleep(500);
 	}
 }
@@ -69,19 +69,16 @@ int	get_index(int index, int philo_num)
 		return (index);
 }
 
-int	print_action(t_philo *philo, char *action)
+int	print_action(t_philo *p, char *action)
 {
 	bool	should_end;
 
-	if (is_someone_dead(philo, &should_end) != 0)
-		return (1);
-	if (should_end)
-		return (1);
-	if (mutex_lock(&philo->mtxs[LOG], &philo->mtxs[ERR], philo->err) != 0)
-		return (1);
-	printf("%lld %zu", get_timestamp(), philo->index);
-	printf(" %s\n", action);
-	if (mutex_unlock(&philo->mtxs[LOG], &philo->mtxs[ERR], philo->err) != 0)
-		return (1);
-	return (0);
+	if (is_someone_dead(p, &should_end) == FAIL
+		|| should_end
+		|| mutex_lock(&p->mtxes[LOG], &p->mtxes[ERR], p->err) == FAIL)
+	{
+		return (FAIL);
+	}
+	printf("%lld %zu %s\n", get_timestamp(), p->index, action);
+	return (mutex_unlock(&p->mtxes[LOG], &p->mtxes[ERR], p->err));
 }

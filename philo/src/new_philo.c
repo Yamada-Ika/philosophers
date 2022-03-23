@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 18:49:47 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 20:51:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static t_philo	*create_philo(size_t n)
  * @brief Create a structure to pass to each thread
  * 
  */
-int	new_philo(t_philo **philo, t_arg *argt, t_error *err)
+int	new_philo(t_philo **philos, t_arg *argt, t_error *err)
 {
-	*philo = create_philo(argt->num_of_philo + 1);
-	if (*philo == NULL)
+	*philos = create_philo(argt->num_of_philo + 1);
+	if (*philos == NULL)
 	{
 		set_err(err, NO_MEM);
-		return (FAILE);
+		return (FAIL);
 	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:38:04 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 19:14:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	wait_for_death(t_philo *philo)
 	if (my_msleep(philo, philo->time_to_die) != 0
 		|| my_msleep(philo, 10) != 0)
 	{
-		return (1);
+		return (FAIL);
 	}
-	return (0);
+	return (SUCCESS);
 }

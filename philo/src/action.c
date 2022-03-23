@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:49 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 20:46:24 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:25:20 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static int	philo_think(t_philo *philo)
 
 static int	philo_sleep(t_philo *philo)
 {
-	if (put_forks(philo) != 0
-		|| print_action(philo, "is sleeping") != 0
-		|| my_msleep(philo, philo->time_to_sleep) != 0)
+	if (put_forks(philo) == FAIL
+		|| print_action(philo, "is sleeping") == FAIL
+		|| my_msleep(philo, philo->time_to_sleep) == FAIL)
 	{
-		return (1);
+		return (FAIL);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static int	incre_eat_count(t_philo *philo)
@@ -40,20 +40,20 @@ static int	incre_eat_count(t_philo *philo)
 		philo->is_full = true;
 		return (incre_full_philo(philo));
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static int	philo_eat(t_philo *philo)
 {
-	if (get_forks(philo) != 0
-		|| print_action(philo, "is eating") != 0
-		|| my_msleep(philo, philo->time_to_eat) != 0
-		|| update_last_mealtime(philo) != 0
-		|| incre_eat_count(philo) != 0)
+	if (get_forks(philo) == FAIL
+		|| print_action(philo, "is eating") == FAIL
+		|| my_msleep(philo, philo->time_to_eat) == FAIL
+		|| update_last_mealtime(philo) == FAIL
+		|| incre_eat_count(philo) == FAIL)
 	{
-		return (1);
+		return (FAIL);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 void	*do_action(void *argp)
@@ -61,13 +61,13 @@ void	*do_action(void *argp)
 	t_philo	*philo;
 
 	philo = (t_philo *)argp;
-	if (update_last_mealtime(philo) != 0)
+	if (update_last_mealtime(philo) == FAIL)
 		return (NULL);
 	while (true)
 	{
-		if (philo_eat(philo) != 0
-			|| philo_sleep(philo) != 0
-			|| philo_think(philo) != 0)
+		if (philo_eat(philo) == FAIL
+			|| philo_sleep(philo) == FAIL
+			|| philo_think(philo) == FAIL)
 		{
 			put_forks(philo);
 			return (NULL);

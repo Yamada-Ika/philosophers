@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:53 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 21:29:21 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:27:41 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	update_last_mealtime(t_philo *philo)
 {
-	if (mutex_lock(&philo->mtxs[TIME], &philo->mtxs[ERR], philo->err) != 0)
-		return (1);
+	if (mutex_lock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err) == FAIL)
+		return (FAIL);
 	philo->last_meal_time = get_timestamp();
-	return (mutex_unlock(&philo->mtxs[TIME], &philo->mtxs[ERR], philo->err));
+	return (mutex_unlock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err));
 }
 
-int	incre_full_philo(t_philo *philo)
+int	incre_full_philo(t_philo *p)
 {
-	if (mutex_lock(&philo->mtxs[COUNT], &philo->mtxs[ERR], philo->err) != 0)
-		return (1);
-	*(philo->full_num) += 1;
-	return (mutex_unlock(&philo->mtxs[COUNT], &philo->mtxs[ERR], philo->err));
+	if (mutex_lock(&p->mtxes[COUNT], &p->mtxes[ERR], p->err) == FAIL)
+		return (FAIL);
+	*(p->full_num) += 1;
+	return (mutex_unlock(&p->mtxes[COUNT], &p->mtxes[ERR], p->err));
 }
 
 int	still_hungry(t_philo *philo)

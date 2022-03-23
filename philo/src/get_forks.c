@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:24 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 21:27:01 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,47 +15,49 @@
 bool	is_eat_alone(t_philo *philo);
 void	wait_for_death(t_philo *philo);
 
-static int	get_fork_on_leftside(t_philo *philo)
+static int	get_fork_on_leftside(t_philo *p)
 {
 	int	left;
 
-	left = get_index(philo->index + 1, philo->num);
-	if (mutex_lock(&philo->forks[left], &philo->mtxs[ERR], philo->err) != 0)
-		return (FAILE);
-	philo->is_hold_on_left = true;
-	if (print_action(philo, "has taken a fork") != 0)
-		return (FAILE);
+	left = get_index(p->index + 1, p->num);
+	if (mutex_lock(&p->forks[left], &p->mtxes[ERR], p->err) != 0)
+		return (FAIL);
+	p->is_hold_on_left = true;
+	if (print_action(p, "has taken a fork") != 0)
+		return (FAIL);
 	return (SUCCESS);
 }
 
-static int	get_fork_on_rightside(t_philo *philo)
+static int	get_fork_on_rightside(t_philo *p)
 {
-	if (mutex_lock(&philo->forks[philo->index], &philo->mtxs[ERR], philo->err) != 0)
-		return (FAILE);
-	philo->is_hold_on_right = true;
-	if (print_action(philo, "has taken a fork") != 0)
-		return (FAILE);
+	if (mutex_lock(&p->forks[p->index], &p->mtxes[ERR], p->err) != 0)
+		return (FAIL);
+	p->is_hold_on_right = true;
+	if (print_action(p, "has taken a fork") != 0)
+		return (FAIL);
 	return (SUCCESS);
 }
+
+#define MOMENT 200
 
 static int	get_forks_even_group(t_philo *philo)
 {
-	usleep(100);
-	if (get_fork_on_leftside(philo) == FAILE
-		|| get_fork_on_rightside(philo) == FAILE)
+	usleep(MOMENT);
+	if (get_fork_on_leftside(philo) == FAIL
+		|| get_fork_on_rightside(philo) == FAIL)
 	{
-		return (FAILE);
+		return (FAIL);
 	}
 	return (SUCCESS);
 }
 
 static int	get_forks_odd_group(t_philo *philo)
 {
-	usleep(100);
-	if (get_fork_on_rightside(philo) == FAILE
-		|| get_fork_on_leftside(philo) == FAILE)
+	usleep(MOMENT);
+	if (get_fork_on_rightside(philo) == FAIL
+		|| get_fork_on_leftside(philo) == FAIL)
 	{
-		return (FAILE);
+		return (FAIL);
 	}
 	return (SUCCESS);
 }

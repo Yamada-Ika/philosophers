@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 22:55:01 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef pthread_attr_t	t_attr;
  */
 typedef enum e_state {
 	SUCCESS,
-	FAILE,
+	FAIL,
 }	t_state;
 
 /**
@@ -73,7 +73,7 @@ typedef struct s_arg
 	bool			is_set_eat_cnt;
 }	t_arg;
 
-# define MTXS_N 5
+# define MTXES_N 5
 
 /**
  * @brief define mutex index kind
@@ -91,7 +91,7 @@ typedef struct s_share
 {
 	bool	*is_end;
 	t_mutex	*forks;
-	t_mutex	*mtxs;
+	t_mutex	*mtxes;
 	t_error	*err;
 	size_t	*full_num;
 }	t_share;
@@ -117,7 +117,7 @@ typedef struct s_philo
 	bool		*is_end;
 	size_t		*full_num;
 	t_mutex		*forks;
-	t_mutex		*mtxs;
+	t_mutex		*mtxes;
 	t_error		*err;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;

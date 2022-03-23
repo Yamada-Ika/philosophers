@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wait_thread.c                                      :+:      :+:    :+:   */
+/*   destroy_mutex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/15 19:30:07 by iyamada           #+#    #+#             */
+/*   Created: 2022/03/23 23:31:00 by iyamada           #+#    #+#             */
 /*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/**
- * @brief Wait for the philosophers to finish their meal
- *
- */
-int	wait_philo(t_philo *philos, t_error *err)
+static int	destroy_mutexes(t_mutex *mtxs, size_t from, size_t to, t_error *err)
 {
 	size_t	i;
 
-	i = 1;
-	while (i < philos[1].num + 1)
+	i = from;
+	while (i < to)
 	{
-		if (pthread_join(philos[i].philo_id, NULL) != 0)
+		if (pthread_mutex_destroy(&mtxs[i]) != 0)
 		{
-			set_err(err, JOIN_THREAD);
+			set_err(err, DESTROY_MTX);
 			return (FAIL);
 		}
 		i++;
@@ -33,15 +29,26 @@ int	wait_philo(t_philo *philos, t_error *err)
 	return (SUCCESS);
 }
 
+static int	destroy_forks_mutex(t_philo *philos, t_error *err)
+{
+	return (destroy_mutexes(philos[1].forks, 1, philos[1].num + 1, err));
+}
+
+static int	destroy_mtxes_mutex(t_philo *philos, t_error *err)
+{
+	return (destroy_mutexes(philos[1].mtxes, 0, MTXES_N, err));
+}
+
 /**
- * @brief Wait for the philosopher to finish monitoring
+ * @brief Destroy mutex
+ * @details To avoid errors with valgrind
  * 
  */
-int	wait_monitor(t_philo *philos, t_error *err)
+int	destroy_mutex(t_philo *philos, t_error *err)
 {
-	if (pthread_join(philos[1].monitor_id, NULL) != 0)
+	if (destroy_forks_mutex(philos, err) == FAIL
+		|| destroy_mtxes_mutex(philos, err) == FAIL)
 	{
-		set_err(err, JOIN_THREAD);
 		return (FAIL);
 	}
 	return (SUCCESS);

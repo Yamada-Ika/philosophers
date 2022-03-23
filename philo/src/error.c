@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:56 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 20:52:14 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ void	set_err(t_error *err, t_error kind)
 	*err = kind;
 }
 
-static char	*get_err_msg(t_error kind)
+static char	*gen_err_msg(t_error kind)
 {
 	static char	*msg[] = {
 		"error: Input more philosophers\n",
 		"error: Argument number is 4 or 5\n",
 		"error: Argument should be positive\n",
 		"error: Argument should be numeric\n",
-		"error: Failed to memory allocate\n",
-		"error: Failed to initialize mutex\n",
-		"error: Failed to destroy mutex\n",
-		"error: Failed to lock mutex\n",
-		"error: Failed to unlock mutex\n",
-		"error: Failed to initialize thread attribute\n",
-		"error: Failed to add thread attribute\n",
-		"error: Failed to create thread\n",
-		"error: Failed to detach thread\n",
-		"error: Failed to join thread\n",
+		"error: FAILd to memory allocate\n",
+		"error: FAILd to initialize mutex\n",
+		"error: FAILd to destroy mutex\n",
+		"error: FAILd to lock mutex\n",
+		"error: FAILd to unlock mutex\n",
+		"error: FAILd to initialize thread attribute\n",
+		"error: FAILd to add thread attribute\n",
+		"error: FAILd to create thread\n",
+		"error: FAILd to detach thread\n",
+		"error: FAILd to join thread\n",
 	};
 
 	return (ft_strdup(msg[kind]));
@@ -90,10 +90,10 @@ int	print_error(t_error kind)
 	if (is_undefined_err(kind))
 	{
 		ft_putstr_fd(UNDEFINED_MSG, STDERR_FILENO);
-		return (FAILE);
+		return (FAIL);
 	}
-	msg = get_err_msg(kind);
+	msg = gen_err_msg(kind);
 	ft_putstr_fd(msg, STDERR_FILENO);
 	free(msg);
-	return (FAILE);
+	return (FAIL);
 }

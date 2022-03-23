@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 19:10:35 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 21:44:30 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int	print_usage(void)
 	to_err("  ./philo number_of_philosophers ");
 	to_err("time_to_die time_to_eat time_to_sleep ");
 	to_err("[number_of_times_each_philosopher_must_eat]\n");
-	return (FAILE);
+	return (FAIL);
 }
