@@ -29,11 +29,14 @@ function TEST() {
 	echo "case : ./philo $1 $2 $3 $4 $5"
 	../philo $1 $2 $3 $4 $5 > $6
 	TEST_EAT_COUNT $1 $5 $6 "case : ./philo $1 $2 $3 $4 $5"
-	exit 1
+	# exit 1
 }
 
-TEST 5 800 200 200 7 res1.log &
-TEST 3 610 200 200 10 res1.log &
-TEST 200 410 200 200 10 res2.log &
-wait
+# No one died
+TEST 5 800 200 200 100 res1.log
+TEST 5 800 200 200 7 res1.log
+TEST 4 410 200 200 100 res1.log
+TEST 3 610 200 200 10 res1.log
+TEST 200 410 200 200 10 res2.log
+# wait
 echo "end"
