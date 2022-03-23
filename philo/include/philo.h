@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 02:13:58 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef enum e_mutex_kind {
 
 typedef struct s_share
 {
-	bool	*is_end;
+	bool	*should_end;
 	t_mutex	*forks;
 	t_mutex	*mtxes;
 	t_error	*err;
@@ -114,7 +114,7 @@ typedef struct s_philo
 	bool		is_hold_on_left;
 	bool		is_hold_on_right;
 	bool		should_count_eat;
-	bool		*is_end;
+	bool		*should_end;
 	size_t		*full_num;
 	t_mutex		*forks;
 	t_mutex		*mtxes;
@@ -154,7 +154,7 @@ void		destroy_philo(t_philo *philo);
 // action.c
 void		*do_action(void *argp);
 void		*monitor(void *argp);
-void		set_end_dinner_flag(t_philo *philo);
+void		set_end_flag(t_philo *philo);
 void		kill_thread(t_philo *philo);
 
 // get_forks.c, get_forks2.c
@@ -164,7 +164,7 @@ int			put_forks(t_philo *philo);
 // utils.c
 long long	get_timestamp(void);
 int			my_msleep(t_philo *philo, long long msec);
-int			get_index(int index, int philo_num);
+int			get_index(t_philo *philo, size_t index);
 int			print_action(t_philo *philo, char *action);
 
 // pthread

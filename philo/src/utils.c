@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:27:20 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 02:13:47 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	is_someone_dead(t_philo *p, bool *res)
 {
 	if (mutex_lock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
 		return (FAIL);
-	if (*(p->is_end))
+	if (*(p->should_end))
 	{
 		if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
 			return (FAIL);
@@ -59,11 +59,11 @@ int	my_msleep(t_philo *philo, long long msec)
 	}
 }
 
-int	get_index(int index, int philo_num)
+int	get_index(t_philo *philo, size_t index)
 {
 	if (index == 0)
-		return (philo_num);
-	else if (index == philo_num + 1)
+		return (philo->num);
+	else if (index == philo->num + 1)
 		return (1);
 	else
 		return (index);

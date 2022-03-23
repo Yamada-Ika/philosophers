@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:29 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 01:30:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static bool	is_nomem(t_share *share)
 {
 	return (share->forks == NULL
-		|| share->is_end == NULL
+		|| share->should_end == NULL
 		|| share->mtxes == NULL
 		|| share->full_num == NULL);
 }
@@ -30,7 +30,7 @@ static void	set_philo(t_philo *philo, size_t index, t_arg *argt, t_share *share)
 	philo->must_eat_times = argt->must_eat_times;
 	philo->eat_count = 0;
 	philo->last_meal_time = get_timestamp();
-	philo->is_end = share->is_end;
+	philo->should_end = share->should_end;
 	philo->full_num = share->full_num;
 	philo->forks = share->forks;
 	philo->mtxes = share->mtxes;
@@ -55,7 +55,7 @@ static int	set_philos(t_philo *philos, t_arg *argt,
 
 static void	set_share(t_share *share, t_arg *argt, t_error *err)
 {
-	share->is_end = (bool *)ft_calloc(1, sizeof(bool));
+	share->should_end = (bool *)ft_calloc(1, sizeof(bool));
 	share->forks = (t_mutex *)ft_calloc(argt->num_of_philo + 1,
 			sizeof(t_mutex));
 	share->mtxes = (t_mutex *)ft_calloc(MTXES_N, sizeof(t_mutex));

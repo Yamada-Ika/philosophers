@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:42 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/24 00:52:52 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	put_fork_on_leftside(t_philo *philo)
 
 	if (!philo->is_hold_on_left)
 		return (SUCCESS);
-	left = get_index(philo->index + 1, philo->num);
+	left = get_index(philo, philo->index + 1);
 	if (mutex_unlock(&(philo->forks[left]),
 			&philo->mtxes[ERR], philo->err) == FAIL)
 	{
