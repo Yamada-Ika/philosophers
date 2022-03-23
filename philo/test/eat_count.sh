@@ -18,7 +18,7 @@ function TEST_EAT_COUNT() {
 		cnt=$(cat $file | grep " $i is eating" | wc -l)
 		if [ $cnt -lt $min_ate_cnt ]
 		then
-			echo "Faile : $test_case" 1>&2
+			echo "FAIL : $test_case" 1>&2
 			echo "philo $i ate $cnt times, but should eat $min_ate_cnt times at least" 1>&2
 			exit 1
 		fi
@@ -36,7 +36,7 @@ function TEST() {
 TEST 5 800 200 200 100 res1.log
 TEST 5 800 200 200 7 res1.log
 TEST 4 410 200 200 100 res1.log
-TEST 3 610 200 200 10 res1.log
+TEST 3 610 200 200 100 res1.log
 TEST 200 410 200 200 10 res2.log
 # wait
 echo "end"
