@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 00:38:04 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 19:14:30 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ bool	is_eat_alone(t_philo *philo)
  * @brief Wait until the philosopher dies.
  * @details Call wait function twice to avoid overflow
  */
-void	wait_for_death(t_philo *philo)
+int	wait_for_death(t_philo *philo)
 {
-	my_msleep(philo->time_to_die);
-	my_msleep(philo->time_to_die);
+	if (my_msleep(philo, philo->time_to_die) != 0
+		|| my_msleep(philo, 10) != 0)
+	{
+		return (1);
+	}
+	return (0);
 }

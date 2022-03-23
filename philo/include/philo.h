@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/21 19:14:10 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 22:55:01 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,15 @@
 typedef struct timeval	t_time;
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_attr_t	t_attr;
+
+/**
+ * @brief define state kind
+ * 
+ */
+typedef enum e_state {
+	SUCCESS,
+	FAILE,
+}	t_state;
 
 /**
  * @brief define error kind
@@ -64,15 +73,25 @@ typedef struct s_arg
 	bool			is_set_eat_cnt;
 }	t_arg;
 
+# define MTXS_N 5
+
+/**
+ * @brief define mutex index kind
+ * 
+ */
+typedef enum e_mutex_kind {
+	LOG,
+	STATE,
+	COUNT,
+	TIME,
+	ERR,
+}	t_mutex_kind;
+
 typedef struct s_share
 {
 	bool	*is_end;
 	t_mutex	*forks;
-	t_mutex	*log;
-	t_mutex	*state;
-	t_mutex	*count;
-	t_mutex	*time;
-	t_mutex	*mtx_err;
+	t_mutex	*mtxs;
 	t_error	*err;
 	size_t	*full_num;
 }	t_share;
@@ -91,16 +110,14 @@ typedef struct s_philo
 	size_t		must_eat_times;
 	size_t		eat_count;
 	long long	last_meal_time;
-	t_mutex		*time;
 	bool		is_full;
+	bool		is_hold_on_left;
+	bool		is_hold_on_right;
 	bool		should_count_eat;
 	bool		*is_end;
-	t_mutex		*state;
 	size_t		*full_num;
-	t_mutex		*count;
 	t_mutex		*forks;
-	t_mutex		*log;
-	t_mutex		*mtx_err;
+	t_mutex		*mtxs;
 	t_error		*err;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;
@@ -115,15 +132,15 @@ int			new_philo(t_philo **philo, t_arg *argt, t_error *err);
 int			init_philo(t_philo *philo, t_arg *argt, t_error *err);
 
 // run_thread.c
-int			run_philo_thread(t_philo **philo, t_error *err);
-int			run_monitor_thread(t_philo **philo, t_error *err);
+int			run_philo_thread(t_philo *philo, t_error *err);
+int			run_monitor_thread(t_philo *philo, t_error *err);
 
 // wait_thread.c
-int			wait_philo(t_philo **philo, t_error *err);
-int			wait_monitor(t_philo **philo, t_error *err);
+int			wait_philo(t_philo *philo, t_error *err);
+int			wait_monitor(t_philo *philo, t_error *err);
 
 // mutex.c
-int			destroy_mutex(t_philo **philo, t_error *err);
+int			destroy_mutex(t_philo *philo, t_error *err);
 int			init_mutex(t_philo *philo, t_error *err);
 
 // error.c
@@ -146,7 +163,7 @@ int			put_forks(t_philo *philo);
 
 // utils.c
 long long	get_timestamp(void);
-void		my_msleep(long long msec);
+int			my_msleep(t_philo *philo, long long msec);
 int			get_index(int index, int philo_num);
 int			print_action(t_philo *philo, char *action);
 

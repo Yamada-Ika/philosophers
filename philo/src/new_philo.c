@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 18:49:47 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/21 19:14:17 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 20:51:53 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	new_philo(t_philo **philo, t_arg *argt, t_error *err)
 	if (*philo == NULL)
 	{
 		set_err(err, NO_MEM);
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }

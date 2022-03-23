@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:48:12 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 21:38:21 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,36 @@ long long	get_timestamp(void)
 	return (0);
 }
 
-void	my_msleep(long long msec)
+static int	is_someone_dead(t_philo *philo, bool *res)
+{
+	if (mutex_lock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
+		return (-1);
+	if (*(philo->is_end))
+	{
+		if (mutex_unlock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
+			return (-1);
+		*res = true;
+		return (0);
+	}
+	if (mutex_unlock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err) != 0)
+		return (-1);
+	*res = false;
+	return (0);
+}
+
+int	my_msleep(t_philo *philo, long long msec)
 {
 	long long	start;
+	bool		should_end;
 
+	should_end = false;
 	start = get_timestamp();
 	while (true)
 	{
-		if (get_timestamp() - start >= msec)
-			return ;
+		if (is_someone_dead(philo, &should_end) != 0)
+			return (1);
+		if (get_timestamp() - start >= msec || should_end)
+			return (0);
 		usleep(500);
 	}
 }
@@ -50,21 +71,17 @@ int	get_index(int index, int philo_num)
 
 int	print_action(t_philo *philo, char *action)
 {
-	if (mutex_lock(philo->state, philo->mtx_err, philo->err) != 0)
+	bool	should_end;
+
+	if (is_someone_dead(philo, &should_end) != 0)
 		return (1);
-	if (*(philo->is_end))
-	{
-		if (mutex_unlock(philo->state, philo->mtx_err, philo->err) != 0)
-			return (1);
+	if (should_end)
 		return (1);
-	}
-	if (mutex_unlock(philo->state, philo->mtx_err, philo->err) != 0)
-		return (1);
-	if (mutex_lock(philo->log, philo->mtx_err, philo->err) != 0)
+	if (mutex_lock(&philo->mtxs[LOG], &philo->mtxs[ERR], philo->err) != 0)
 		return (1);
 	printf("%lld %zu", get_timestamp(), philo->index);
 	printf(" %s\n", action);
-	if (mutex_unlock(philo->log, philo->mtx_err, philo->err) != 0)
+	if (mutex_unlock(&philo->mtxs[LOG], &philo->mtxs[ERR], philo->err) != 0)
 		return (1);
 	return (0);
 }

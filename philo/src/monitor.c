@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:34 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 02:11:28 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 21:31:25 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static bool	is_dead(t_philo *philo)
 {
 	bool	res;
 
-	mutex_lock(philo->time, philo->mtx_err, philo->err);
+	mutex_lock(&philo->mtxs[TIME], &philo->mtxs[ERR], philo->err);
 	res = get_timestamp() - philo->last_meal_time > philo->time_to_die;
-	mutex_unlock(philo->time, philo->mtx_err, philo->err);
+	mutex_unlock(&philo->mtxs[TIME], &philo->mtxs[ERR], philo->err);
 	return (res);
 }
 
@@ -26,10 +26,10 @@ static bool	is_end_dinner(t_philo *philo)
 {
 	bool	res;
 
-	mutex_lock(philo->count, philo->mtx_err, philo->err);
+	mutex_lock(&philo->mtxs[COUNT], &philo->mtxs[ERR], philo->err);
 	res = philo->should_count_eat
 		&& *(philo->full_num) >= philo->num;
-	mutex_unlock(philo->count, philo->mtx_err, philo->err);
+	mutex_unlock(&philo->mtxs[COUNT], &philo->mtxs[ERR], philo->err);
 	return (res);
 }
 
@@ -37,17 +37,17 @@ static bool	is_err_occured_while_dinner(t_philo *philo)
 {
 	bool	res;
 
-	mutex_lock(philo->mtx_err, philo->mtx_err, philo->err);
+	mutex_lock(&philo->mtxs[ERR], &philo->mtxs[ERR], philo->err);
 	res = is_err_occured(philo->err);
-	mutex_unlock(philo->mtx_err, philo->mtx_err, philo->err);
+	mutex_unlock(&philo->mtxs[ERR], &philo->mtxs[ERR], philo->err);
 	return (res);
 }
 
 void	set_end_dinner_flag(t_philo *philo)
 {
-	mutex_lock(philo->state, philo->mtx_err, philo->err);
+	mutex_lock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err);
 	*(philo->is_end) = true;
-	mutex_unlock(philo->state, philo->mtx_err, philo->err);
+	mutex_unlock(&philo->mtxs[STATE], &philo->mtxs[ERR], philo->err);
 }
 
 void	*monitor(void *argp)

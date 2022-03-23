@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:42 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 21:36:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,49 @@ static int	put_fork_on_leftside(t_philo *philo)
 {
 	int	left;
 
+	if (!philo->is_hold_on_left)
+		return (SUCCESS);
 	left = get_index(philo->index + 1, philo->num);
-	return (mutex_unlock(&(philo->forks[left]), philo->mtx_err, philo->err));
+	if (mutex_unlock(&(philo->forks[left]),
+			&philo->mtxs[ERR], philo->err) == FAILE)
+	{
+		return (FAILE);
+	}
+	philo->is_hold_on_left = false;
+	return (SUCCESS);
 }
 
 static int	put_fork_on_rightside(t_philo *philo)
 {
-	return (mutex_unlock(&(philo->forks[philo->index]),
-			philo->mtx_err, philo->err));
+	if (!philo->is_hold_on_right)
+		return (SUCCESS);
+	if (mutex_unlock(&(philo->forks[philo->index]),
+			&philo->mtxs[ERR], philo->err) == FAILE)
+	{
+		return (FAILE);
+	}
+	philo->is_hold_on_right = false;
+	return (SUCCESS);
 }
 
 static int	put_forks_even_group(t_philo *philo)
 {
-	if (put_fork_on_leftside(philo) != 0
-		|| put_fork_on_rightside(philo) != 0)
+	if (put_fork_on_leftside(philo) == FAILE
+		|| put_fork_on_rightside(philo) == FAILE)
 	{
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static int	put_forks_odd_group(t_philo *philo)
 {
-	if (put_fork_on_rightside(philo) != 0
-		|| put_fork_on_leftside(philo) != 0)
+	if (put_fork_on_rightside(philo) == FAILE
+		|| put_fork_on_leftside(philo) == FAILE)
 	{
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	put_forks(t_philo *philo)

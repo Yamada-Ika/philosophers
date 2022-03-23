@@ -6,13 +6,13 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:26 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 08:37:53 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 22:50:49 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_usage(void);
+int	print_usage(void);
 
 // __attribute__((destructor))
 // static void destructor() {
@@ -29,23 +29,23 @@ int	main(int argc, char *argv[])
 	t_error	err;
 
 	err = NO_ERR;
-	if (parse(argc, argv, &arg, &err) != 0)
+	if (parse(argc, argv, &arg, &err) == FAILE)
 	{
-		print_usage();
-		return (print_error(err));
+		print_error(err);
+		return (print_usage());
 	}
-	if (new_philo(&philo, &arg, &err) != 0)
+	if (new_philo(&philo, &arg, &err) == FAILE)
 		return (print_error(err));
-	if (init_philo(philo, &arg, &err) != 0
-		|| run_philo_thread(&philo, &err) != 0
-		|| run_monitor_thread(&philo, &err) != 0
-		|| wait_philo(&philo, &err) != 0
-		|| wait_monitor(&philo, &err) != 0
-		|| destroy_mutex(&philo, &err) != 0)
+	if (init_philo(philo, &arg, &err) == FAILE
+		|| run_philo_thread(philo, &err) == FAILE
+		|| run_monitor_thread(philo, &err) == FAILE
+		|| wait_philo(philo, &err) == FAILE
+		|| wait_monitor(philo, &err) == FAILE
+		|| destroy_mutex(philo, &err) == FAILE)
 	{
 		destroy_philo(philo);
 		return (print_error(err));
 	}
 	destroy_philo(philo);
-	return (0);
+	return (SUCCESS);
 }

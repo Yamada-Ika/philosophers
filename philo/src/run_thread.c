@@ -6,51 +6,35 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 03:24:12 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 22:52:49 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static int	create_odd_group(t_philo **philo, t_attr *attr, t_error *err)
+static int	create_thread_helper(t_philo *philo, t_error *err, size_t from)
 {
-	size_t	i;
-
-	i = 1;
-	while (i < (*philo)[1].num + 1)
+	while (from < philo[1].num + 1)
 	{
-		if (pthread_create(&((*philo)[i].philo_id), attr,
-			do_action, &((*philo)[i])) != 0)
+		if (pthread_create(&philo[from].philo_id, NULL,
+			do_action, &philo[from]) != 0)
 		{
 			set_err(err, CREATE_THREAD);
-			return (1);
+			return (FAILE);
 		}
-		i += 2;
+		from += 2;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-static int	create_even_group(t_philo **philo, t_attr *attr, t_error *err)
+static int	create_odd_group(t_philo *philo, t_error *err)
 {
-	size_t	i;
-
-	i = 2;
-	while (i < (*philo)[1].num + 1)
-	{
-		if (pthread_create(&((*philo)[i].philo_id), attr,
-			do_action, &((*philo)[i])) != 0)
-		{
-			set_err(err, CREATE_THREAD);
-			return (1);
-		}
-		i += 2;
-	}
-	return (0);
+	return (create_thread_helper(philo, err, 1));
 }
 
-static void	wait_a_moment(void)
+static int	create_even_group(t_philo *philo, t_error *err)
 {
-	usleep(100);
+	return (create_thread_helper(philo, err, 2));
 }
 
 /**
@@ -58,34 +42,34 @@ static void	wait_a_moment(void)
  * @details The philosophers are divided into even and odd groups,
  *          and the odd group threads are run first.
  */
-int	run_philo_thread(t_philo **philo, t_error *err)
+int	run_philo_thread(t_philo *philo, t_error *err)
 {
-	if (create_odd_group(philo, NULL, err) != 0)
+	if (create_odd_group(philo, err) == FAILE)
 	{
-		kill_thread(&((*philo)[1]));
-		return (1);
+		kill_thread(&philo[1]);
+		return (FAILE);
 	}
-	wait_a_moment();
-	if (create_even_group(philo, NULL, err) != 0)
+	usleep(100);
+	if (create_even_group(philo, err) == FAILE)
 	{
-		kill_thread(&((*philo)[2]));
-		return (1);
+		kill_thread(&philo[2]);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 /**
  * @brief Monitor the state of the philosopher
  * @details There is only one thread on the monitor
  */
-int	run_monitor_thread(t_philo **philo, t_error *err)
+int	run_monitor_thread(t_philo *philo, t_error *err)
 {
-	if (pthread_create(&((*philo)[1].monitor_id), NULL,
-		monitor, ((*philo))) != 0)
+	if (pthread_create(&philo[1].monitor_id, NULL,
+		monitor, philo) != 0)
 	{
-		kill_thread(&((*philo)[1]));
+		kill_thread(&philo[1]);
 		set_err(err, CREATE_THREAD);
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }

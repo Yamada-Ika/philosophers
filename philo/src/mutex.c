@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:36 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/16 00:40:42 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 22:54:05 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,21 @@ int	init_mutex(t_philo *philo, t_error *err)
 		if (pthread_mutex_init(&philo[1].forks[i], NULL) != 0)
 		{
 			set_err(err, INIT_MTX);
-			return (1);
+			return (FAILE);
 		}
 		i++;
 	}
-	if (pthread_mutex_init(philo[1].log, NULL) != 0
-		|| pthread_mutex_init(philo[1].state, NULL) != 0
-		|| pthread_mutex_init(philo[1].count, NULL) != 0
-		|| pthread_mutex_init(philo[1].time, NULL) != 0
-		|| pthread_mutex_init(philo[1].mtx_err, NULL) != 0)
+	i = 0;
+	while (i < MTXS_N)
 	{
-		set_err(err, INIT_MTX);
-		return (1);
+		if (pthread_mutex_init(&philo[1].mtxs[i], NULL) != 0)
+		{
+			set_err(err, INIT_MTX);
+			return (FAILE);
+		}
+		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 /**
@@ -43,30 +44,31 @@ int	init_mutex(t_philo *philo, t_error *err)
  * @details To avoid errors with valgrind
  * 
  */
-int	destroy_mutex(t_philo **philo, t_error *err)
+int	destroy_mutex(t_philo *philo, t_error *err)
 {
 	size_t	i;
 
 	i = 1;
-	while (i < (*philo)[1].num + 1)
+	while (i < philo[1].num + 1)
 	{
-		if (pthread_mutex_destroy(&(*philo)[1].forks[i]) != 0)
+		if (pthread_mutex_destroy(&philo[1].forks[i]) != 0)
 		{
 			set_err(err, DESTROY_MTX);
-			return (1);
+			return (FAILE);
 		}
 		i++;
 	}
-	if (pthread_mutex_destroy((*philo)[1].log) != 0
-		|| pthread_mutex_destroy((*philo)[1].state) != 0
-		|| pthread_mutex_destroy((*philo)[1].count) != 0
-		|| pthread_mutex_destroy((*philo)[1].time) != 0
-		|| pthread_mutex_destroy((*philo)[1].mtx_err) != 0)
+	i = 0;
+	while (i < MTXS_N)
 	{
-		set_err(err, DESTROY_MTX);
-		return (1);
+		if (pthread_mutex_init(&philo[1].mtxs[i], NULL) != 0)
+		{
+			set_err(err, INIT_MTX);
+			return (FAILE);
+		}
+		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err)
@@ -76,9 +78,9 @@ int	mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err)
 		pthread_mutex_lock(mtx_err);
 		set_err(err, LOCK_MTX);
 		pthread_mutex_unlock(mtx_err);
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err)
@@ -88,7 +90,7 @@ int	mutex_unlock(t_mutex *mtx, t_mutex *mtx_err, t_error *err)
 		pthread_mutex_lock(mtx_err);
 		set_err(err, UNLOCK_MTX);
 		pthread_mutex_unlock(mtx_err);
-		return (1);
+		return (FAILE);
 	}
-	return (0);
+	return (SUCCESS);
 }

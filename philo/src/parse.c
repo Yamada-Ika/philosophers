@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:39 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/19 01:46:48 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 20:51:17 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	parse_arg(int argc, char *argv[], t_arg *argt, t_error *err)
 	if (argt->num_of_philo == 0)
 	{
 		set_err(err, MORE_PHILO);
-		return (1);
+		return (FAILE);
 	}
 	argt->time_to_die = parse_ll(argv[2], err);
 	argt->time_to_eat = parse_ll(argv[3], err);
@@ -57,8 +57,8 @@ static int	parse_arg(int argc, char *argv[], t_arg *argt, t_error *err)
 	else
 		argt->is_set_eat_cnt = false;
 	if (is_err_occured(err))
-		return (1);
-	return (0);
+		return (FAILE);
+	return (SUCCESS);
 }
 
 /**
@@ -70,7 +70,7 @@ int	parse(int argc, char *argv[], t_arg *argt, t_error *err)
 	if (is_invalid_arg_num(argc))
 	{
 		set_err(err, ARG_NUM);
-		return (1);
+		return (FAILE);
 	}
 	return (parse_arg(argc, argv, argt, err));
 }

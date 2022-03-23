@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:56 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/23 08:31:52 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/23 20:52:14 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ int	print_error(t_error kind)
 	if (is_undefined_err(kind))
 	{
 		ft_putstr_fd(UNDEFINED_MSG, STDERR_FILENO);
-		return (1);
+		return (FAILE);
 	}
 	msg = get_err_msg(kind);
 	ft_putstr_fd(msg, STDERR_FILENO);
 	free(msg);
-	return (1);
+	return (FAILE);
 }
