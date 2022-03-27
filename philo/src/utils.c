@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 02:13:47 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/28 05:20:27 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,32 @@ long long	get_timestamp(void)
 		return (time);
 	}
 	return (0);
+}
+
+static long long	get_timestamp_in_usec(void)
+{
+	t_time		tv;
+	long long	time;
+
+	if (gettimeofday(&tv, NULL) == 0)
+	{
+		time = tv.tv_sec * 1000000 + tv.tv_usec;
+		return (time);
+	}
+	return (0);
+}
+
+void	my_usleep(long long usec)
+{
+	long long	start;
+
+	start = get_timestamp_in_usec();
+	while (true)
+	{
+		if (get_timestamp_in_usec() - start >= usec)
+			return ;
+		usleep(1);
+	}
 }
 
 static int	is_someone_dead(t_philo *p, bool *res)

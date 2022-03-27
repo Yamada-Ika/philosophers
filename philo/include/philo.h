@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 02:13:58 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/28 05:19:36 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int			put_forks(t_philo *philo);
 // utils.c
 long long	get_timestamp(void);
 int			my_msleep(t_philo *philo, long long msec);
+void		my_usleep(long long usec);
 int			get_index(t_philo *philo, size_t index);
 int			print_action(t_philo *philo, char *action);
 
