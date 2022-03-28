@@ -34,9 +34,16 @@ function TEST() {
 
 # No one died
 TEST 3 610 200 200 100 res.log
+TEST 3 610 200 200 500 res.log
+TEST 3 610 200 200 1000 res.log
 TEST 5 800 200 200 100 res.log
+TEST 5 800 200 200 500 res.log
+TEST 5 800 200 200 1000 res.log
 TEST 5 800 200 200 7 res.log
 TEST 4 410 200 200 100 res.log
 TEST 200 410 200 200 10 res.log
+TEST 200 410 200 200 100 res.log
+TEST 200 410 200 200 500 res.log
+TEST 200 410 200 200 1000 res.log
 # wait
 echo "end"

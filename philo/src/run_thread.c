@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/28 05:54:32 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	create_even_group(t_philo *philos, t_error *err)
 	return (create_thread_helper(philos, err, 2));
 }
 
-#define MOMENT 100
+#define MOMENT 200
 
 /**
  * @brief Created multiple threads to feed philosophers in parallel
@@ -51,7 +51,8 @@ int	run_philo_thread(t_philo *philos, t_error *err)
 		kill_thread(&philos[1]);
 		return (FAIL);
 	}
-	usleep(MOMENT);
+	// usleep(MOMENT);
+	my_usleep(MOMENT);
 	if (create_even_group(philos, err) == FAIL)
 	{
 		kill_thread(&philos[2]);

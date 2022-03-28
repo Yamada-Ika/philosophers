@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:24 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 05:20:11 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/28 08:35:35 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,9 @@ static int	get_fork_on_rightside(t_philo *p)
 
 #define MOMENT 200
 
-// static void	usleep_(long long usec)
-// {
-// 	long long	times;
-
-// 	times = 0;
-// 	while (times < usec)
-// 	{
-// 		usleep(1);
-// 		times++;
-// 	}
-// }
-
 static int	get_forks_even_group(t_philo *philo)
 {
-	// usleep(MOMENT);
-	my_usleep(MOMENT);
+	// my_usleep(MOMENT);
 	if (get_fork_on_leftside(philo) == FAIL
 		|| get_fork_on_rightside(philo) == FAIL)
 	{
@@ -66,8 +53,7 @@ static int	get_forks_even_group(t_philo *philo)
 
 static int	get_forks_odd_group(t_philo *philo)
 {
-	// usleep(MOMENT);
-	my_usleep(MOMENT);
+	// my_usleep(MOMENT);
 	if (get_fork_on_rightside(philo) == FAIL
 		|| get_fork_on_leftside(philo) == FAIL)
 	{
