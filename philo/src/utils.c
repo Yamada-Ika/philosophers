@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 05:20:27 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/29 00:11:47 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	my_msleep(t_philo *philo, long long msec)
 			return (FAIL);
 		if (get_timestamp() - start >= msec || should_end)
 			return (SUCCESS);
-		usleep(500);
+		usleep(100);
 	}
 }
 
