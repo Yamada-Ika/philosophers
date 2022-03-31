@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/31 12:25:07 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/01 01:17:55 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ int	my_msleep(t_philo *philo, long long msec)
 	{
 		if (get_timestamp() - start >= msec)
 			return (SUCCESS);
-		if (loop_cnt % 2 == 0)
+		if (loop_cnt % 10 == 0)
 		{
 			if (is_someone_dead(philo))
 				return (FAIL);
 			loop_cnt++;
 			continue ;
 		}
-		usleep(500);
+		usleep(100);
 		loop_cnt++;
 	}
 }
