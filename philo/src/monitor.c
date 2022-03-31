@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:34 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 02:17:34 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/31 12:10:18 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,17 @@ static bool	is_end_dinner(t_philo *philo)
 	return (res);
 }
 
-static bool	is_err_occured_while_dinner(t_philo *philo)
-{
-	bool	res;
+// static bool	is_err_occured_while_dinner(t_philo *philo)
+// {
+// 	bool	res;
 
-	if (pthread_mutex_lock(&philo->mtxes[ERR]) != 0)
-		return (true);
-	res = is_err_occured(philo->err);
-	if (pthread_mutex_unlock(&philo->mtxes[ERR]) != 0)
-		return (true);
-	return (res);
-}
+// 	if (pthread_mutex_lock(&philo->mtxes[ERR]) != 0)
+// 		return (true);
+// 	res = is_err_occured(philo->err);
+// 	if (pthread_mutex_unlock(&philo->mtxes[ERR]) != 0)
+// 		return (true);
+// 	return (res);
+// }
 
 static void	kill_philos(t_philo *philo)
 {
@@ -74,8 +74,9 @@ void	*monitor(void *argp)
 			print_action(&philos[i], "died");
 			break ;
 		}
-		if (is_err_occured_while_dinner(&philos[i])
-			|| is_end_dinner(&philos[i]))
+		// if (is_err_occured_while_dinner(&philos[i])
+			// || is_end_dinner(&philos[i]))
+		if (is_end_dinner(&philos[i]))
 			break ;
 		i++;
 	}

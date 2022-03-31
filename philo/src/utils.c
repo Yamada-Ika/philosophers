@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:03 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/29 00:11:47 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/31 12:25:07 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,37 +51,38 @@ void	my_usleep(long long usec)
 	}
 }
 
-static int	is_someone_dead(t_philo *p, bool *res)
+static bool	is_someone_dead(t_philo *p)
 {
-	if (mutex_lock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
-		return (FAIL);
-	if (*(p->should_end))
-	{
-		if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
-			return (FAIL);
-		*res = true;
-		return (SUCCESS);
-	}
-	if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) != 0)
-		return (FAIL);
-	*res = false;
-	return (SUCCESS);
+	bool	res;
+
+	if (mutex_lock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) == FAIL)
+		return (true);
+	res = *(p->should_end);
+	if (mutex_unlock(&p->mtxes[STATE], &p->mtxes[ERR], p->err) == FAIL)
+		return (true);
+	return (res);
 }
 
 int	my_msleep(t_philo *philo, long long msec)
 {
 	long long	start;
-	bool		should_end;
+	size_t		loop_cnt;
 
-	should_end = false;
+	loop_cnt = 0;
 	start = get_timestamp();
 	while (true)
 	{
-		if (is_someone_dead(philo, &should_end) == FAIL)
-			return (FAIL);
-		if (get_timestamp() - start >= msec || should_end)
+		if (get_timestamp() - start >= msec)
 			return (SUCCESS);
-		usleep(100);
+		if (loop_cnt % 2 == 0)
+		{
+			if (is_someone_dead(philo))
+				return (FAIL);
+			loop_cnt++;
+			continue ;
+		}
+		usleep(500);
+		loop_cnt++;
 	}
 }
 
@@ -97,10 +98,7 @@ int	get_index(t_philo *philo, size_t index)
 
 int	print_action(t_philo *p, char *action)
 {
-	bool	should_end;
-
-	if (is_someone_dead(p, &should_end) == FAIL
-		|| should_end
+	if (is_someone_dead(p)
 		|| mutex_lock(&p->mtxes[LOG], &p->mtxes[ERR], p->err) == FAIL)
 	{
 		return (FAIL);

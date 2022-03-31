@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:42 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 09:25:38 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/31 11:14:45 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	put_fork_on_rightside(t_philo *philo)
 	return (SUCCESS);
 }
 
-#define MOMENT 1000
+#define MOMENT 200
 
 static int	put_forks_even_group(t_philo *philo)
 {

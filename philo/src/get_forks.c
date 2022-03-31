@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:24 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 08:35:35 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/31 12:03:05 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ static int	get_fork_on_rightside(t_philo *p)
 	return (SUCCESS);
 }
 
-#define MOMENT 200
-
 static int	get_forks_even_group(t_philo *philo)
 {
-	// my_usleep(MOMENT);
 	if (get_fork_on_leftside(philo) == FAIL
 		|| get_fork_on_rightside(philo) == FAIL)
 	{
@@ -53,7 +50,6 @@ static int	get_forks_even_group(t_philo *philo)
 
 static int	get_forks_odd_group(t_philo *philo)
 {
-	// my_usleep(MOMENT);
 	if (get_fork_on_rightside(philo) == FAIL
 		|| get_fork_on_leftside(philo) == FAIL)
 	{

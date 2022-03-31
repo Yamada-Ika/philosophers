@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:53 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:27:41 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/03/30 16:35:10 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 int	update_last_mealtime(t_philo *philo)
 {
-	if (mutex_lock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err) == FAIL)
-		return (FAIL);
+	// if (mutex_lock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err) == FAIL)
+	// 	return (FAIL);
 	philo->last_meal_time = get_timestamp();
-	return (mutex_unlock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err));
+	return (SUCCESS);
+	// return (mutex_unlock(&philo->mtxes[TIME], &philo->mtxes[ERR], philo->err));
 }
 
 int	incre_full_philo(t_philo *p)
