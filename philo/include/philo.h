@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 05:19:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/03 02:40:02 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 typedef struct timeval	t_time;
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_attr_t	t_attr;
+
+# define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
 
 /**
  * @brief define state kind
@@ -118,6 +120,7 @@ typedef struct s_philo
 	size_t		*full_num;
 	t_mutex		*forks;
 	t_mutex		*mtxes;
+	t_mutex		time_mtx;
 	t_error		*err;
 	pthread_t	philo_id;
 	pthread_t	monitor_id;

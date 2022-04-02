@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 23:31:00 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/24 00:24:23 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/03 02:41:07 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,24 @@ static int	destroy_mtxes_mutex(t_philo *philos, t_error *err)
  */
 int	destroy_mutex(t_philo *philos, t_error *err)
 {
+	size_t	i;
+
 	if (destroy_forks_mutex(philos, err) == FAIL
 		|| destroy_mtxes_mutex(philos, err) == FAIL)
 	{
 		return (FAIL);
 	}
+
+	i = 1;
+	while (i < philos[1].num + 1)
+	{
+		if (pthread_mutex_destroy(&philos[i].time_mtx) != 0)
+		{
+			set_err(err, DESTROY_MTX);
+			return (FAIL);
+		}
+		i++;
+	}
+
 	return (SUCCESS);
 }

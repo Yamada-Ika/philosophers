@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:28:49 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/30 16:34:36 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/03 02:47:35 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static int	incre_eat_count(t_philo *philo)
 static int	philo_eat(t_philo *philo)
 {
 	if (get_forks(philo) == FAIL
-		|| print_action(philo, "is eating") == FAIL
 		|| update_last_mealtime(philo) == FAIL
+		|| print_action(philo, "is eating") == FAIL
 		|| my_msleep(philo, philo->time_to_eat) == FAIL
 		|| incre_eat_count(philo) == FAIL)
 	{
