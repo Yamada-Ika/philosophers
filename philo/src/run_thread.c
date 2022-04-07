@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:29:46 by iyamada           #+#    #+#             */
-/*   Updated: 2022/03/28 05:54:32 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/07 10:15:50 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	run_philo_thread(t_philo *philos, t_error *err)
 		kill_thread(&philos[1]);
 		return (FAIL);
 	}
-	// usleep(MOMENT);
 	my_usleep(MOMENT);
 	if (create_even_group(philos, err) == FAIL)
 	{

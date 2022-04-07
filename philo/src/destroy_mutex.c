@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 23:31:00 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/03 02:41:07 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/07 10:15:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	destroy_mutex(t_philo *philos, t_error *err)
 	{
 		return (FAIL);
 	}
-
 	i = 1;
 	while (i < philos[1].num + 1)
 	{
@@ -64,6 +63,5 @@ int	destroy_mutex(t_philo *philos, t_error *err)
 		}
 		i++;
 	}
-
 	return (SUCCESS);
 }

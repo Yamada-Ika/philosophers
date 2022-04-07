@@ -6,7 +6,7 @@
 /*   By: iyamada <iyamada@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 19:30:15 by iyamada           #+#    #+#             */
-/*   Updated: 2022/04/03 02:40:02 by iyamada          ###   ########.fr       */
+/*   Updated: 2022/04/07 10:19:23 by iyamada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 typedef struct timeval	t_time;
 typedef pthread_mutex_t	t_mutex;
 typedef pthread_attr_t	t_attr;
-
-# define DBG() fprintf(stderr, "%s %d\n", __func__, __LINE__)
 
 /**
  * @brief define state kind
@@ -170,6 +168,7 @@ int			my_msleep(t_philo *philo, long long msec);
 void		my_usleep(long long usec);
 int			get_index(t_philo *philo, size_t index);
 int			print_action(t_philo *philo, char *action);
+bool		is_someone_dead(t_philo *p);
 
 // pthread
 int			mutex_lock(t_mutex *mtx, t_mutex *mtx_err, t_error *err);
